@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T19:05:00.275648+03:00",
+  "generated_at": "2026-06-25T19:32:46.435232+03:00",
   "today": {
     "recovery": 85.0,
     "hrv_ms": 79.1,
@@ -307,6 +307,7 @@
     "monthly_income": 383317,
     "monthly_expense_goal": 300000,
     "month_expenses": 283202,
+    "credit_repayment": 91173,
     "categories": [
       {
         "name": "Семья",
