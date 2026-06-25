@@ -581,10 +581,20 @@ function dot(cls) {
   return `<div class="cal-dot ${cls}"></div>`;
 }
 
-function ring(cur, goal, color, icon, label, sub) {
+function ringColor(pct) {
+  if (pct >= 90) return '#2A7A52';   // насыщенный зелёный
+  if (pct >= 75) return '#4EA843';   // зелёный
+  if (pct >= 55) return '#86B830';   // жёлто-зелёный
+  if (pct >= 35) return '#C8A028';   // жёлтый
+  if (pct >= 15) return '#D4701C';   // оранжевый
+  return '#8E2C2C';                   // бордо
+}
+
+function ring(cur, goal, icon, label, sub) {
   const pct = goal > 0 ? Math.min(100, Math.round(cur / goal * 100)) : 0;
   const fill = pct.toFixed(1);
   const empty = (100 - pct).toFixed(1);
+  const color = ringColor(pct);
   return `<div class="ring-wrap">
     <div class="ring-chart">
       <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
@@ -763,13 +773,11 @@ function render(d) {
     : m.sleep_on_time_days / mTotal >= 0.3 ? 'var(--warn)' : 'var(--crit)';
   const workColor = m.workouts >= m.workouts_goal ? 'var(--pos)' : 'var(--bordeaux)';
 
-  const intensiveMonthColor = (m.intensive || 0) >= (m.intensive_goal || 1) ? 'var(--pos)' : 'var(--bordeaux)';
-
   const monthMetrics = `<div class="rings-grid-2x2">
-    ${ring(m.sobriety_days, mTotal, 'var(--pos)', '🍺', 'Трезвость', `${m.sobriety_days} / ${mTotal} дн`)}
-    ${ring(m.sleep_on_time_days, mTotal, sleepRingColor, '🌙', 'Сон', `${m.sleep_on_time_days} / ${mTotal} дн`)}
-    ${ring(m.workouts, m.workouts_goal, workColor, '🏃', 'Активность', `${m.workouts} / ${m.workouts_goal}`)}
-    ${ring(m.intensive || 0, m.intensive_goal || 1, intensiveMonthColor, '🏋', 'Интенсивные', `${m.intensive || 0} / ${m.intensive_goal || '?'}`)}
+    ${ring(m.sobriety_days, mTotal, '🍺', 'Трезвость', `${m.sobriety_days} / ${mTotal} дн`)}
+    ${ring(m.sleep_on_time_days, mTotal, '🌙', 'Сон', `${m.sleep_on_time_days} / ${mTotal} дн`)}
+    ${ring(m.workouts, m.workouts_goal, '🏃', 'Активность', `${m.workouts} / ${m.workouts_goal}`)}
+    ${ring(m.intensive || 0, m.intensive_goal || 1, '🏋', 'Интенсивные', `${m.intensive || 0} / ${m.intensive_goal || '?'}`)}
   </div>`;
 
   /* ── Year metrics ── */
@@ -779,10 +787,10 @@ function render(d) {
   const savGoalK = Math.round(savGoal / 1000);
 
   const yearMetrics = `<div class="rings-grid-2x2">
-    ${ring(y.sobriety_days, y.sobriety_goal, 'var(--pos)', '🍺', 'Трезвость', `${y.sobriety_days} / ${y.sobriety_goal} дн`)}
-    ${ring(y.activity_count || 0, y.activity_goal || 365, 'var(--bordeaux)', '🏃', 'Активность', `${y.activity_count || 0} / ${y.activity_goal || 365}`)}
-    ${ring(y.intensive_count, y.intensive_goal, 'var(--bordeaux)', '🏋', 'Интенсивные', `${y.intensive_count} / ${y.intensive_goal}`)}
-    ${ring(savedK, savGoalK, 'var(--bordeaux)', '💰', 'Накоплено', `${savedK}к / ${savGoalK}к ₽`)}
+    ${ring(y.sobriety_days, y.sobriety_goal, '🍺', 'Трезвость', `${y.sobriety_days} / ${y.sobriety_goal} дн`)}
+    ${ring(y.activity_count || 0, y.activity_goal || 365, '🏃', 'Активность', `${y.activity_count || 0} / ${y.activity_goal || 365}`)}
+    ${ring(y.intensive_count, y.intensive_goal, '🏋', 'Интенсивные', `${y.intensive_count} / ${y.intensive_goal}`)}
+    ${ring(savedK, savGoalK, '💰', 'Накоплено', `${savedK}к / ${savGoalK}к ₽`)}
   </div>`;
 
   /* ── Streak calendar ── */
