@@ -8,171 +8,279 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink: #1A1A1F;
-  --ink-soft: #4C4A52;
+  --ink:       #1A1A1F;
+  --ink-soft:  #4C4A52;
   --ink-faint: #8A857E;
-  --paper: #F7F4EF;
-  --card: #FCFAF6;
-  --line: #E6DFD3;
-  --bordeaux: #8E2C2C;
-  --pos: #2E7D5B;
-  --warn: #C0881E;
-  --crit: #C0392B;
-  --pos-bg: #EBF5F0;
-  --warn-bg: #FDF5E6;
-  --crit-bg: #FBEFEC;
+  --paper:     #F7F4EF;
+  --card:      #FCFAF6;
+  --line:      #E6DFD3;
+  --bg:        #E2DDD5;
+  --bordeaux:  #8E2C2C;
+  --pos:       #2A7A52;
+  --pos-bg:    #EAF5EF;
+  --warn:      #B87A18;
+  --warn-bg:   #FDF3E0;
+  --crit:      #B83232;
+  --crit-bg:   #FAECEC;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.07);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #E8E3DA;
+  background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
-  padding: 24px 16px 48px;
+  padding: 28px 16px 60px;
   -webkit-font-smoothing: antialiased;
 }
 
-.page { max-width: 760px; margin: 0 auto; }
+.page { max-width: 820px; margin: 0 auto; }
 
+/* ── Header ── */
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  padding: 0 4px 16px;
-  border-bottom: 1px solid var(--line);
+  align-items: center;
   margin-bottom: 28px;
+  padding: 0 2px;
 }
 .header-title {
   font-family: 'Manrope', sans-serif;
   font-weight: 800;
-  font-size: 22px;
-  letter-spacing: -.01em;
+  font-size: 20px;
+  letter-spacing: .04em;
+  color: var(--ink);
 }
 .header-title .dot { color: var(--bordeaux); }
 .header-sub {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--ink-faint);
-  letter-spacing: .04em;
+  letter-spacing: .05em;
 }
 
+/* ── Section label ── */
 .section-label {
   font-family: 'Manrope', sans-serif;
   font-weight: 700;
-  font-size: 11px;
-  letter-spacing: .2em;
+  font-size: 10px;
+  letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--bordeaux);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
-/* Habit chips row (Today) */
-.chips {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-.chip {
+/* ── Card base ── */
+.card {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px 20px;
+  border-radius: 18px;
+  box-shadow: var(--card-shadow);
+}
+
+/* ── WHOOP compact strip ── */
+.whoop-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 12px;
+}
+.whoop-strip .card { border-radius: 0; border-right: none; }
+.whoop-strip .card:first-child { border-radius: 18px 0 0 18px; }
+.whoop-strip .card:last-child  { border-radius: 0 18px 18px 0; border-right: 1px solid var(--line); }
+
+.whoop-cell {
+  padding: 14px 18px;
+}
+.whoop-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 5px;
+}
+.whoop-value {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+.whoop-value .unit {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.whoop-sub {
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 3px;
+}
+.rec-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  margin-bottom: 2px;
+  vertical-align: middle;
+}
+.rec-dot.good { background: var(--pos); }
+.rec-dot.warn { background: var(--warn); }
+.rec-dot.crit { background: var(--crit); }
+
+/* ── Habit chips ── */
+.chips {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+@media (max-width: 560px) {
+  .chips { grid-template-columns: 1fr; }
+  .whoop-strip { grid-template-columns: 1fr; }
+  .whoop-strip .card { border-right: 1px solid var(--line); border-radius: 0; border-bottom: none; }
+  .whoop-strip .card:first-child { border-radius: 18px 18px 0 0; }
+  .whoop-strip .card:last-child  { border-radius: 0 0 18px 18px; border-bottom: 1px solid var(--line); }
+}
+
+.chip {
+  padding: 16px 18px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex: 1;
-  min-width: 180px;
+  gap: 14px;
+  border-left: 3px solid var(--line);
 }
-.chip.ok   { border-top: 3px solid var(--pos);  background: var(--pos-bg); }
-.chip.warn { border-top: 3px solid var(--warn); background: var(--warn-bg); }
-.chip.fail { border-top: 3px solid var(--crit); background: var(--crit-bg); }
-
-.chip-icon { font-size: 22px; }
+.chip.ok   { border-left-color: var(--pos);  background: var(--pos-bg); }
+.chip.warn { border-left-color: var(--warn); background: var(--warn-bg); }
+.chip.fail { border-left-color: var(--crit); background: var(--crit-bg); }
+.chip-icon { font-size: 24px; flex-shrink: 0; }
 .chip-main {
   font-family: 'Manrope', sans-serif;
   font-weight: 800;
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1;
   color: var(--ink);
 }
-.chip-sub {
-  font-size: 12px;
+.chip-sub  {
+  font-size: 11px;
   color: var(--ink-faint);
-  margin-top: 2px;
+  margin-top: 3px;
+  line-height: 1.4;
 }
 
-/* Action bar */
-.action-card {
+/* ── Action bar ── */
+.action-bar {
   background: var(--ink);
   border-radius: 14px;
   padding: 14px 20px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 28px;
+  box-shadow: 0 4px 16px rgba(26,26,31,0.18);
 }
 .action-arrow {
   font-family: 'Manrope', sans-serif;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
   color: var(--bordeaux);
   flex-shrink: 0;
 }
 .action-text {
-  font-size: 14px;
-  color: #F7F4EF;
+  font-size: 13px;
+  color: #F0ECE5;
   font-weight: 500;
+  line-height: 1.4;
 }
 
-/* Two-column bottom */
+/* ── Sleep week chart ── */
+.sleep-chart-card {
+  padding: 20px 22px;
+  margin-bottom: 16px;
+}
+.sleep-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 64px;
+  margin: 12px 0 6px;
+}
+.sleep-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  justify-content: flex-end;
+}
+.sleep-bar {
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  min-height: 4px;
+  transition: height .3s ease;
+}
+.sleep-bar.ok    { background: var(--pos); }
+.sleep-bar.late  { background: var(--crit); opacity: .8; }
+.sleep-bar.nodata { background: var(--line); }
+.sleep-bar-label {
+  font-size: 10px;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.sleep-bar-hours {
+  font-size: 9px;
+  color: var(--ink-faint);
+  height: 12px;
+  line-height: 12px;
+}
+
+/* ── Month + Year grid ── */
 .bottom-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 14px;
+  margin-bottom: 16px;
 }
-@media (max-width: 600px) {
-  .bottom-grid { grid-template-columns: 1fr; }
-  .chips { flex-direction: column; }
+@media (max-width: 600px) { .bottom-grid { grid-template-columns: 1fr; } }
+
+.section-card {
+  padding: 20px 20px 16px;
+  border-left: 3px solid var(--bordeaux);
+  border-radius: 0 18px 18px 0;
 }
 
-.card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 20px 22px;
-}
-
-/* Metric rows */
+/* ── Metric rows ── */
 .metric {
-  padding: 11px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--line);
 }
 .metric:last-child { border-bottom: none; padding-bottom: 0; }
 .metric:first-child { padding-top: 0; }
-
 .metric-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 6px;
 }
-.metric-name {
-  font-size: 13px;
-  color: var(--ink-soft);
-}
+.metric-name  { font-size: 12px; color: var(--ink-soft); }
 .metric-value {
   font-family: 'Manrope', sans-serif;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--ink);
   white-space: nowrap;
 }
 
-/* Progress bar */
+/* ── Progress bar ── */
 .bar-track {
-  height: 6px;
+  height: 5px;
   background: var(--line);
   border-radius: 99px;
   overflow: hidden;
@@ -183,15 +291,111 @@ body {
   background: var(--bordeaux);
 }
 .bar-fill.good { background: var(--pos); }
-.bar-fill.warn { background: var(--warn); }
-
+.bar-fill.over { background: var(--pos); }
 .bar-footer {
   display: flex;
   justify-content: space-between;
   margin-top: 4px;
 }
-.bar-pct { font-size: 11px; color: var(--ink-faint); }
+.bar-pct { font-size: 10px; color: var(--ink-faint); }
 
+/* ── Streak calendar ── */
+.cal-card {
+  padding: 20px 22px;
+  margin-bottom: 16px;
+}
+.cal-legend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.cal-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.cal-wd {
+  text-align: center;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.cal-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 0;
+}
+.cal-empty { /* blank day offset */ }
+.cal-num {
+  font-size: 9px;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 1px;
+}
+.cal-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  align-items: center;
+}
+.cal-dot {
+  width: 18px;
+  height: 7px;
+  border-radius: 2px;
+}
+.dot-ok   { background: var(--pos); }
+.dot-fail { background: var(--crit); opacity: .75; }
+.dot-na   { background: var(--line); }
+
+/* ── Life goals ── */
+.goals-card {
+  padding: 20px 22px;
+  margin-bottom: 0;
+}
+.goals-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.goal-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+.goal-item:first-child { padding-top: 0; }
+.goal-item:last-child  { border-bottom: none; padding-bottom: 0; }
+.goal-icon { font-size: 18px; flex-shrink: 0; width: 28px; text-align: center; }
+.goal-text { font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
+.goal-text strong { color: var(--ink); font-weight: 600; }
+
+/* ── Misc ── */
+.spacer { height: 16px; }
 .loading { text-align: center; padding: 80px 0; color: var(--ink-faint); font-size: 14px; }
 </style>
 </head>
@@ -205,11 +409,14 @@ body {
 </div>
 
 <script>
+const DAY_ABBR = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+const WEEKDAYS = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+
 function bar(cur, goal, variant) {
-  const pct = goal > 0 ? Math.min(100, Math.round(cur / goal * 100)) : 0;
-  const cls = variant || (pct >= 100 ? 'good' : '');
-  return `
-    <div class="bar-track"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
+  const raw = goal > 0 ? cur / goal : 0;
+  const pct = Math.min(100, Math.round(raw * 100));
+  const cls = variant || (raw >= 1 ? 'over' : '');
+  return `<div class="bar-track"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
     <div class="bar-footer">
       <span class="bar-pct">${cur} / ${goal}</span>
       <span class="bar-pct">${pct}%</span>
@@ -221,14 +428,63 @@ function rub(n) {
   return n >= 1000 ? Math.round(n / 1000) + 'к ₽' : n + ' ₽';
 }
 
-function render(d) {
-  const t = d.today;
-  const m = d.month;
-  const y = d.year;
+function recClass(r) {
+  if (r == null) return '';
+  return r >= 67 ? 'good' : r >= 34 ? 'warn' : 'crit';
+}
 
-  // Chip: трезвость
+function sleepH(h) {
+  if (h == null) return '—';
+  const hrs = Math.floor(h);
+  const min = Math.round((h - hrs) * 60);
+  return min > 0 ? `${hrs}ч ${min}м` : `${hrs}ч`;
+}
+
+function dot(cls) {
+  return `<div class="cal-dot ${cls}"></div>`;
+}
+
+function render(d) {
+  const t   = d.today;
+  const m   = d.month;
+  const y   = d.year;
+  const sw  = d.sleep_week || [];
+  const cal = d.month_calendar || [];
+
+  /* ── WHOOP strip ── */
+  const rc = recClass(t.recovery);
+  const whoopStrip = `
+    <div class="whoop-strip">
+      <div class="card">
+        <div class="whoop-cell">
+          <div class="whoop-label">Recovery</div>
+          <div class="whoop-value">
+            <span class="rec-dot ${rc}"></span>
+            ${t.recovery != null ? Math.round(t.recovery) : '—'}<span class="unit">%</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="whoop-cell">
+          <div class="whoop-label">Сон</div>
+          <div class="whoop-value">${sleepH(t.sleep_hours)}</div>
+          <div class="whoop-sub">лёг ${t.sleep_start || '—'}</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="whoop-cell">
+          <div class="whoop-label">HRV · ЧСС покоя</div>
+          <div class="whoop-value">
+            ${t.hrv_ms != null ? Math.round(t.hrv_ms) : '—'}<span class="unit">мс</span>
+          </div>
+          <div class="whoop-sub">пульс покоя ${t.rhr != null ? Math.round(t.rhr) : '—'} уд/мин</div>
+        </div>
+      </div>
+    </div>`;
+
+  /* ── Habit chips ── */
   const alc = t.alcohol_free_days;
-  const alcChip = `<div class="chip ok">
+  const alcChip = `<div class="card chip ok">
     <span class="chip-icon">🍺</span>
     <div>
       <div class="chip-main">${alc != null ? alc + ' дн' : '—'}</div>
@@ -236,35 +492,53 @@ function render(d) {
     </div>
   </div>`;
 
-  // Chip: сон
   const sleepOk = t.sleep_on_time;
   const lateMins = t.sleep_late_min || 0;
-  const sleepClass = sleepOk ? 'ok' : 'fail';
-  const sleepMark = sleepOk ? '✅' : '❌';
-  const sleepSub = sleepOk
-    ? `лёг ${t.sleep_start || '—'}`
-    : `лёг ${t.sleep_start || '—'}, +${lateMins} мин`;
-  const sleepChip = `<div class="chip ${sleepClass}">
+  const sleepChip = `<div class="card chip ${sleepOk ? 'ok' : 'fail'}">
     <span class="chip-icon">🌙</span>
     <div>
-      <div class="chip-main">${sleepMark}</div>
-      <div class="chip-sub">${sleepSub}</div>
+      <div class="chip-main">${sleepOk ? '✅' : '❌'}</div>
+      <div class="chip-sub">лёг ${t.sleep_start || '—'}${!sleepOk && lateMins > 0 ? '<br>+' + lateMins + ' мин от цели' : ''}</div>
     </div>
   </div>`;
 
-  // Chip: тренировка
-  const trained = t.trained;
-  const trainChip = `<div class="chip ${trained ? 'ok' : 'warn'}">
+  const trainClass = t.trained ? 'ok' : 'warn';
+  const trainMain  = t.trained ? '✅' : '—';
+  const trainSub   = t.trained
+    ? `${t.workout_type || 'тренировка'}${t.workout_strain != null ? '<br>страйн ' + t.workout_strain : ''}`
+    : 'нет тренировки';
+  const trainChip = `<div class="card chip ${trainClass}">
     <span class="chip-icon">🏋</span>
     <div>
-      <div class="chip-main">${trained ? '✅' : '—'}</div>
-      <div class="chip-sub">${trained ? 'тренировка' : 'нет тренировки'}</div>
+      <div class="chip-main">${trainMain}</div>
+      <div class="chip-sub">${trainSub}</div>
     </div>
   </div>`;
 
-  // Month
+  /* ── Sleep week chart ── */
+  const MAX_H = 9;
+  const MAX_PX = 56;
+  const sleepBars = sw.map(n => {
+    const h = n.hours;
+    const px = h != null ? Math.max(4, Math.round((Math.min(h, MAX_H) / MAX_H) * MAX_PX)) : 4;
+    const cls = h == null ? 'nodata' : n.on_time ? 'ok' : 'late';
+    const label = h != null ? (h % 1 === 0 ? h + 'ч' : h + 'ч') : '';
+    return `<div class="sleep-bar-col">
+      <div class="sleep-bar-hours">${label}</div>
+      <div class="sleep-bar ${cls}" style="height:${px}px"></div>
+      <div class="sleep-bar-label">${n.label}</div>
+    </div>`;
+  }).join('');
+
+  const sleepWeekHtml = `
+    <div class="card sleep-chart-card">
+      <div class="section-label">Сон — 7 ночей</div>
+      <div class="sleep-bars">${sleepBars}</div>
+    </div>`;
+
+  /* ── Month metrics ── */
   const mDays = m.days_elapsed || 1;
-  const monthHtml = `
+  const monthMetrics = `
     <div class="metric">
       <div class="metric-header">
         <span class="metric-name">🍺 Трезвость</span>
@@ -277,7 +551,7 @@ function render(d) {
         <span class="metric-name">🌙 Сон вовремя</span>
         <span class="metric-value">${m.sleep_on_time_days} / ${mDays} дн</span>
       </div>
-      ${bar(m.sleep_on_time_days, mDays, m.sleep_on_time_days / mDays >= 0.7 ? 'good' : 'warn')}
+      ${bar(m.sleep_on_time_days, mDays, m.sleep_on_time_days / mDays >= 0.7 ? 'good' : '')}
     </div>
     <div class="metric">
       <div class="metric-header">
@@ -287,10 +561,10 @@ function render(d) {
       ${bar(m.workouts, m.workouts_goal)}
     </div>`;
 
-  // Year
+  /* ── Year metrics ── */
   const savedRub = y.saved_rub || 0;
-  const savingsGoal = y.savings_goal || 480000;
-  const yearHtml = `
+  const savGoal  = y.savings_goal || 480000;
+  const yearMetrics = `
     <div class="metric">
       <div class="metric-header">
         <span class="metric-name">🍺 Трезвость</span>
@@ -308,31 +582,99 @@ function render(d) {
     <div class="metric">
       <div class="metric-header">
         <span class="metric-name">💰 Накоплено</span>
-        <span class="metric-value">${rub(savedRub)} / ${rub(savingsGoal)}</span>
+        <span class="metric-value">${rub(savedRub)} / ${rub(savGoal)}</span>
       </div>
-      ${bar(savedRub, savingsGoal)}
+      ${bar(savedRub, savGoal)}
     </div>`;
 
+  /* ── Streak calendar ── */
+  const year  = new Date().getFullYear();
+  const month = new Date().getMonth();
+  const firstDow = (new Date(year, month, 1).getDay() + 6) % 7; // 0=Mon
+
+  const wdHeaders = WEEKDAYS.map(w => `<div class="cal-wd">${w}</div>`).join('');
+
+  const blanks = Array(firstDow).fill('<div class="cal-cell cal-empty"></div>').join('');
+
+  const dayCells = cal.map(item => {
+    const soberDot = item.sober === true ? 'ok' : item.sober === false ? 'fail' : 'na';
+    const sleepDot = item.sleep_ok === true ? 'ok' : item.sleep_ok === false ? 'fail' : 'na';
+    return `<div class="cal-cell">
+      <div class="cal-num">${item.day}</div>
+      <div class="cal-dots">
+        ${dot('cal-dot dot-' + soberDot)}
+        ${dot('cal-dot dot-' + sleepDot)}
+      </div>
+    </div>`;
+  }).join('');
+
+  const calHtml = `
+    <div class="card cal-card">
+      <div class="section-label">Стрик — ${m.name}</div>
+      <div class="cal-legend">
+        <div class="cal-legend-item"><div class="legend-dot" style="background:var(--pos)"></div>🍺 трезвость</div>
+        <div class="cal-legend-item"><div class="legend-dot" style="background:var(--pos)"></div>🌙 сон вовремя</div>
+        <div class="cal-legend-item"><div class="legend-dot" style="background:var(--crit);opacity:.75"></div>нарушено</div>
+        <div class="cal-legend-item"><div class="legend-dot" style="background:var(--line)"></div>нет данных</div>
+      </div>
+      <div class="cal-weekdays">${wdHeaders}</div>
+      <div class="cal-grid">${blanks}${dayCells}</div>
+    </div>`;
+
+  /* ── Life goals ── */
+  const goalsHtml = `
+    <div class="card goals-card">
+      <div class="section-label">Фокус 2026</div>
+      <ul class="goals-list">
+        <li class="goal-item">
+          <span class="goal-icon">🎯</span>
+          <span class="goal-text"><strong>Операционный директор</strong> — освоить роль полностью к концу 2026</span>
+        </li>
+        <li class="goal-item">
+          <span class="goal-icon">🍺</span>
+          <span class="goal-text"><strong>365 дней трезвости</strong> — начал 18 июня 2026</span>
+        </li>
+        <li class="goal-item">
+          <span class="goal-icon">🏋</span>
+          <span class="goal-text"><strong>200 интенсивных тренировок</strong> — strain &gt; 10</span>
+        </li>
+        <li class="goal-item">
+          <span class="goal-icon">💰</span>
+          <span class="goal-text"><strong>Накопить 480 000 ₽</strong> — 40 000 в месяц</span>
+        </li>
+        <li class="goal-item">
+          <span class="goal-icon">👨‍👩‍👧</span>
+          <span class="goal-text"><strong>Семья</strong> — качественное время с Анной и Евой</span>
+        </li>
+      </ul>
+    </div>`;
+
+  /* ── Assemble ── */
   document.getElementById('content').innerHTML = `
     <div class="section-label">Сегодня</div>
+    ${whoopStrip}
+    <div class="spacer"></div>
     <div class="chips">${alcChip}${sleepChip}${trainChip}</div>
-    <div class="action-card">
+    <div class="action-bar">
       <span class="action-arrow">→</span>
       <span class="action-text">${t.action || ''}</span>
     </div>
+    ${sleepWeekHtml}
     <div class="bottom-grid">
-      <div class="card">
+      <div class="card section-card">
         <div class="section-label">${m.name}</div>
-        ${monthHtml}
+        ${monthMetrics}
       </div>
-      <div class="card">
+      <div class="card section-card">
         <div class="section-label">Год 2026</div>
-        ${yearHtml}
+        ${yearMetrics}
       </div>
     </div>
+    ${calHtml}
+    ${goalsHtml}
   `;
 
-  const gen = new Date(d.generated_at);
+  const gen  = new Date(d.generated_at);
   const opts = { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' };
   document.getElementById('updated').textContent = 'обновлено ' + gen.toLocaleString('ru-RU', opts);
 }
