@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T15:06:05.331347+03:00",
+  "generated_at": "2026-06-25T16:26:05.626667+03:00",
   "today": {
     "recovery": 85.0,
     "hrv_ms": 79.1,
@@ -13,7 +13,8 @@
     "trained": true,
     "workout_type": "Теннис",
     "workout_strain": 12.1,
-    "action": "Лёг на 58 мин позже цели — сегодня отбой до 23:10"
+    "action": "Лёг на 58 мин позже цели — сегодня отбой до 23:10",
+    "mood": null
   },
   "sleep_week": [
     {
@@ -257,5 +258,54 @@
       "sober": true,
       "sleep_ok": false
     }
-  ]
+  ],
+  "mood_week": [
+    {
+      "date": "2026-06-19",
+      "day": 19,
+      "label": "Пт",
+      "score": null
+    },
+    {
+      "date": "2026-06-20",
+      "day": 20,
+      "label": "Сб",
+      "score": null
+    },
+    {
+      "date": "2026-06-21",
+      "day": 21,
+      "label": "Вс",
+      "score": null
+    },
+    {
+      "date": "2026-06-22",
+      "day": 22,
+      "label": "Пн",
+      "score": null
+    },
+    {
+      "date": "2026-06-23",
+      "day": 23,
+      "label": "Вт",
+      "score": null
+    },
+    {
+      "date": "2026-06-24",
+      "day": 24,
+      "label": "Ср",
+      "score": null
+    },
+    {
+      "date": "2026-06-25",
+      "day": 25,
+      "label": "Чт",
+      "score": null
+    }
+  ],
+  "finances": {
+    "monthly_income": 400000,
+    "monthly_expense_goal": 300000,
+    "month_expenses": 0
+  }
 }
