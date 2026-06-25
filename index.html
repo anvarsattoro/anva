@@ -343,6 +343,11 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
 }
+.rings-grid-2x2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
 .ring-wrap {
   display: flex;
   flex-direction: column;
@@ -770,8 +775,9 @@ function render(d) {
   const savedK   = Math.round(savedRub / 1000);
   const savGoalK = Math.round(savGoal / 1000);
 
-  const yearMetrics = `<div class="rings-grid">
+  const yearMetrics = `<div class="rings-grid-2x2">
     ${ring(y.sobriety_days, y.sobriety_goal, 'var(--pos)', '🍺', 'Трезвость', `${y.sobriety_days} / ${y.sobriety_goal} дн`)}
+    ${ring(y.activity_count || 0, y.activity_goal || 365, 'var(--bordeaux)', '🏃', 'Активность', `${y.activity_count || 0} / ${y.activity_goal || 365}`)}
     ${ring(y.intensive_count, y.intensive_goal, 'var(--bordeaux)', '🏋', 'Интенсивные', `${y.intensive_count} / ${y.intensive_goal}`)}
     ${ring(savedK, savGoalK, 'var(--bordeaux)', '💰', 'Накоплено', `${savedK}к / ${savGoalK}к ₽`)}
   </div>`;
