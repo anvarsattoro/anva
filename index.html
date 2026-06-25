@@ -249,6 +249,7 @@ body {
   transition: height .3s ease;
 }
 .sleep-bar.ok    { background: var(--pos); }
+.sleep-bar.warn  { background: var(--warn); }
 .sleep-bar.late  { background: var(--crit); opacity: .8; }
 .sleep-bar.nodata { background: var(--line); }
 .sleep-bar-label {
@@ -471,6 +472,7 @@ function render(d) {
   const m   = d.month;
   const y   = d.year;
   const sw  = d.sleep_week || [];
+  const rw  = d.recovery_week || [];
   const cal = d.month_calendar || [];
 
   /* ── WHOOP strip ── */
@@ -564,25 +566,44 @@ function render(d) {
     </div>
   </div>`;
 
-  /* ── Sleep week chart ── */
+  /* ── Sleep + Recovery week charts ── */
   const MAX_H = 9;
   const MAX_PX = 56;
-  const sleepBars = sw.map(n => {
-    const h = n.hours;
-    const px = h != null ? Math.max(4, Math.round((Math.min(h, MAX_H) / MAX_H) * MAX_PX)) : 4;
-    const cls = h == null ? 'nodata' : n.on_time ? 'ok' : 'late';
-    const label = h != null ? (h % 1 === 0 ? h + 'ч' : h + 'ч') : '';
-    return `<div class="sleep-bar-col">
-      <div class="sleep-bar-hours">${label}</div>
-      <div class="sleep-bar ${cls}" style="height:${px}px"></div>
-      <div class="sleep-bar-label">${n.label}</div>
-    </div>`;
-  }).join('');
+
+  function miniBarChart(items, topLabelFn, clsFn) {
+    return items.map(n => {
+      const val = n.hours != null ? n.hours : n.score;
+      const maxVal = n.hours != null ? MAX_H : 100;
+      const px = val != null ? Math.max(4, Math.round((Math.min(val, maxVal) / maxVal) * MAX_PX)) : 4;
+      const cls = clsFn(n);
+      const label = topLabelFn(n);
+      return `<div class="sleep-bar-col">
+        <div class="sleep-bar-hours">${label}</div>
+        <div class="sleep-bar ${cls}" style="height:${px}px"></div>
+        <div class="sleep-bar-label">${n.label}</div>
+      </div>`;
+    }).join('');
+  }
+
+  const sleepBars = miniBarChart(
+    sw,
+    n => n.hours != null ? n.hours + 'ч' : '',
+    n => n.hours == null ? 'nodata' : n.on_time ? 'ok' : 'late'
+  );
+
+  const recBars = miniBarChart(
+    rw,
+    n => n.score != null ? n.score + '%' : '',
+    n => n.score == null ? 'nodata' : n.score >= 67 ? 'ok' : n.score >= 34 ? 'warn' : 'late'
+  );
 
   const sleepWeekHtml = `
     <div class="card sleep-chart-card">
       <div class="section-label">Сон — 7 ночей</div>
       <div class="sleep-bars">${sleepBars}</div>
+      <div style="height:14px"></div>
+      <div class="section-label">Recovery — 7 дней</div>
+      <div class="sleep-bars">${recBars}</div>
     </div>`;
 
   /* ── Month metrics ── */
