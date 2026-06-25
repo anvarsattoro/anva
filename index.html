@@ -121,6 +121,25 @@ body {
   color: var(--ink-faint);
   margin-top: 3px;
 }
+.whoop-target {
+  font-size: 10px;
+  color: var(--ink-faint);
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.whoop-target .tval {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+}
+.whoop-target .tval.met   { color: var(--pos); }
+.whoop-target .tval.unmet { color: var(--crit); }
+.whoop-target .tarrow {
+  font-size: 9px;
+  opacity: .5;
+}
 .rec-dot {
   display: inline-block;
   width: 8px;
@@ -453,6 +472,23 @@ function render(d) {
 
   /* ── WHOOP strip ── */
   const rc = recClass(t.recovery);
+  const REC_TARGET  = 67;
+  const SLEEP_TARGET = 7.5; // 7ч 30м
+  const RHR_TARGET   = 52;  // пульс покоя ≤ 52
+
+  function target(actual, goal, fmtFn, label, lowerIsBetter) {
+    if (actual == null) return '';
+    const met = lowerIsBetter ? actual <= goal : actual >= goal;
+    const cls = met ? 'met' : 'unmet';
+    const arrow = met ? '↑' : '↓';
+    return `<div class="whoop-target">
+      <span class="tarrow">${arrow}</span>
+      <span>цель</span>
+      <span class="tval ${cls}">${fmtFn(goal)}</span>
+      ${label ? '<span>' + label + '</span>' : ''}
+    </div>`;
+  }
+
   const whoopStrip = `
     <div class="whoop-strip">
       <div class="card">
@@ -462,6 +498,7 @@ function render(d) {
             <span class="rec-dot ${rc}"></span>
             ${t.recovery != null ? Math.round(t.recovery) : '—'}<span class="unit">%</span>
           </div>
+          ${target(t.recovery, REC_TARGET, v => v + '%', '', false)}
         </div>
       </div>
       <div class="card">
@@ -469,6 +506,7 @@ function render(d) {
           <div class="whoop-label">Сон</div>
           <div class="whoop-value">${sleepH(t.sleep_hours)}</div>
           <div class="whoop-sub">лёг ${t.sleep_start || '—'}</div>
+          ${target(t.sleep_hours, SLEEP_TARGET, sleepH, '', false)}
         </div>
       </div>
       <div class="card">
@@ -478,6 +516,7 @@ function render(d) {
             ${t.hrv_ms != null ? Math.round(t.hrv_ms) : '—'}<span class="unit">мс</span>
           </div>
           <div class="whoop-sub">пульс покоя ${t.rhr != null ? Math.round(t.rhr) : '—'} уд/мин</div>
+          ${target(t.rhr, RHR_TARGET, v => '≤' + v + ' уд/мин', '', true)}
         </div>
       </div>
     </div>`;
