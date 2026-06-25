@@ -836,10 +836,12 @@ function render(d) {
     </div>`;
 
   // Finance card
-  const income  = fin.monthly_income || 400000;
-  const expGoal = fin.monthly_expense_goal || 300000;
-  const spent   = fin.month_expenses || 0;
-  const free    = income - spent;
+  const income   = fin.monthly_income || 400000;
+  const expGoal  = fin.monthly_expense_goal || 300000;
+  const spent    = fin.month_expenses || 0;
+  const creditRep = fin.credit_repayment || 0;
+  const newSpent = spent - creditRep;  // реальные новые траты без погашения долга
+  const free     = income - spent;
   const spentPct = Math.min(100, Math.round(spent / expGoal * 100));
   const spentColor = spentPct >= 100 ? 'var(--crit)' : spentPct >= 90 ? 'var(--warn)' : 'var(--pos)';
   const cats = (fin.categories || []).filter(c => c.amount > 0);
@@ -859,23 +861,28 @@ function render(d) {
   const financeHtml = `
     <div class="card sleep-chart-card" style="margin-bottom:16px">
       <div class="section-label">Финансы — ${m.name}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0 12px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 12px">
         <div>
           <div class="whoop-label">Доход</div>
           <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px">${Math.round(income/1000)}к ₽</div>
         </div>
         <div>
+          <div class="whoop-label">Свободно</div>
+          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;color:${free>=0?'var(--pos)':'var(--crit)'}">${free>=0?'':'−'}${Math.round(Math.abs(free)/1000)}к ₽</div>
+        </div>
+        <div>
           <div class="whoop-label">Расходы</div>
-          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;color:${spentColor}">${Math.round(spent/1000)}к ₽</div>
+          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;color:${spentColor}">${Math.round(newSpent/1000)}к ₽</div>
           <div class="whoop-sub">цель ≤${Math.round(expGoal/1000)}к</div>
         </div>
         <div>
-          <div class="whoop-label">Свободно</div>
-          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;color:${free>=0?'var(--pos)':'var(--crit)'}">${Math.round(Math.abs(free)/1000)}к ₽</div>
+          <div class="whoop-label">💳 Погашение долга</div>
+          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;color:var(--warn)">${Math.round(creditRep/1000)}к ₽</div>
+          <div class="whoop-sub">погашение кредитки</div>
         </div>
       </div>
       <div class="bar-track"><div class="bar-fill" style="width:${spentPct}%;background:${spentColor}"></div></div>
-      <div class="bar-footer"><span class="bar-pct">${Math.round(spent/1000)}к / ${Math.round(expGoal/1000)}к ₽</span><span class="bar-pct">${spentPct}%</span></div>
+      <div class="bar-footer"><span class="bar-pct">итого ${Math.round(spent/1000)}к / ${Math.round(expGoal/1000)}к ₽</span><span class="bar-pct">${spentPct}%</span></div>
       ${cats.length ? `<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line)">
         <div class="whoop-label" style="margin-bottom:6px">Структура расходов</div>
         ${catRows}
