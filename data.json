@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T15:05:00.198610+03:00",
+  "generated_at": "2026-06-25T15:06:05.331347+03:00",
   "today": {
     "recovery": 85.0,
     "hrv_ms": 79.1,
@@ -117,7 +117,9 @@
     "sobriety_days": 8,
     "sleep_on_time_days": 1,
     "workouts": 28,
-    "workouts_goal": 30
+    "workouts_goal": 30,
+    "intensive": 13,
+    "intensive_goal": 16
   },
   "year": {
     "sobriety_days": 8,
