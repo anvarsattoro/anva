@@ -163,12 +163,64 @@ body {
   gap: 10px;
   margin-bottom: 12px;
 }
-@media (max-width: 560px) {
-  .chips { grid-template-columns: 1fr; }
-  .whoop-strip { grid-template-columns: 1fr; }
-  .whoop-strip .card { border-right: 1px solid var(--line); border-radius: 0; border-bottom: none; }
-  .whoop-strip .card:first-child { border-radius: 18px 18px 0 0; }
-  .whoop-strip .card:last-child  { border-radius: 0 0 18px 18px; border-bottom: 1px solid var(--line); }
+/* ── Mobile: iPhone 14 Pro Max (430px) — compact horizontal layout ── */
+@media (max-width: 500px) {
+  body { padding: 18px 12px 48px; }
+
+  .header { margin-bottom: 20px; }
+  .header-title { font-size: 17px; letter-spacing: .03em; }
+  .header-sub { font-size: 10px; }
+
+  /* WHOOP strip: keep 3 cols, shrink everything */
+  .whoop-cell { padding: 10px 10px 10px 12px; }
+  .whoop-label { font-size: 8.5px; letter-spacing: .06em; }
+  .whoop-value { font-size: 21px; }
+  .whoop-value .unit { font-size: 11px; }
+  .whoop-sub { font-size: 9.5px; margin-top: 2px; }
+  .whoop-target { font-size: 9px; margin-top: 4px; gap: 3px; }
+  .whoop-target .tval { font-size: 9px; }
+  .rec-dot { width: 7px; height: 7px; margin-right: 4px; }
+
+  /* Habit chips: keep 3 cols, tighter */
+  .chips { gap: 7px; }
+  .chip { padding: 12px 8px; gap: 8px; border-left-width: 3px; }
+  .chip-icon { font-size: 18px; }
+  .chip-main { font-size: 17px; }
+  .chip-sub { font-size: 10px; margin-top: 2px; }
+
+  /* Action bar */
+  .action-bar { padding: 12px 16px; gap: 10px; margin-bottom: 20px; }
+  .action-text { font-size: 12.5px; }
+
+  /* Charts */
+  .sleep-chart-card { padding: 14px 14px; }
+  .sleep-bars { height: 52px; gap: 5px; }
+  .sleep-bar-hours { font-size: 8.5px; }
+  .sleep-bar-label { font-size: 9px; }
+
+  /* Bottom grid: 2 cols but compact */
+  .bottom-grid { gap: 8px; margin-bottom: 12px; }
+  .section-card { padding: 14px 14px 12px; }
+  .metric { padding: 8px 0; }
+  .metric-name { font-size: 11px; }
+  .metric-value { font-size: 13px; }
+
+  /* Calendar */
+  .cal-card { padding: 14px 12px; }
+  .cal-dot { width: 14px; height: 6px; }
+  .cal-num { font-size: 8px; }
+  .cal-legend { gap: 10px; flex-wrap: wrap; }
+  .cal-legend-item { font-size: 10px; }
+
+  /* Goals */
+  .goals-card { padding: 14px 14px; }
+  .goal-item { padding: 9px 0; gap: 10px; }
+  .goal-icon { font-size: 16px; width: 22px; }
+  .goal-text { font-size: 12px; }
+
+  .section-label { font-size: 9.5px; margin-bottom: 8px; }
+  .spacer { height: 10px; }
+  .card { border-radius: 14px; }
 }
 
 .chip {
