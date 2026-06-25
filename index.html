@@ -715,11 +715,27 @@ function render(d) {
     }).join('');
   }
 
-  const sleepBars = miniBarChart(
-    sw,
-    n => n.hours != null ? n.hours + 'ч' : '',
-    n => n.hours == null ? 'nodata' : n.on_time ? 'ok' : 'late'
-  );
+  function sleepColor(h) {
+    if (h == null) return 'var(--line)';
+    if (h >= 7.5) return '#2A7A52';   // зелёный — цель
+    if (h >= 7.0) return '#74B852';   // салатовый
+    if (h >= 6.5) return '#B8C030';   // жёлто-зелёный
+    if (h >= 6.0) return '#C8A028';   // жёлтый
+    if (h >= 5.0) return '#D4701C';   // оранжевый
+    return '#B83232';                  // красный
+  }
+
+  const sleepBars = sw.map(n => {
+    const h = n.hours;
+    const px = h != null ? Math.max(4, Math.round((Math.min(h, MAX_H) / MAX_H) * MAX_PX)) : 4;
+    const bg = sleepColor(h);
+    const label = h != null ? h + 'ч' : '';
+    return `<div class="sleep-bar-col">
+      <div class="sleep-bar-hours">${label}</div>
+      <div class="sleep-bar" style="height:${px}px;background:${bg}"></div>
+      <div class="sleep-bar-label">${n.label}</div>
+    </div>`;
+  }).join('');
 
   const recBars = miniBarChart(
     rw,
