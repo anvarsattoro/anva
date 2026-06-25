@@ -763,10 +763,13 @@ function render(d) {
     : m.sleep_on_time_days / mTotal >= 0.3 ? 'var(--warn)' : 'var(--crit)';
   const workColor = m.workouts >= m.workouts_goal ? 'var(--pos)' : 'var(--bordeaux)';
 
-  const monthMetrics = `<div class="rings-grid">
+  const intensiveMonthColor = (m.intensive || 0) >= (m.intensive_goal || 1) ? 'var(--pos)' : 'var(--bordeaux)';
+
+  const monthMetrics = `<div class="rings-grid-2x2">
     ${ring(m.sobriety_days, mTotal, 'var(--pos)', '🍺', 'Трезвость', `${m.sobriety_days} / ${mTotal} дн`)}
     ${ring(m.sleep_on_time_days, mTotal, sleepRingColor, '🌙', 'Сон', `${m.sleep_on_time_days} / ${mTotal} дн`)}
-    ${ring(m.workouts, m.workouts_goal, workColor, '🏋', 'Тренировки', `${m.workouts} / ${m.workouts_goal}`)}
+    ${ring(m.workouts, m.workouts_goal, workColor, '🏃', 'Активность', `${m.workouts} / ${m.workouts_goal}`)}
+    ${ring(m.intensive || 0, m.intensive_goal || 1, intensiveMonthColor, '🏋', 'Интенсивные', `${m.intensive || 0} / ${m.intensive_goal || '?'}`)}
   </div>`;
 
   /* ── Year metrics ── */
