@@ -200,10 +200,16 @@ body {
 
   /* Bottom grid: 2 cols but compact */
   .bottom-grid { gap: 8px; margin-bottom: 12px; }
-  .section-card { padding: 14px 14px 12px; }
+  .section-card { padding: 14px 10px 12px; }
   .metric { padding: 8px 0; }
   .metric-name { font-size: 11px; }
   .metric-value { font-size: 13px; }
+
+  /* Rings compact */
+  .ring-chart { width: 60px; height: 60px; }
+  .ring-pct { font-size: 11px; }
+  .ring-label { font-size: 10px; }
+  .ring-sub { font-size: 9px; }
 
   /* Calendar */
   .cal-card { padding: 14px 12px; }
@@ -326,9 +332,60 @@ body {
 @media (max-width: 600px) { .bottom-grid { grid-template-columns: 1fr; } }
 
 .section-card {
-  padding: 20px 20px 16px;
+  padding: 18px 16px 16px;
   border-left: 3px solid var(--bordeaux);
   border-radius: 0 18px 18px 0;
+}
+
+/* ── Rings ── */
+.rings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.ring-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 0;
+}
+.ring-chart {
+  position: relative;
+  width: 72px;
+  height: 72px;
+}
+.ring-chart svg { width: 100%; height: 100%; }
+.ring-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+}
+.ring-pct {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--ink);
+  letter-spacing: -.03em;
+  line-height: 1;
+}
+.ring-icon { font-size: 15px; line-height: 1; }
+.ring-label {
+  font-size: 11px;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.3;
+}
+.ring-sub {
+  font-size: 9.5px;
+  color: var(--ink-faint);
+  text-align: center;
+  line-height: 1.3;
 }
 
 /* ── Metric rows ── */
@@ -519,6 +576,27 @@ function dot(cls) {
   return `<div class="cal-dot ${cls}"></div>`;
 }
 
+function ring(cur, goal, color, icon, label, sub) {
+  const pct = goal > 0 ? Math.min(100, Math.round(cur / goal * 100)) : 0;
+  const fill = pct.toFixed(1);
+  const empty = (100 - pct).toFixed(1);
+  return `<div class="ring-wrap">
+    <div class="ring-chart">
+      <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--line)" stroke-width="3.8"/>
+        <circle cx="18" cy="18" r="15.9" fill="none" stroke="${color}"
+          stroke-width="3.8" stroke-linecap="round"
+          stroke-dasharray="${fill} ${empty}" stroke-dashoffset="25"/>
+      </svg>
+      <div class="ring-inner">
+        <div class="ring-pct">${pct}%</div>
+      </div>
+    </div>
+    <div class="ring-label">${icon} ${label}</div>
+    <div class="ring-sub">${sub}</div>
+  </div>`;
+}
+
 function render(d) {
   const t   = d.today;
   const m   = d.month;
@@ -660,54 +738,27 @@ function render(d) {
 
   /* ── Month metrics ── */
   const mTotal = m.days_in_month || 30;
-  const monthMetrics = `
-    <div class="metric">
-      <div class="metric-header">
-        <span class="metric-name">🍺 Трезвость</span>
-        <span class="metric-value">${m.sobriety_days} / ${mTotal} дн</span>
-      </div>
-      ${bar(m.sobriety_days, mTotal, 'good')}
-    </div>
-    <div class="metric">
-      <div class="metric-header">
-        <span class="metric-name">🌙 Сон вовремя</span>
-        <span class="metric-value">${m.sleep_on_time_days} / ${mTotal} дн</span>
-      </div>
-      ${bar(m.sleep_on_time_days, mTotal, m.sleep_on_time_days / mTotal >= 0.7 ? 'good' : '')}
-    </div>
-    <div class="metric">
-      <div class="metric-header">
-        <span class="metric-name">🏋 Тренировки</span>
-        <span class="metric-value">${m.workouts} / ${m.workouts_goal}</span>
-      </div>
-      ${bar(m.workouts, m.workouts_goal)}
-    </div>`;
+  const sleepColor = m.sleep_on_time_days / mTotal >= 0.7 ? 'var(--pos)'
+    : m.sleep_on_time_days / mTotal >= 0.3 ? 'var(--warn)' : 'var(--crit)';
+  const workColor = m.workouts >= m.workouts_goal ? 'var(--pos)' : 'var(--bordeaux)';
+
+  const monthMetrics = `<div class="rings-grid">
+    ${ring(m.sobriety_days, mTotal, 'var(--pos)', '🍺', 'Трезвость', `${m.sobriety_days} / ${mTotal} дн`)}
+    ${ring(m.sleep_on_time_days, mTotal, sleepColor, '🌙', 'Сон', `${m.sleep_on_time_days} / ${mTotal} дн`)}
+    ${ring(m.workouts, m.workouts_goal, workColor, '🏋', 'Тренировки', `${m.workouts} / ${m.workouts_goal}`)}
+  </div>`;
 
   /* ── Year metrics ── */
   const savedRub = y.saved_rub || 0;
   const savGoal  = y.savings_goal || 480000;
-  const yearMetrics = `
-    <div class="metric">
-      <div class="metric-header">
-        <span class="metric-name">🍺 Трезвость</span>
-        <span class="metric-value">${y.sobriety_days} / ${y.sobriety_goal} дн</span>
-      </div>
-      ${bar(y.sobriety_days, y.sobriety_goal, 'good')}
-    </div>
-    <div class="metric">
-      <div class="metric-header">
-        <span class="metric-name">🏋 Интенсивные</span>
-        <span class="metric-value">${y.intensive_count} / ${y.intensive_goal}</span>
-      </div>
-      ${bar(y.intensive_count, y.intensive_goal)}
-    </div>
-    <div class="metric">
-      <div class="metric-header">
-        <span class="metric-name">💰 Накоплено</span>
-        <span class="metric-value">${rub(savedRub)} / ${rub(savGoal)}</span>
-      </div>
-      ${bar(savedRub, savGoal)}
-    </div>`;
+  const savedK   = Math.round(savedRub / 1000);
+  const savGoalK = Math.round(savGoal / 1000);
+
+  const yearMetrics = `<div class="rings-grid">
+    ${ring(y.sobriety_days, y.sobriety_goal, 'var(--pos)', '🍺', 'Трезвость', `${y.sobriety_days} / ${y.sobriety_goal} дн`)}
+    ${ring(y.intensive_count, y.intensive_goal, 'var(--bordeaux)', '🏋', 'Интенсивные', `${y.intensive_count} / ${y.intensive_goal}`)}
+    ${ring(savedK, savGoalK, 'var(--bordeaux)', '💰', 'Накоплено', `${savedK}к / ${savGoalK}к ₽`)}
+  </div>`;
 
   /* ── Streak calendar ── */
   const year  = new Date().getFullYear();
