@@ -534,6 +534,43 @@ body {
 /* ── Misc ── */
 .spacer { height: 16px; }
 .loading { text-align: center; padding: 80px 0; color: var(--ink-faint); font-size: 14px; }
+
+/* ── Tab navigation ── */
+.tab-bar {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 8px 0 12px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 50;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-pill {
+  flex-shrink: 0;
+  padding: 5px 13px;
+  border-radius: 20px;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--ink-soft);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+.tab-pill.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.tab-section { scroll-margin-top: 52px; }
 </style>
 </head>
 <body>
@@ -802,9 +839,23 @@ function render(d) {
   const income  = fin.monthly_income || 400000;
   const expGoal = fin.monthly_expense_goal || 300000;
   const spent   = fin.month_expenses || 0;
-  const free    = expGoal - spent;
+  const free    = income - spent;
   const spentPct = Math.min(100, Math.round(spent / expGoal * 100));
-  const spentColor = spentPct >= 100 ? 'var(--crit)' : spentPct >= 80 ? 'var(--warn)' : 'var(--pos)';
+  const spentColor = spentPct >= 100 ? 'var(--crit)' : spentPct >= 90 ? 'var(--warn)' : 'var(--pos)';
+  const cats = (fin.categories || []).filter(c => c.amount > 0);
+  const catRows = cats.map(c => {
+    const pct = spent > 0 ? Math.round(c.amount / spent * 100) : 0;
+    const w   = Math.min(100, pct);
+    const nm  = c.name.length > 18 ? c.name.slice(0, 17) + '…' : c.name;
+    return `<div style="display:flex;align-items:center;gap:6px;margin:4px 0">
+      <div style="width:110px;font-size:11px;color:var(--ink-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${nm}</div>
+      <div style="flex:1;background:var(--line);border-radius:2px;height:3px;min-width:40px">
+        <div style="width:${w}%;height:3px;background:var(--ink-soft);border-radius:2px"></div>
+      </div>
+      <div style="min-width:32px;text-align:right;font-size:11px;font-weight:700;color:var(--ink-soft)">${Math.round(c.amount/1000)}к</div>
+      <div style="min-width:26px;text-align:right;font-size:11px;color:var(--ink-faint)">${pct}%</div>
+    </div>`;
+  }).join('');
   const financeHtml = `
     <div class="card sleep-chart-card" style="margin-bottom:16px">
       <div class="section-label">Финансы — ${m.name}</div>
@@ -825,6 +876,10 @@ function render(d) {
       </div>
       <div class="bar-track"><div class="bar-fill" style="width:${spentPct}%;background:${spentColor}"></div></div>
       <div class="bar-footer"><span class="bar-pct">${Math.round(spent/1000)}к / ${Math.round(expGoal/1000)}к ₽</span><span class="bar-pct">${spentPct}%</span></div>
+      ${cats.length ? `<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line)">
+        <div class="whoop-label" style="margin-bottom:6px">Структура расходов</div>
+        ${catRows}
+      </div>` : ''}
     </div>`;
 
   /* ── Month metrics ── */
@@ -917,22 +972,39 @@ function render(d) {
 
   /* ── Assemble ── */
   document.getElementById('content').innerHTML = `
-    <div class="section-label">Сегодня</div>
-    ${whoopStrip}
-    <div class="spacer"></div>
-    <div class="chips">${alcChip}${sleepChip}${trainChip}${moodChip}</div>
-    <div class="action-bar">
-      <span class="action-arrow">→</span>
-      <span class="action-text">${t.action || ''}</span>
+    <div class="tab-bar" id="tab-bar">
+      <button class="tab-pill active" data-section="s-today">📊 Сводка</button>
+      <button class="tab-pill" data-section="s-finance">💰 Финансы</button>
+      <button class="tab-pill" data-section="s-sleep">🌙 Сон</button>
+      <button class="tab-pill" data-section="s-month">📅 Месяц</button>
+      <button class="tab-pill" data-section="s-year">📈 Год</button>
     </div>
-    ${sleepWeekHtml}
-    ${financeHtml}
+
+    <section class="tab-section" id="s-today">
+      <div class="section-label">Сегодня</div>
+      ${whoopStrip}
+      <div class="spacer"></div>
+      <div class="chips">${alcChip}${sleepChip}${trainChip}${moodChip}</div>
+      <div class="action-bar">
+        <span class="action-arrow">→</span>
+        <span class="action-text">${t.action || ''}</span>
+      </div>
+    </section>
+
+    <section class="tab-section" id="s-sleep">
+      ${sleepWeekHtml}
+    </section>
+
+    <section class="tab-section" id="s-finance">
+      ${financeHtml}
+    </section>
+
     <div class="bottom-grid">
-      <div class="card section-card">
+      <div class="card section-card tab-section" id="s-month">
         <div class="section-label">${m.name}</div>
         ${monthMetrics}
       </div>
-      <div class="card section-card">
+      <div class="card section-card tab-section" id="s-year">
         <div class="section-label">Год 2026</div>
         ${yearMetrics}
       </div>
@@ -940,6 +1012,29 @@ function render(d) {
     ${calHtml}
     ${goalsHtml}
   `;
+
+  /* ── Tab click + scroll spy ── */
+  const tabBar = document.getElementById('tab-bar');
+  if (tabBar) {
+    const pills = tabBar.querySelectorAll('.tab-pill');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const sec = document.getElementById(pill.dataset.section);
+        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+      });
+    });
+    const secIds = ['s-today', 's-sleep', 's-finance', 's-month', 's-year'];
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          pills.forEach(p => p.classList.toggle('active', p.dataset.section === e.target.id));
+        }
+      });
+    }, { rootMargin: '-10% 0px -60% 0px', threshold: 0 });
+    secIds.map(id => document.getElementById(id)).filter(Boolean).forEach(s => observer.observe(s));
+  }
 
   const gen  = new Date(d.generated_at);
   const opts = { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' };
