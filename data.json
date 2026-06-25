@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T16:26:05.626667+03:00",
+  "generated_at": "2026-06-25T18:16:39.792317+03:00",
   "today": {
     "recovery": 85.0,
     "hrv_ms": 79.1,
@@ -304,8 +304,50 @@
     }
   ],
   "finances": {
-    "monthly_income": 400000,
+    "monthly_income": 383317,
     "monthly_expense_goal": 300000,
-    "month_expenses": 0
+    "month_expenses": 283202,
+    "categories": [
+      {
+        "name": "Семья",
+        "amount": 144849
+      },
+      {
+        "name": "Здоровье",
+        "amount": 8637
+      },
+      {
+        "name": "Теннис",
+        "amount": 12260
+      },
+      {
+        "name": "Транспорт",
+        "amount": 46559
+      },
+      {
+        "name": "Еда",
+        "amount": 15130
+      },
+      {
+        "name": "Прочее",
+        "amount": 7567
+      },
+      {
+        "name": "Переводы",
+        "amount": 12830
+      },
+      {
+        "name": "Дом",
+        "amount": 8199
+      },
+      {
+        "name": "Путешествия",
+        "amount": 1800
+      },
+      {
+        "name": "Алкоголь & Сигареты",
+        "amount": 17967
+      }
+    ]
   }
 }
