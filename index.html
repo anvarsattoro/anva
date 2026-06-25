@@ -159,7 +159,7 @@ body {
 /* ── Habit chips ── */
 .chips {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-bottom: 12px;
 }
@@ -618,7 +618,9 @@ function render(d) {
   const y   = d.year;
   const sw  = d.sleep_week || [];
   const rw  = d.recovery_week || [];
+  const mw  = d.mood_week || [];
   const cal = d.month_calendar || [];
+  const fin = d.finances || {};
 
   /* ── WHOOP strip ── */
   const rc = recClass(t.recovery);
@@ -711,6 +713,18 @@ function render(d) {
     </div>
   </div>`;
 
+  const MOOD_EMOJI = {1:'😞', 2:'😔', 3:'😐', 4:'😊', 5:'🌟'};
+  const MOOD_LABEL = {1:'тяжело', 2:'плохо', 3:'нормально', 4:'хорошо', 5:'отлично'};
+  const moodScore = t.mood;
+  const moodClass = moodScore == null ? '' : moodScore >= 4 ? 'ok' : moodScore >= 3 ? 'warn' : 'fail';
+  const moodChip = `<div class="card chip ${moodClass}">
+    <span class="chip-icon">${moodScore != null ? MOOD_EMOJI[moodScore] : '🙂'}</span>
+    <div>
+      <div class="chip-main">${moodScore != null ? moodScore + '/5' : '—'}</div>
+      <div class="chip-sub">${moodScore != null ? MOOD_LABEL[moodScore] : 'отправь «н 1-5»'}</div>
+    </div>
+  </div>`;
+
   /* ── Sleep + Recovery week charts ── */
   const MAX_H = 9;
   const MAX_PX = 56;
@@ -758,6 +772,20 @@ function render(d) {
     n => n.score == null ? 'nodata' : n.score >= 67 ? 'ok' : n.score >= 34 ? 'warn' : 'late'
   );
 
+  // Mood 7-day chart
+  const moodColors = {1:'#B83232', 2:'#D4701C', 3:'#C8A028', 4:'#74B852', 5:'#2A7A52'};
+  const moodBars = mw.map(n => {
+    const s = n.score;
+    const px = s != null ? Math.max(4, Math.round((s / 5) * MAX_PX)) : 4;
+    const bg = s != null ? moodColors[s] : 'var(--line)';
+    const label = s != null ? MOOD_EMOJI[s] : '';
+    return `<div class="sleep-bar-col">
+      <div class="sleep-bar-hours">${label}</div>
+      <div class="sleep-bar" style="height:${px}px;background:${bg}"></div>
+      <div class="sleep-bar-label">${n.label}</div>
+    </div>`;
+  }).join('');
+
   const sleepWeekHtml = `
     <div class="card sleep-chart-card">
       <div class="section-label">Сон — 7 ночей</div>
@@ -765,6 +793,38 @@ function render(d) {
       <div style="height:14px"></div>
       <div class="section-label">Recovery — 7 дней</div>
       <div class="sleep-bars">${recBars}</div>
+      <div style="height:14px"></div>
+      <div class="section-label">Настроение — 7 дней</div>
+      <div class="sleep-bars">${moodBars}</div>
+    </div>`;
+
+  // Finance card
+  const income  = fin.monthly_income || 400000;
+  const expGoal = fin.monthly_expense_goal || 300000;
+  const spent   = fin.month_expenses || 0;
+  const free    = expGoal - spent;
+  const spentPct = Math.min(100, Math.round(spent / expGoal * 100));
+  const spentColor = spentPct >= 100 ? 'var(--crit)' : spentPct >= 80 ? 'var(--warn)' : 'var(--pos)';
+  const financeHtml = `
+    <div class="card sleep-chart-card" style="margin-bottom:16px">
+      <div class="section-label">Финансы — ${m.name}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0 12px">
+        <div>
+          <div class="whoop-label">Доход</div>
+          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px">${Math.round(income/1000)}к ₽</div>
+        </div>
+        <div>
+          <div class="whoop-label">Расходы</div>
+          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;color:${spentColor}">${Math.round(spent/1000)}к ₽</div>
+          <div class="whoop-sub">цель ≤${Math.round(expGoal/1000)}к</div>
+        </div>
+        <div>
+          <div class="whoop-label">Свободно</div>
+          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;color:${free>=0?'var(--pos)':'var(--crit)'}">${Math.round(Math.abs(free)/1000)}к ₽</div>
+        </div>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:${spentPct}%;background:${spentColor}"></div></div>
+      <div class="bar-footer"><span class="bar-pct">${Math.round(spent/1000)}к / ${Math.round(expGoal/1000)}к ₽</span><span class="bar-pct">${spentPct}%</span></div>
     </div>`;
 
   /* ── Month metrics ── */
@@ -860,12 +920,13 @@ function render(d) {
     <div class="section-label">Сегодня</div>
     ${whoopStrip}
     <div class="spacer"></div>
-    <div class="chips">${alcChip}${sleepChip}${trainChip}</div>
+    <div class="chips">${alcChip}${sleepChip}${trainChip}${moodChip}</div>
     <div class="action-bar">
       <span class="action-arrow">→</span>
       <span class="action-text">${t.action || ''}</span>
     </div>
     ${sleepWeekHtml}
+    ${financeHtml}
     <div class="bottom-grid">
       <div class="card section-card">
         <div class="section-label">${m.name}</div>
