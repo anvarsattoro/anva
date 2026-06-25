@@ -129,12 +129,15 @@ body {
   align-items: center;
   gap: 5px;
 }
-.whoop-target .tval {
+.whoop-target .tval,
+.tval {
   font-family: 'Manrope', sans-serif;
   font-weight: 700;
   font-size: 10px;
 }
+.tval.met,
 .whoop-target .tval.met   { color: var(--pos); }
+.tval.unmet,
 .whoop-target .tval.unmet { color: var(--crit); }
 .whoop-target .tarrow {
   font-size: 9px;
@@ -515,8 +518,15 @@ function render(d) {
           <div class="whoop-value">
             ${t.hrv_ms != null ? Math.round(t.hrv_ms) : '—'}<span class="unit">мс</span>
           </div>
-          <div class="whoop-sub">пульс покоя ${t.rhr != null ? Math.round(t.rhr) : '—'} уд/мин</div>
-          ${target(t.rhr, RHR_TARGET, v => '≤' + v + ' уд/мин', '', true)}
+          ${(() => {
+            const rhrVal = t.rhr != null ? Math.round(t.rhr) : null;
+            const rhrMet = rhrVal != null && rhrVal <= RHR_TARGET;
+            const rhrCls = rhrVal != null ? (rhrMet ? 'met' : 'unmet') : '';
+            const rhrStr = rhrVal != null
+              ? `<span class="tval ${rhrCls}">${rhrVal}</span>`
+              : '—';
+            return `<div class="whoop-sub">пульс покоя ${rhrStr} · цель ≤${RHR_TARGET} уд/мин</div>`;
+          })()}
         </div>
       </div>
     </div>`;
