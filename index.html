@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Анвар · Жизнь</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1A1A1F;
+  --ink-soft: #4C4A52;
+  --ink-faint: #8A857E;
+  --paper: #F7F4EF;
+  --card: #FCFAF6;
+  --line: #E6DFD3;
+  --bordeaux: #8E2C2C;
+  --pos: #2E7D5B;
+  --warn: #C0881E;
+  --crit: #C0392B;
+  --pos-bg: #EBF5F0;
+  --warn-bg: #FDF5E6;
+  --crit-bg: #FBEFEC;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #E8E3DA;
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 24px 16px 48px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 4px 16px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 28px;
+}
+.header-title {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+.header-title .dot { color: var(--bordeaux); }
+.header-sub {
+  font-size: 12px;
+  color: var(--ink-faint);
+  letter-spacing: .04em;
+}
+
+/* Section labels */
+.section-label {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--bordeaux);
+  margin-bottom: 12px;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 22px;
+}
+
+/* Today grid */
+.today-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+@media (max-width: 600px) {
+  .today-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.kpi {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.kpi.accent { border-top: 3px solid var(--bordeaux); }
+.kpi.good   { border-top: 3px solid var(--pos); background: var(--pos-bg); }
+.kpi.warn   { border-top: 3px solid var(--warn); background: var(--warn-bg); }
+.kpi.crit   { border-top: 3px solid var(--crit); background: var(--crit-bg); }
+
+.kpi-label {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.kpi-value {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.kpi-value .unit {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-left: 2px;
+}
+.kpi-sub {
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+/* Habits row */
+.habits-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.habit-chip {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.habit-chip .emoji { font-size: 20px; }
+.habit-chip .habit-val {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--ink);
+}
+.habit-chip .habit-label {
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+/* Action card */
+.action-card {
+  background: var(--ink);
+  border-radius: 14px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.action-arrow {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--bordeaux);
+}
+.action-text {
+  font-size: 14px;
+  color: #F7F4EF;
+  font-weight: 500;
+}
+
+/* Bottom two columns */
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 640px) {
+  .bottom-grid { grid-template-columns: 1fr; }
+}
+
+/* Metric rows */
+.metric {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.metric:last-child { border-bottom: none; }
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.metric-name {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.metric-value {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+}
+.metric-delta {
+  font-size: 12px;
+  margin-left: 4px;
+}
+.delta-up   { color: var(--pos); }
+.delta-down { color: var(--crit); }
+
+/* Progress bar */
+.bar-track {
+  height: 6px;
+  background: var(--line);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--bordeaux);
+  transition: width .4s ease;
+}
+.bar-fill.good { background: var(--pos); }
+
+.bar-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+.bar-pct {
+  font-size: 11px;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 80px 0;
+  color: var(--ink-faint);
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-title">АНВАР <span class="dot">·</span> ЖИЗНЬ</div>
+    <div class="header-sub" id="updated">загрузка...</div>
+  </div>
+
+  <div id="content"><div class="loading">Загрузка данных...</div></div>
+</div>
+
+<script>
+function fmt(n, decimals = 0) {
+  if (n == null) return '—';
+  return Number(n).toFixed(decimals);
+}
+
+function bar(current, goal, good = false) {
+  const pct = Math.min(100, Math.round((current / goal) * 100));
+  const cls = good ? 'good' : '';
+  return `
+    <div class="bar-track"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
+    <div class="bar-footer">
+      <span class="bar-pct">${current} / ${goal}</span>
+      <span class="bar-pct">${pct}%</span>
+    </div>`;
+}
+
+function delta(cur, prev, prevName) {
+  if (cur == null || prev == null) return '';
+  const diff = cur - prev;
+  const cls = diff >= 0 ? 'delta-up' : 'delta-down';
+  const sign = diff >= 0 ? '▲' : '▼';
+  return `<span class="metric-delta ${cls}">${sign} vs ${prevName} ${prev}%</span>`;
+}
+
+function kpiColor(recovery) {
+  if (recovery == null) return '';
+  if (recovery >= 67) return 'good';
+  if (recovery >= 34) return 'warn';
+  return 'crit';
+}
+
+function sleepFmt(h) {
+  if (h == null) return '—';
+  const hrs = Math.floor(h);
+  const min = Math.round((h - hrs) * 60);
+  return `${hrs}ч ${min}м`;
+}
+
+function render(d) {
+  const t = d.today;
+  const m = d.month;
+  const y = d.year;
+
+  const recColor = kpiColor(t.recovery);
+
+  const html = `
+    <div class="section-label">Сегодня</div>
+
+    <div class="today-grid">
+      <div class="kpi accent ${recColor}">
+        <div class="kpi-label">Recovery</div>
+        <div class="kpi-value">${fmt(t.recovery)}<span class="unit">%</span></div>
+        <div class="kpi-sub">${t.score_label || '—'}</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Сон</div>
+        <div class="kpi-value" style="font-size:24px">${sleepFmt(t.sleep_hours)}</div>
+        <div class="kpi-sub">лёг ${t.sleep_start || '—'}${t.sleep_start_late_min > 0 ? ' <span style="color:var(--crit)">+' + t.sleep_start_late_min + 'мин</span>' : ''}</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">HRV</div>
+        <div class="kpi-value">${fmt(t.hrv_ms)}<span class="unit">ms</span></div>
+        <div class="kpi-sub">пульс покоя ${fmt(t.rhr)}</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Strain</div>
+        <div class="kpi-value">${fmt(t.strain, 1)}</div>
+        <div class="kpi-sub">нагрузка дня</div>
+      </div>
+    </div>
+
+    <div class="habits-row">
+      <div class="habit-chip">
+        <span class="emoji">🍺</span>
+        <div>
+          <div class="habit-val">${t.alcohol_free_days != null ? t.alcohol_free_days + ' дн' : '—'}</div>
+          <div class="habit-label">без алкоголя</div>
+        </div>
+      </div>
+      <div class="habit-chip">
+        <span class="emoji">🚬</span>
+        <div>
+          <div class="habit-val">${t.smoking_free_days != null ? t.smoking_free_days + ' дн' : 'не начат'}</div>
+          <div class="habit-label">без сигарет</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <span class="action-arrow">→</span>
+      <span class="action-text">${t.action || ''}</span>
+    </div>
+
+    <div class="bottom-grid">
+      <div class="card">
+        <div class="section-label">${m.name}</div>
+        <div class="metric">
+          <div class="metric-header">
+            <span class="metric-name">Recovery avg</span>
+            <span class="metric-value">${fmt(m.recovery_avg)}%${delta(m.recovery_avg, m.prev_recovery_avg, m.prev_month_name)}</span>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-header">
+            <span class="metric-name">Активность</span>
+            <span class="metric-value">${m.activity_count} / ${m.activity_goal}</span>
+          </div>
+          ${bar(m.activity_count, m.activity_goal, m.activity_count >= m.activity_goal)}
+        </div>
+        <div class="metric">
+          <div class="metric-header">
+            <span class="metric-name">Без алкоголя</span>
+            <span class="metric-value">${m.alcohol_free_days} / ${m.days_elapsed} дн</span>
+          </div>
+          ${bar(m.alcohol_free_days, m.days_elapsed, true)}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-label">Год 2026</div>
+        <div class="metric">
+          <div class="metric-header">
+            <span class="metric-name">🏋 Интенсивные</span>
+            <span class="metric-value">${y.intensive_count} / ${y.intensive_goal}</span>
+          </div>
+          ${bar(y.intensive_count, y.intensive_goal)}
+        </div>
+        <div class="metric">
+          <div class="metric-header">
+            <span class="metric-name">🎯 Активность</span>
+            <span class="metric-value">${y.activity_count} / ${y.activity_goal}</span>
+          </div>
+          ${bar(y.activity_count, y.activity_goal)}
+        </div>
+        <div class="metric">
+          <div class="metric-header">
+            <span class="metric-name">🍺 Трезвость</span>
+            <span class="metric-value">${y.sobriety_days} / ${y.sobriety_goal} дн</span>
+          </div>
+          ${bar(y.sobriety_days, y.sobriety_goal, true)}
+        </div>
+        <div class="metric">
+          <div class="metric-header">
+            <span class="metric-name">💪 Recovery avg</span>
+            <span class="metric-value">${fmt(y.recovery_avg)}% <span style="color:var(--ink-faint);font-size:12px">цель ${y.recovery_goal}%</span></span>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-header">
+            <span class="metric-name">💰 Накоплено</span>
+            <span class="metric-value">${Math.round(y.saved_rub/1000)}к / ${Math.round(y.savings_goal/1000)}к</span>
+          </div>
+          ${bar(y.saved_rub, y.savings_goal)}
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('content').innerHTML = html;
+
+  const gen = new Date(d.generated_at);
+  const opts = { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' };
+  document.getElementById('updated').textContent = 'обновлено ' + gen.toLocaleString('ru-RU', opts);
+}
+
+fetch('data.json?v=' + Date.now())
+  .then(r => r.json())
+  .then(render)
+  .catch(e => {
+    document.getElementById('content').innerHTML =
+      '<div class="loading">Ошибка загрузки данных</div>';
+  });
+</script>
+</body>
+</html>
