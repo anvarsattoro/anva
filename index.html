@@ -659,21 +659,21 @@ function render(d) {
     </div>`;
 
   /* ── Month metrics ── */
-  const mDays = m.days_elapsed || 1;
+  const mTotal = m.days_in_month || 30;
   const monthMetrics = `
     <div class="metric">
       <div class="metric-header">
         <span class="metric-name">🍺 Трезвость</span>
-        <span class="metric-value">${m.sobriety_days} / ${mDays} дн</span>
+        <span class="metric-value">${m.sobriety_days} / ${mTotal} дн</span>
       </div>
-      ${bar(m.sobriety_days, mDays, 'good')}
+      ${bar(m.sobriety_days, mTotal, 'good')}
     </div>
     <div class="metric">
       <div class="metric-header">
         <span class="metric-name">🌙 Сон вовремя</span>
-        <span class="metric-value">${m.sleep_on_time_days} / ${mDays} дн</span>
+        <span class="metric-value">${m.sleep_on_time_days} / ${mTotal} дн</span>
       </div>
-      ${bar(m.sleep_on_time_days, mDays, m.sleep_on_time_days / mDays >= 0.7 ? 'good' : '')}
+      ${bar(m.sleep_on_time_days, mTotal, m.sleep_on_time_days / mTotal >= 0.7 ? 'good' : '')}
     </div>
     <div class="metric">
       <div class="metric-header">
