@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-26T19:15:02.409330+03:00",
+  "generated_at": "2026-06-26T21:21:30.882424+03:00",
   "today": {
     "recovery": 55.0,
     "hrv_ms": 57.4,
@@ -14,7 +14,9 @@
     "workout_type": "Теннис",
     "workout_strain": 10.3,
     "action": "Лёг на 18 мин позже цели — сегодня отбой до 23:10",
-    "mood": null
+    "mood": null,
+    "cigarettes": 0,
+    "cigarettes_target": 4
   },
   "sleep_week": [
     {
@@ -127,7 +129,8 @@
     "workouts": 29,
     "workouts_goal": 30,
     "intensive": 14,
-    "intensive_goal": 16
+    "intensive_goal": 16,
+    "cigarettes": 175
   },
   "year": {
     "sobriety_days": 140,
@@ -136,6 +139,7 @@
     "activity_goal": 365,
     "intensive_count": 97,
     "intensive_goal": 200,
+    "cigarettes": 1232,
     "saved_rub": 20000,
     "savings_goal": 480000
   },
