@@ -1073,23 +1073,28 @@ function render(d) {
         const mTotal = m.days_in_month || 30;
         const mPct   = Math.round(mDay / mTotal * 100);
         const mName  = (m.name || '').toUpperCase();
-        function timebar(label, pct, cur, total, color) {
+        // Градиент: зелёный → жёлтый → оранжевый → красный
+        // Полоса обрезается на текущем %. Чем дальше — тем краснее = времени меньше.
+        const GRAD = 'linear-gradient(to right, #2A7A52 0%, #86B830 30%, #C8A028 55%, #D4701C 75%, #B83232 100%)';
+
+        function timebar(label, pct, cur, total, remainLabel) {
+          const remaining = total - cur;
           return `<div>
-            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
-              <span style="font-size:10px;font-weight:700;color:var(--ink-faint);letter-spacing:.6px">${label}</span>
-              <div style="display:flex;align-items:baseline;gap:5px">
-                <span style="font-size:20px;font-weight:800;font-family:Manrope,sans-serif;color:var(--ink)">${pct}%</span>
-                <span style="font-size:10px;color:var(--ink-faint)">${cur} из ${total} дн</span>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <span style="font-size:10px;font-weight:700;color:var(--ink-faint);letter-spacing:.7px">${label}</span>
+              <div style="display:flex;align-items:baseline;gap:4px">
+                <span style="font-size:22px;font-weight:800;font-family:Manrope,sans-serif;color:var(--ink);line-height:1">${pct}%</span>
+                <span style="font-size:10px;color:var(--ink-faint)">· ещё ${remaining} дн</span>
               </div>
             </div>
-            <div style="background:var(--line);border-radius:4px;height:6px">
-              <div style="width:${pct}%;height:6px;background:${color};border-radius:4px;transition:width .4s"></div>
+            <div style="background:var(--line);border-radius:5px;height:8px;overflow:hidden">
+              <div style="width:${pct}%;height:8px;background:${GRAD};background-size:${Math.round(10000/Math.max(pct,1))}% 100%;border-radius:5px;transition:width .5s ease"></div>
             </div>
           </div>`;
         }
-        return `<div class="card" style="margin-top:14px;padding:14px 16px;display:flex;flex-direction:column;gap:14px">
-          ${timebar('ГОД ' + now.getFullYear(), yPct, doy, yTotal, 'var(--bordeaux)')}
-          ${timebar(mName, mPct, mDay, mTotal, 'var(--ink-soft)')}
+        return `<div class="card" style="margin-top:14px;padding:14px 16px;display:flex;flex-direction:column;gap:16px">
+          ${timebar('ГОД ' + now.getFullYear(), yPct, doy, yTotal)}
+          ${timebar(mName, mPct, mDay, mTotal)}
         </div>`;
       })()}
     </section>
