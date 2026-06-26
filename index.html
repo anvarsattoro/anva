@@ -968,11 +968,18 @@ function render(d) {
     : m.sleep_on_time_days / mTotal >= 0.3 ? 'var(--warn)' : 'var(--crit)';
   const workColor = m.workouts >= m.workouts_goal ? 'var(--pos)' : 'var(--bordeaux)';
 
+  const monthCigAvg = m.days_elapsed ? (Math.round(cigMonth / m.days_elapsed * 10) / 10) : '—';
   const monthMetrics = `<div class="rings-grid-2x2">
     ${ring(m.sobriety_days, mTotal, '🍺', 'Трезвость', `${m.sobriety_days} / ${mTotal} дн`)}
     ${ring(m.sleep_on_time_days, mTotal, '🌙', 'Сон', `${m.sleep_on_time_days} / ${mTotal} дн`)}
     ${ring(m.workouts, m.workouts_goal, '🏃', 'Активность', `${m.workouts} / ${m.workouts_goal}`)}
     ${ring(m.intensive || 0, m.intensive_goal || 1, '🏋', 'Интенсивные', `${m.intensive || 0} / ${m.intensive_goal || '?'}`)}
+  </div>
+  <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:baseline;gap:8px">
+    <span style="font-size:9px;font-weight:700;color:var(--ink-faint);letter-spacing:.8px">🚬 СИГАРЕТЫ</span>
+    <span style="font-size:28px;font-weight:800;font-family:Manrope,sans-serif;color:var(--ink);line-height:1">${cigMonth}</span>
+    <span style="font-size:12px;color:var(--ink-faint)">за месяц</span>
+    <span style="font-size:12px;color:var(--ink-soft)">· ${monthCigAvg}/день</span>
   </div>`;
 
   /* ── Year metrics ── */
@@ -981,11 +988,19 @@ function render(d) {
   const savedK   = Math.round(savedRub / 1000);
   const savGoalK = Math.round(savGoal / 1000);
 
+  const yearDays = Math.round((new Date() - new Date(new Date().getFullYear(), 0, 1)) / 86400000) + 1;
+  const yearCigAvg = yearDays ? (Math.round(cigYear / yearDays * 10) / 10) : '—';
   const yearMetrics = `<div class="rings-grid-2x2">
     ${ring(y.sobriety_days, y.sobriety_goal, '🍺', 'Трезвость', `${y.sobriety_days} / ${y.sobriety_goal} дн`)}
     ${ring(y.activity_count || 0, y.activity_goal || 365, '🏃', 'Активность', `${y.activity_count || 0} / ${y.activity_goal || 365}`)}
     ${ring(y.intensive_count, y.intensive_goal, '🏋', 'Интенсивные', `${y.intensive_count} / ${y.intensive_goal}`)}
     ${ring(savedK, savGoalK, '💰', 'Накоплено', `${savedK}к / ${savGoalK}к ₽`)}
+  </div>
+  <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:baseline;gap:8px">
+    <span style="font-size:9px;font-weight:700;color:var(--ink-faint);letter-spacing:.8px">🚬 СИГАРЕТЫ</span>
+    <span style="font-size:28px;font-weight:800;font-family:Manrope,sans-serif;color:var(--ink);line-height:1">${cigYear}</span>
+    <span style="font-size:12px;color:var(--ink-faint)">за год</span>
+    <span style="font-size:12px;color:var(--ink-soft)">· ${yearCigAvg}/день</span>
   </div>`;
 
   /* ── Streak calendar ── */
@@ -1086,6 +1101,30 @@ function render(d) {
     </div>`;
   })();
 
+  /* ── 4 life rings ── */
+  const lifeRingsHtml = (() => {
+    // Сигареты: % снижения от базовой привычки 7/день
+    const daysEl   = m.days_elapsed || 1;
+    const cigBase  = daysEl * 7;
+    const cigReduc = Math.max(0, cigBase - (m.cigarettes || 0));
+
+    // Бюджет: сколько осталось от 300к
+    const budgetFree = Math.max(0, expGoal - spent);
+    const budgetSub  = budgetFree > 0
+      ? `${Math.round(budgetFree/1000)}к свободно`
+      : 'перерасход';
+
+    return `<div class="rings-grid-2x2" style="margin-bottom:14px">
+      ${ring(y.sobriety_days, y.sobriety_goal, '🍺', 'Трезвость',
+        `${alc != null ? alc : 0} дн стрик`)}
+      ${ring(cigReduc, cigBase, '🚬', 'Сигареты',
+        `${cigToday} сег · ${m.cigarettes || 0} мес`)}
+      ${ring(y.intensive_count || 0, y.intensive_goal || 200, '🏋', 'Тело',
+        `${y.intensive_count || 0} / ${y.intensive_goal || 200} инт`)}
+      ${ring(budgetFree, expGoal, '💰', 'Бюджет', budgetSub)}
+    </div>`;
+  })();
+
   /* ── Time period bars ── */
   const timeBarsHtml = (() => {
     const now    = new Date(d.generated_at || Date.now());
@@ -1135,58 +1174,8 @@ function render(d) {
         <span class="action-text">${t.action || ''}</span>
       </div>
 
-      <div style="text-align:center;padding:16px 0 8px">
-        ${heroRingHtml}
-        <div style="margin-top:10px;font-size:11px;color:var(--ink-faint);display:flex;align-items:center;justify-content:center;gap:6px">
-          ${trendArrow(t.recovery, recYesterday, false)}
-          <span>вчера ${recYesterday != null ? recYesterday : '—'}% · цель 67%</span>
-        </div>
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-        <div class="card" style="padding:12px 14px">
-          <div style="font-size:9px;font-weight:700;color:var(--ink-faint);letter-spacing:.8px;margin-bottom:5px">СОН</div>
-          <div style="font-size:22px;font-weight:800;font-family:Manrope,sans-serif;line-height:1">
-            ${sleepH(t.sleep_hours)}${trendArrow(t.sleep_hours, sleepYest, false)}
-          </div>
-          <div style="font-size:10px;color:var(--ink-faint);margin-top:5px">лёг ${t.sleep_start || '—'}</div>
-        </div>
-        <div class="card" style="padding:12px 14px">
-          <div style="font-size:9px;font-weight:700;color:var(--ink-faint);letter-spacing:.8px;margin-bottom:5px">HRV · ЧСС</div>
-          <div style="font-size:22px;font-weight:800;font-family:Manrope,sans-serif;line-height:1">
-            ${t.hrv_ms != null ? Math.round(t.hrv_ms) : '—'}<span style="font-size:12px;color:var(--ink-soft)"> мс</span>${trendArrow(t.hrv_ms, hrvYesterday, false)}
-          </div>
-          <div style="font-size:10px;color:var(--ink-faint);margin-top:5px">покоя ${t.rhr != null ? Math.round(t.rhr) : '—'} · цель ≤52</div>
-        </div>
-      </div>
-
-      <div class="card" style="padding:14px 16px;margin-bottom:8px">
-        <div style="display:flex;justify-content:space-around;align-items:center">
-          <div style="text-align:center">
-            <div style="font-size:20px;line-height:1;margin-bottom:4px">🍺</div>
-            <div style="font-size:15px;font-weight:800;font-family:Manrope;line-height:1">${alc != null ? alc : '—'}<span style="font-size:9px;font-weight:500;color:var(--ink-faint)">д</span></div>
-            <div style="font-size:9px;color:var(--ink-faint);margin-top:3px">${y.sobriety_days} в году</div>
-          </div>
-          <div style="width:1px;height:40px;background:var(--line)"></div>
-          <div style="text-align:center">
-            <div style="font-size:20px;line-height:1;margin-bottom:4px">🌙</div>
-            <div style="font-size:15px;font-weight:800;font-family:Manrope;line-height:1;color:${sleepOk ? 'var(--pos)' : 'var(--crit)'}">${sleepOk ? '✓' : '✗'}</div>
-            <div style="font-size:9px;color:var(--ink-faint);margin-top:3px">${t.sleep_start || '—'}</div>
-          </div>
-          <div style="width:1px;height:40px;background:var(--line)"></div>
-          <div style="text-align:center">
-            <div style="font-size:20px;line-height:1;margin-bottom:4px">${trainIcon}</div>
-            <div style="font-size:15px;font-weight:800;font-family:Manrope;line-height:1;color:${t.trained ? 'var(--pos)' : 'var(--ink-faint)'}">${t.trained ? '✓' : '—'}</div>
-            <div style="font-size:9px;color:var(--ink-faint);margin-top:3px">${t.trained ? (t.workout_type || '').slice(0, 7) : 'нет'}</div>
-          </div>
-          <div style="width:1px;height:40px;background:var(--line)"></div>
-          <div style="text-align:center">
-            <div style="font-size:20px;line-height:1;margin-bottom:4px">🚬</div>
-            <div style="font-size:15px;font-weight:800;font-family:Manrope;line-height:1;color:${cigToday === 0 ? 'var(--pos)' : cigToday <= cigTarget ? 'var(--warn)' : 'var(--crit)'}">${cigToday}/${cigTarget}</div>
-            <div style="font-size:9px;color:var(--ink-faint);margin-top:3px">${cigMonth} мес</div>
-          </div>
-        </div>
-      </div>
+      ${lifeRingsHtml}
+      ${whoopStrip}
 
       ${timeBarsHtml}
 
