@@ -860,16 +860,30 @@ function render(d) {
   const spentColor = spentPct >= 100 ? 'var(--crit)' : spentPct >= 90 ? 'var(--warn)' : 'var(--pos)';
   const cats = (fin.categories || []).filter(c => c.amount > 0);
   const catRows = cats.map(c => {
-    const pct = spent > 0 ? Math.round(c.amount / spent * 100) : 0;
-    const w   = Math.min(100, pct);
-    const nm  = c.name.length > 18 ? c.name.slice(0, 17) + '…' : c.name;
-    return `<div style="display:flex;align-items:center;gap:6px;margin:4px 0">
-      <div style="width:110px;font-size:11px;color:var(--ink-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${nm}</div>
-      <div style="flex:1;background:var(--line);border-radius:2px;height:3px;min-width:40px">
-        <div style="width:${w}%;height:3px;background:var(--ink-soft);border-radius:2px"></div>
+    const limit = c.limit || 0;
+    const pctOfLimit  = limit > 0 ? Math.round(c.amount / limit * 100) : null;
+    const pctOfBudget = spent  > 0 ? Math.round(c.amount / spent * 100) : 0;
+    const barW = pctOfLimit != null ? Math.min(100, pctOfLimit) : pctOfBudget;
+    const barColor = pctOfLimit == null ? 'var(--ink-soft)'
+      : pctOfLimit >= 100 ? 'var(--crit)'
+      : pctOfLimit >= 80  ? 'var(--warn)'
+      : 'var(--pos)';
+    const nm = c.name.length > 18 ? c.name.slice(0, 17) + '…' : c.name;
+    const amtStr  = Math.round(c.amount / 1000) + 'к';
+    const limStr  = limit > 0 ? ' / ' + Math.round(limit / 1000) + 'к ₽' : ' ₽';
+    const overTag = pctOfLimit != null && pctOfLimit > 100
+      ? `<span style="font-size:10px;color:var(--crit);font-weight:700;margin-left:4px">↑${pctOfLimit}%</span>` : '';
+    return `<div style="margin:7px 0">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px">
+        <span style="font-size:12px;color:var(--ink-soft)">${nm}${overTag}</span>
+        <div style="text-align:right">
+          <span style="font-size:12px;font-weight:700;color:${barColor}">${amtStr}</span><span style="font-size:11px;color:var(--ink-faint)">${limStr}</span>
+          <span style="font-size:10px;color:var(--ink-faint);margin-left:6px">${pctOfBudget}% бюд</span>
+        </div>
       </div>
-      <div style="min-width:32px;text-align:right;font-size:11px;font-weight:700;color:var(--ink-soft)">${Math.round(c.amount/1000)}к</div>
-      <div style="min-width:26px;text-align:right;font-size:11px;color:var(--ink-faint)">${pct}%</div>
+      <div style="background:var(--line);border-radius:3px;height:4px">
+        <div style="width:${barW}%;height:4px;background:${barColor};border-radius:3px;transition:width .3s"></div>
+      </div>
     </div>`;
   }).join('');
   const financeHtml = `
