@@ -1046,6 +1046,17 @@ function render(d) {
       </ul>
     </div>`;
 
+  /* ── Weekly averages ── */
+  const validSw  = sw.filter(n => n.hours != null);
+  const validRw  = rw.filter(n => n.score != null);
+  const validHrv = rw.filter(n => n.hrv   != null);
+  const avgSleepW = validSw.length
+    ? validSw.reduce((s,n) => s + n.hours, 0) / validSw.length : null;
+  const avgRecW   = validRw.length
+    ? Math.round(validRw.reduce((s,n) => s + n.score, 0) / validRw.length) : null;
+  const avgHrvW   = validHrv.length
+    ? Math.round(validHrv.reduce((s,n) => s + n.hrv, 0) / validHrv.length) : null;
+
   /* ── Assemble ── */
   document.getElementById('content').innerHTML = `
     <div class="tab-bar" id="tab-bar">
@@ -1073,30 +1084,57 @@ function render(d) {
         const mTotal = m.days_in_month || 30;
         const mPct   = Math.round(mDay / mTotal * 100);
         const mName  = (m.name || '').toUpperCase();
-        // Градиент: зелёный → жёлтый → оранжевый → красный
-        // Полоса обрезается на текущем %. Чем дальше — тем краснее = времени меньше.
-        const GRAD = 'linear-gradient(to right, #2A7A52 0%, #86B830 30%, #C8A028 55%, #D4701C 75%, #B83232 100%)';
 
-        function timebar(label, pct, cur, total, remainLabel) {
+        // Градиент на треке целиком, серый оверлей справа закрывает непройденное
+        const GRAD = 'linear-gradient(to right,#2A7A52 0%,#86B830 30%,#C8A028 55%,#D4701C 75%,#B83232 100%)';
+
+        function timebar(label, pct, cur, total) {
           const remaining = total - cur;
           return `<div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
               <span style="font-size:10px;font-weight:700;color:var(--ink-faint);letter-spacing:.7px">${label}</span>
-              <div style="display:flex;align-items:baseline;gap:4px">
-                <span style="font-size:22px;font-weight:800;font-family:Manrope,sans-serif;color:var(--ink);line-height:1">${pct}%</span>
-                <span style="font-size:10px;color:var(--ink-faint)">· ещё ${remaining} дн</span>
+              <div style="display:flex;align-items:baseline;gap:5px">
+                <span style="font-size:24px;font-weight:800;font-family:Manrope,sans-serif;color:var(--ink);line-height:1">${pct}%</span>
+                <span style="font-size:11px;color:var(--ink-faint)">· ещё ${remaining} дн</span>
               </div>
             </div>
-            <div style="background:var(--line);border-radius:5px;height:8px;overflow:hidden">
-              <div style="width:${pct}%;height:8px;background:${GRAD};background-size:${Math.round(10000/Math.max(pct,1))}% 100%;border-radius:5px;transition:width .5s ease"></div>
+            <div style="position:relative;height:9px;border-radius:5px;background:${GRAD};overflow:hidden">
+              <div style="position:absolute;right:0;top:0;width:${100 - pct}%;height:100%;background:var(--line)"></div>
             </div>
           </div>`;
         }
-        return `<div class="card" style="margin-top:14px;padding:14px 16px;display:flex;flex-direction:column;gap:16px">
+        return `<div class="card" style="margin-top:14px;padding:16px;display:flex;flex-direction:column;gap:18px">
           ${timebar('ГОД ' + now.getFullYear(), yPct, doy, yTotal)}
           ${timebar(mName, mPct, mDay, mTotal)}
         </div>`;
       })()}
+
+      <div style="margin-top:6px">
+        <div class="section-label" style="margin-bottom:8px">Неделя — средние</div>
+        <div class="whoop-strip">
+          <div class="card">
+            <div class="whoop-cell">
+              <div class="whoop-label">Сон</div>
+              <div class="whoop-value">${avgSleepW != null ? sleepH(avgSleepW) : '—'}</div>
+              <div class="whoop-sub">7 ночей</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="whoop-cell">
+              <div class="whoop-label">Recovery</div>
+              <div class="whoop-value">${avgRecW != null ? avgRecW : '—'}<span class="unit">%</span></div>
+              <div class="whoop-sub">7 дней</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="whoop-cell">
+              <div class="whoop-label">HRV</div>
+              <div class="whoop-value">${avgHrvW != null ? avgHrvW : '—'}<span class="unit">мс</span></div>
+              <div class="whoop-sub">7 дней</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="tab-section" id="s-finance" style="display:none">
