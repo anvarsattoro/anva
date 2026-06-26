@@ -1103,9 +1103,9 @@ function render(d) {
 
   /* ── 4 life pillars: 1 hero + 3 compact ── */
   const lifeRingsHtml = (() => {
-    const daysEl     = m.days_elapsed || 1;
-    const cigBase    = daysEl * 7;
-    const cigReduc   = Math.max(0, cigBase - (m.cigarettes || 0));
+    const mTotal     = m.days_in_month || 30;
+    const cigMonthBudget = cigTarget * mTotal;
+    const cigRemaining   = Math.max(0, cigMonthBudget - (m.cigarettes || 0));
     const budgetFree = Math.max(0, expGoal - spent);
 
     const pillars = [
@@ -1116,8 +1116,8 @@ function render(d) {
       },
       {
         emoji: '🚬', label: 'Сигареты',
-        val: cigReduc, goal: Math.max(1, cigBase),
-        sub: `${cigToday} сег · цель ≤${cigTarget}/день`
+        val: cigRemaining, goal: Math.max(1, cigMonthBudget),
+        sub: `${cigToday} сег · бюджет ${cigRemaining} из ${cigMonthBudget}`
       },
       {
         emoji: '🏋', label: 'Тело',
