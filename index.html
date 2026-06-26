@@ -1103,45 +1103,46 @@ function render(d) {
 
   /* ── 4 life pillars: 1 hero + 3 compact ── */
   const lifeRingsHtml = (() => {
-    const mTotal     = m.days_in_month || 30;
-    const cigMonthBudget = cigTarget * mTotal;
-    const cigRemaining   = Math.max(0, cigMonthBudget - (m.cigarettes || 0));
-    const budgetFree = Math.max(0, expGoal - spent);
+    const SPEND_GOAL = 285000;
+    // Сигареты: сегодня vs таргет (100% = на таргете или лучше)
+    const cigPct = cigToday === 0 ? 100 : Math.min(100, Math.round(cigTarget / cigToday * 100));
 
     const pillars = [
       {
         emoji: '🍺', label: 'Трезвость',
-        val: y.sobriety_days, goal: y.sobriety_goal,
-        sub: `${alc != null ? alc : 0} дн стрик`
+        pct: Math.min(100, Math.round((alc || 0) / 30 * 100)),
+        sub: `${alc || 0} дн стрик`
       },
       {
         emoji: '🚬', label: 'Сигареты',
-        val: cigRemaining, goal: Math.max(1, cigMonthBudget),
-        sub: `${cigToday} сег · бюджет ${cigRemaining} из ${cigMonthBudget}`
+        pct: cigPct,
+        sub: `${cigToday} / ${cigTarget} сег`
       },
       {
         emoji: '🏋', label: 'Тело',
-        val: y.intensive_count || 0, goal: y.intensive_goal || 200,
-        sub: `${y.intensive_count || 0} / ${y.intensive_goal || 200} инт`
+        pct: Math.min(100, m.workouts_goal ? Math.round((m.workouts || 0) / m.workouts_goal * 100) : 0),
+        sub: `${m.workouts || 0} / ${m.workouts_goal || '?'} в мес`
       },
       {
         emoji: '💰', label: 'Бюджет',
-        val: budgetFree, goal: expGoal,
-        sub: budgetFree > 0 ? `${Math.round(budgetFree/1000)}к свободно` : 'перерасход'
+        pct: Math.min(100, Math.round(spent / SPEND_GOAL * 100)),
+        sub: `${Math.round(spent / 1000)}к из ${Math.round(SPEND_GOAL / 1000)}к`,
+        invertColor: true
       }
     ].map(p => ({
       ...p,
-      pct: Math.min(100, p.goal ? Math.round(p.val / p.goal * 100) : 0)
-    })).sort((a, b) => a.pct - b.pct);
+      sortPct: p.invertColor ? 100 - p.pct : p.pct
+    })).sort((a, b) => a.sortPct - b.sortPct);
 
     const hero = pillars[0];
     const rest = pillars.slice(1);
 
-    function pillarColor(pct) {
+    function pillarColor(pct, invert) {
+      if (invert) return pct >= 90 ? '#B83232' : pct >= 67 ? '#C8A028' : '#2A7A52';
       return pct >= 67 ? '#2A7A52' : pct >= 34 ? '#C8A028' : '#B83232';
     }
 
-    const hc   = pillarColor(hero.pct);
+    const hc    = pillarColor(hero.pct, hero.invertColor);
     const fill  = hero.pct.toFixed(1);
     const empty = (100 - hero.pct).toFixed(1);
 
@@ -1164,7 +1165,7 @@ function render(d) {
 
     const compactEl = `<div class="card" style="padding:14px 8px;margin-bottom:14px;display:flex;align-items:center">
       ${rest.map((p, i) => {
-        const c = pillarColor(p.pct);
+        const c = pillarColor(p.pct, p.invertColor);
         return `${i > 0 ? '<div style="width:1px;background:var(--line);align-self:stretch;margin:2px 0"></div>' : ''}
         <div style="flex:1;text-align:center">
           <div style="font-size:15px;line-height:1;margin-bottom:3px">${p.emoji}</div>
