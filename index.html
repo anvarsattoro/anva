@@ -850,15 +850,16 @@ function render(d) {
     </div>`;
 
   // Finance card
-  const income   = fin.monthly_income || 400000;
-  const expGoal  = fin.monthly_expense_goal || 300000;
-  const spent    = fin.month_expenses || 0;
+  const income    = fin.monthly_income || 400000;
+  const expGoal   = fin.monthly_expense_goal || 300000;
   const creditRep = fin.credit_repayment || 0;
-  const newSpent = spent - creditRep;  // реальные новые траты без погашения долга
-  const free     = income - spent;
+  const cats = (fin.categories || []).filter(c => c.amount > 0);
+  // Реальные расходы = сумма категорий (дебет + кредит по факту трат, без погашения долга)
+  const catSum  = cats.reduce((s, c) => s + c.amount, 0);
+  const spent   = catSum || fin.month_expenses || 0;
+  const free    = income - spent - creditRep;
   const spentPct = Math.min(100, Math.round(spent / expGoal * 100));
   const spentColor = spentPct >= 100 ? 'var(--crit)' : spentPct >= 90 ? 'var(--warn)' : 'var(--pos)';
-  const cats = (fin.categories || []).filter(c => c.amount > 0);
   const catRows = cats.map(c => {
     const limit = c.limit || 0;
     const pctOfLimit  = limit > 0 ? Math.round(c.amount / limit * 100) : null;
@@ -900,17 +901,17 @@ function render(d) {
         </div>
         <div>
           <div class="whoop-label">Расходы</div>
-          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;color:${spentColor}">${Math.round(newSpent/1000)}к ₽</div>
+          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;color:${spentColor}">${Math.round(spent/1000)}к ₽</div>
           <div class="whoop-sub">цель ≤${Math.round(expGoal/1000)}к</div>
         </div>
         <div>
-          <div class="whoop-label">💳 Погашение долга</div>
+          <div class="whoop-label">💳 Долг погашен</div>
           <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px;color:var(--warn)">${Math.round(creditRep/1000)}к ₽</div>
-          <div class="whoop-sub">погашение кредитки</div>
+          <div class="whoop-sub">не расход — перевод</div>
         </div>
       </div>
       <div class="bar-track"><div class="bar-fill" style="width:${spentPct}%;background:${spentColor}"></div></div>
-      <div class="bar-footer"><span class="bar-pct">итого ${Math.round(spent/1000)}к / ${Math.round(expGoal/1000)}к ₽</span><span class="bar-pct">${spentPct}%</span></div>
+      <div class="bar-footer"><span class="bar-pct">${Math.round(spent/1000)}к / ${Math.round(expGoal/1000)}к ₽</span><span class="bar-pct">${spentPct}%</span></div>
       ${cats.length ? `<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line)">
         <div class="whoop-label" style="margin-bottom:6px">Структура расходов</div>
         ${catRows}
