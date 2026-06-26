@@ -659,22 +659,34 @@ function render(d) {
   const cal = d.month_calendar || [];
   const fin = d.finances || {};
 
+  /* ── Trend arrows ── */
+  function trendArrow(current, previous, lowerBetter) {
+    if (current == null || previous == null) return '';
+    const delta = current - previous;
+    if (Math.abs(delta) < 0.5) return '';
+    const better = lowerBetter ? delta < 0 : delta > 0;
+    const color = better ? 'var(--pos)' : 'var(--crit)';
+    const sym = delta > 0 ? '↑' : '↓';
+    return `<span style="font-size:10px;color:${color};font-weight:700;margin-left:4px">${sym}${Math.abs(Math.round(delta))}</span>`;
+  }
+
+  const recYesterday  = rw.length >= 2 ? rw[rw.length - 2].score : null;
+  const sleepYest     = sw.length >= 2 ? sw[sw.length - 2].hours : null;
+  const hrvYesterday  = rw.length >= 2 ? rw[rw.length - 2].hrv   : null;
+
   /* ── WHOOP strip ── */
   const rc = recClass(t.recovery);
-  const REC_TARGET  = 67;
-  const SLEEP_TARGET = 7.5; // 7ч 30м
-  const RHR_TARGET   = 52;  // пульс покоя ≤ 52
+  const REC_TARGET   = 67;
+  const SLEEP_TARGET = 7.5;
+  const RHR_TARGET   = 52;
 
-  function target(actual, goal, fmtFn, label, lowerIsBetter) {
+  function target(actual, goal, fmtFn, lowerIsBetter) {
     if (actual == null) return '';
     const met = lowerIsBetter ? actual <= goal : actual >= goal;
     const cls = met ? 'met' : 'unmet';
-    const arrow = met ? '↑' : '↓';
     return `<div class="whoop-target">
-      <span class="tarrow">${arrow}</span>
       <span>цель</span>
       <span class="tval ${cls}">${fmtFn(goal)}</span>
-      ${label ? '<span>' + label + '</span>' : ''}
     </div>`;
   }
 
@@ -686,16 +698,20 @@ function render(d) {
           <div class="whoop-value">
             <span class="rec-dot ${rc}"></span>
             ${t.recovery != null ? Math.round(t.recovery) : '—'}<span class="unit">%</span>
+            ${trendArrow(t.recovery, recYesterday, false)}
           </div>
-          ${target(t.recovery, REC_TARGET, v => v + '%', '', false)}
+          ${target(t.recovery, REC_TARGET, v => v + '%', false)}
         </div>
       </div>
       <div class="card">
         <div class="whoop-cell">
           <div class="whoop-label">Сон</div>
-          <div class="whoop-value">${sleepH(t.sleep_hours)}</div>
+          <div class="whoop-value">
+            ${sleepH(t.sleep_hours)}
+            ${trendArrow(t.sleep_hours, sleepYest, false)}
+          </div>
           <div class="whoop-sub">лёг ${t.sleep_start || '—'}</div>
-          ${target(t.sleep_hours, SLEEP_TARGET, sleepH, '', false)}
+          ${target(t.sleep_hours, SLEEP_TARGET, sleepH, false)}
         </div>
       </div>
       <div class="card">
@@ -703,6 +719,7 @@ function render(d) {
           <div class="whoop-label">HRV · ЧСС покоя</div>
           <div class="whoop-value">
             ${t.hrv_ms != null ? Math.round(t.hrv_ms) : '—'}<span class="unit">мс</span>
+            ${trendArrow(t.hrv_ms, hrvYesterday, false)}
           </div>
           ${(() => {
             const rhrVal = t.rhr != null ? Math.round(t.rhr) : null;
@@ -711,7 +728,7 @@ function render(d) {
             const rhrStr = rhrVal != null
               ? `<span class="tval ${rhrCls}">${rhrVal}</span>`
               : '—';
-            return `<div class="whoop-sub">пульс покоя ${rhrStr} · цель ≤${RHR_TARGET} уд/мин</div>`;
+            return `<div class="whoop-sub">ЧСС покоя ${rhrStr} · цель ≤${RHR_TARGET}</div>`;
           })()}
         </div>
       </div>
@@ -837,6 +854,8 @@ function render(d) {
     </div>`;
   }).join('');
 
+  const hasMoodData = mw.some(n => n.score != null);
+
   const sleepWeekHtml = `
     <div class="card sleep-chart-card">
       <div class="section-label">Сон — 7 ночей</div>
@@ -844,9 +863,11 @@ function render(d) {
       <div style="height:14px"></div>
       <div class="section-label">Recovery — 7 дней</div>
       <div class="sleep-bars">${recBars}</div>
+      ${hasMoodData ? `
       <div style="height:14px"></div>
       <div class="section-label">Настроение — 7 дней</div>
       <div class="sleep-bars">${moodBars}</div>
+      ` : ''}
     </div>`;
 
   // Finance card
@@ -860,7 +881,7 @@ function render(d) {
   const free    = income - spent - creditRep;
   const spentPct = Math.min(100, Math.round(spent / expGoal * 100));
   const spentColor = spentPct >= 100 ? 'var(--crit)' : spentPct >= 90 ? 'var(--warn)' : 'var(--pos)';
-  const catRows = cats.map(c => {
+  function catRow(c) {
     const limit = c.limit || 0;
     const pctOfLimit  = limit > 0 ? Math.round(c.amount / limit * 100) : null;
     const pctOfBudget = spent  > 0 ? Math.round(c.amount / spent * 100) : 0;
@@ -870,8 +891,8 @@ function render(d) {
       : pctOfLimit >= 80  ? 'var(--warn)'
       : 'var(--pos)';
     const nm = c.name.length > 18 ? c.name.slice(0, 17) + '…' : c.name;
-    const amtStr  = Math.round(c.amount / 1000) + 'к';
-    const limStr  = limit > 0 ? ' / ' + Math.round(limit / 1000) + 'к ₽' : ' ₽';
+    const amtStr = Math.round(c.amount / 1000) + 'к';
+    const limStr = limit > 0 ? ' / ' + Math.round(limit / 1000) + 'к ₽' : ' ₽';
     const overTag = pctOfLimit != null && pctOfLimit > 100
       ? `<span style="font-size:10px;color:var(--crit);font-weight:700;margin-left:4px">↑${pctOfLimit}%</span>` : '';
     return `<div style="margin:7px 0">
@@ -879,14 +900,31 @@ function render(d) {
         <span style="font-size:12px;color:var(--ink-soft)">${nm}${overTag}</span>
         <div style="text-align:right">
           <span style="font-size:12px;font-weight:700;color:${barColor}">${amtStr}</span><span style="font-size:11px;color:var(--ink-faint)">${limStr}</span>
-          <span style="font-size:10px;color:var(--ink-faint);margin-left:6px">${pctOfBudget}% бюд</span>
+          <span style="font-size:10px;color:var(--ink-faint);margin-left:6px">${pctOfBudget}%</span>
         </div>
       </div>
       <div style="background:var(--line);border-radius:3px;height:4px">
         <div style="width:${barW}%;height:4px;background:${barColor};border-radius:3px;transition:width .3s"></div>
       </div>
     </div>`;
-  }).join('');
+  }
+
+  const TOP_N = 5;
+  const topCats  = cats.slice(0, TOP_N);
+  const restCats = cats.slice(TOP_N);
+  const expandN  = restCats.length;
+  const suffix   = expandN === 1 ? 'категория' : expandN < 5 ? 'категории' : 'категорий';
+  const catRows = `
+    ${topCats.map(catRow).join('')}
+    ${expandN > 0 ? `
+      <div id="cat-extra" style="display:none">${restCats.map(catRow).join('')}</div>
+      <button id="cat-btn"
+        onclick="document.getElementById('cat-extra').style.display='';this.style.display='none'"
+        style="width:100%;margin-top:8px;padding:7px;border:1px dashed var(--line);border-radius:8px;background:none;color:var(--ink-faint);font-size:12px;cursor:pointer;font-family:inherit;letter-spacing:.3px">
+        + ещё ${expandN} ${suffix}
+      </button>
+    ` : ''}
+  `;
   const financeHtml = `
     <div class="card sleep-chart-card" style="margin-bottom:16px">
       <div class="section-label">Финансы — ${m.name}</div>
@@ -1009,7 +1047,7 @@ function render(d) {
   /* ── Assemble ── */
   document.getElementById('content').innerHTML = `
     <div class="tab-bar" id="tab-bar">
-      <button class="tab-pill active" data-section="s-today">📊 Сводка</button>
+      <button class="tab-pill active" data-section="s-today">📊 Сегодня</button>
       <button class="tab-pill" data-section="s-finance">💰 Финансы</button>
       <button class="tab-pill" data-section="s-sleep">🌙 Сон</button>
       <button class="tab-pill" data-section="s-month">📅 Месяц</button>
@@ -1017,59 +1055,52 @@ function render(d) {
     </div>
 
     <section class="tab-section" id="s-today">
-      <div class="section-label">Сегодня</div>
-      ${whoopStrip}
-      <div class="spacer"></div>
-      <div class="chips">${alcChip}${sleepChip}${trainChip}${moodChip}</div>
       <div class="action-bar">
         <span class="action-arrow">→</span>
         <span class="action-text">${t.action || ''}</span>
       </div>
+      ${whoopStrip}
+      <div class="spacer"></div>
+      <div class="chips">${alcChip}${sleepChip}${trainChip}${moodChip}</div>
     </section>
 
-    <section class="tab-section" id="s-sleep">
-      ${sleepWeekHtml}
-    </section>
-
-    <section class="tab-section" id="s-finance">
+    <section class="tab-section" id="s-finance" style="display:none">
       ${financeHtml}
     </section>
 
-    <div class="bottom-grid">
-      <div class="card section-card tab-section" id="s-month">
+    <section class="tab-section" id="s-sleep" style="display:none">
+      ${sleepWeekHtml}
+    </section>
+
+    <section class="tab-section" id="s-month" style="display:none">
+      <div class="card section-card">
         <div class="section-label">${m.name}</div>
         ${monthMetrics}
       </div>
-      <div class="card section-card tab-section" id="s-year">
+    </section>
+
+    <section class="tab-section" id="s-year" style="display:none">
+      <div class="card section-card">
         <div class="section-label">Год 2026</div>
         ${yearMetrics}
       </div>
-    </div>
-    ${goalsHtml}
+    </section>
   `;
 
-  /* ── Tab click + scroll spy ── */
-  const tabBar = document.getElementById('tab-bar');
-  if (tabBar) {
-    const pills = tabBar.querySelectorAll('.tab-pill');
-    pills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        const sec = document.getElementById(pill.dataset.section);
-        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        pills.forEach(p => p.classList.remove('active'));
-        pill.classList.add('active');
-      });
+  /* ── Tab switching ── */
+  function showTab(id) {
+    document.querySelectorAll('.tab-section').forEach(s => {
+      s.style.display = s.id === id ? '' : 'none';
     });
-    const secIds = ['s-today', 's-sleep', 's-finance', 's-month', 's-year'];
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          pills.forEach(p => p.classList.toggle('active', p.dataset.section === e.target.id));
-        }
-      });
-    }, { rootMargin: '-10% 0px -60% 0px', threshold: 0 });
-    secIds.map(id => document.getElementById(id)).filter(Boolean).forEach(s => observer.observe(s));
+    document.querySelectorAll('.tab-pill').forEach(p => {
+      p.classList.toggle('active', p.dataset.section === id);
+    });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
+
+  document.querySelectorAll('.tab-pill').forEach(p => {
+    p.addEventListener('click', () => showTab(p.dataset.section));
+  });
 
   const gen  = new Date(d.generated_at);
   const opts = { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Moscow' };
