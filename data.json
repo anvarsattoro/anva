@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T19:32:46.435232+03:00",
+  "generated_at": "2026-06-26T06:05:00.125518+03:00",
   "today": {
     "recovery": 85.0,
     "hrv_ms": 79.1,
@@ -8,22 +8,15 @@
     "sleep_start": "00:07",
     "sleep_on_time": false,
     "sleep_late_min": 58,
-    "alcohol_free_days": 8,
+    "alcohol_free_days": 9,
     "smoking_free_days": null,
-    "trained": true,
-    "workout_type": "Теннис",
-    "workout_strain": 12.1,
+    "trained": false,
+    "workout_type": null,
+    "workout_strain": null,
     "action": "Лёг на 58 мин позже цели — сегодня отбой до 23:10",
     "mood": null
   },
   "sleep_week": [
-    {
-      "date": "2026-06-18",
-      "day": 18,
-      "label": "Чт",
-      "hours": 6.1,
-      "on_time": false
-    },
     {
       "date": "2026-06-19",
       "day": 19,
@@ -65,15 +58,16 @@
       "label": "Ср",
       "hours": 6.3,
       "on_time": false
+    },
+    {
+      "date": "2026-06-25",
+      "day": 25,
+      "label": "Чт",
+      "hours": null,
+      "on_time": null
     }
   ],
   "recovery_week": [
-    {
-      "date": "2026-06-19",
-      "day": 19,
-      "label": "Пт",
-      "score": 35
-    },
     {
       "date": "2026-06-20",
       "day": 20,
@@ -109,21 +103,27 @@
       "day": 25,
       "label": "Чт",
       "score": 85
+    },
+    {
+      "date": "2026-06-26",
+      "day": 26,
+      "label": "Пт",
+      "score": null
     }
   ],
   "month": {
     "name": "Июнь",
-    "days_elapsed": 25,
+    "days_elapsed": 26,
     "days_in_month": 30,
-    "sobriety_days": 8,
+    "sobriety_days": 9,
     "sleep_on_time_days": 1,
     "workouts": 28,
     "workouts_goal": 30,
     "intensive": 13,
-    "intensive_goal": 16
+    "intensive_goal": 15
   },
   "year": {
-    "sobriety_days": 8,
+    "sobriety_days": 9,
     "sobriety_goal": 365,
     "activity_count": 195,
     "activity_goal": 365,
@@ -256,16 +256,15 @@
     {
       "day": 25,
       "sober": true,
+      "sleep_ok": null
+    },
+    {
+      "day": 26,
+      "sober": true,
       "sleep_ok": false
     }
   ],
   "mood_week": [
-    {
-      "date": "2026-06-19",
-      "day": 19,
-      "label": "Пт",
-      "score": null
-    },
     {
       "date": "2026-06-20",
       "day": 20,
@@ -300,6 +299,12 @@
       "date": "2026-06-25",
       "day": 25,
       "label": "Чт",
+      "score": null
+    },
+    {
+      "date": "2026-06-26",
+      "day": 26,
+      "label": "Пт",
       "score": null
     }
   ],
