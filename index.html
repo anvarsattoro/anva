@@ -1069,28 +1069,27 @@ function render(d) {
         const doy    = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
         const yTotal = y.sobriety_goal || 365;
         const yPct   = Math.round(doy / yTotal * 100);
-        const mDay   = m.days_elapsed || new Date().getDate();
+        const mDay   = m.days_elapsed || now.getDate();
         const mTotal = m.days_in_month || 30;
         const mPct   = Math.round(mDay / mTotal * 100);
-        return `<div style="margin-top:14px;display:flex;flex-direction:column;gap:8px">
-          <div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-              <span style="font-size:11px;color:var(--ink-faint);font-weight:600;letter-spacing:.4px">ГОД ${new Date().getFullYear()}</span>
-              <span style="font-size:11px;color:var(--ink-soft)">${doy} / ${yTotal} дн · ${yPct}%</span>
+        const mName  = (m.name || '').toUpperCase();
+        function timebar(label, pct, cur, total, color) {
+          return `<div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
+              <span style="font-size:10px;font-weight:700;color:var(--ink-faint);letter-spacing:.6px">${label}</span>
+              <div style="display:flex;align-items:baseline;gap:5px">
+                <span style="font-size:20px;font-weight:800;font-family:Manrope,sans-serif;color:var(--ink)">${pct}%</span>
+                <span style="font-size:10px;color:var(--ink-faint)">${cur} из ${total} дн</span>
+              </div>
             </div>
-            <div style="background:var(--line);border-radius:3px;height:5px">
-              <div style="width:${yPct}%;height:5px;background:var(--bordeaux);border-radius:3px"></div>
+            <div style="background:var(--line);border-radius:4px;height:6px">
+              <div style="width:${pct}%;height:6px;background:${color};border-radius:4px;transition:width .4s"></div>
             </div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-              <span style="font-size:11px;color:var(--ink-faint);font-weight:600;letter-spacing:.4px">${m.name ? m.name.toUpperCase() : 'МЕСЯЦ'}</span>
-              <span style="font-size:11px;color:var(--ink-soft)">${mDay} / ${mTotal} дн · ${mPct}%</span>
-            </div>
-            <div style="background:var(--line);border-radius:3px;height:5px">
-              <div style="width:${mPct}%;height:5px;background:var(--ink-soft);border-radius:3px"></div>
-            </div>
-          </div>
+          </div>`;
+        }
+        return `<div class="card" style="margin-top:14px;padding:14px 16px;display:flex;flex-direction:column;gap:14px">
+          ${timebar('ГОД ' + now.getFullYear(), yPct, doy, yTotal, 'var(--bordeaux)')}
+          ${timebar(mName, mPct, mDay, mTotal, 'var(--ink-soft)')}
         </div>`;
       })()}
     </section>
