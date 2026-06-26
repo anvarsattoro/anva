@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-26T15:05:00.197453+03:00",
+  "generated_at": "2026-06-26T15:19:02.474822+03:00",
   "today": {
     "recovery": 55.0,
     "hrv_ms": 57.4,
@@ -8,7 +8,7 @@
     "sleep_start": "23:27",
     "sleep_on_time": false,
     "sleep_late_min": 18,
-    "alcohol_free_days": 9,
+    "alcohol_free_days": 6,
     "smoking_free_days": null,
     "trained": true,
     "workout_type": "Теннис",
@@ -115,7 +115,7 @@
     "name": "Июнь",
     "days_elapsed": 26,
     "days_in_month": 30,
-    "sobriety_days": 9,
+    "sobriety_days": 6,
     "sleep_on_time_days": 1,
     "workouts": 29,
     "workouts_goal": 30,
@@ -123,7 +123,7 @@
     "intensive_goal": 16
   },
   "year": {
-    "sobriety_days": 141,
+    "sobriety_days": 140,
     "sobriety_goal": 365,
     "activity_count": 196,
     "activity_goal": 365,
@@ -220,17 +220,17 @@
     },
     {
       "day": 18,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 19,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 20,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
