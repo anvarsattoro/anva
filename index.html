@@ -781,15 +781,17 @@ function render(d) {
     </div>
   </div>`;
 
-  const MOOD_EMOJI = {1:'😞', 2:'😔', 3:'😐', 4:'😊', 5:'🌟'};
-  const MOOD_LABEL = {1:'тяжело', 2:'плохо', 3:'нормально', 4:'хорошо', 5:'отлично'};
-  const moodScore = t.mood;
-  const moodClass = moodScore == null ? '' : moodScore >= 4 ? 'ok' : moodScore >= 3 ? 'warn' : 'fail';
-  const moodChip = `<div class="card chip ${moodClass}">
-    <span class="chip-icon">${moodScore != null ? MOOD_EMOJI[moodScore] : '🙂'}</span>
+  /* ── Cigarette chip ── */
+  const cigToday  = t.cigarettes  || 0;
+  const cigTarget = t.cigarettes_target || 4;
+  const cigMonth  = m.cigarettes  || 0;
+  const cigYear   = y.cigarettes  || 0;
+  const cigClass  = cigToday === 0 ? 'ok' : cigToday <= cigTarget ? 'warn' : 'fail';
+  const cigChip = `<div class="card chip ${cigClass}">
+    <span class="chip-icon">🚬</span>
     <div>
-      <div class="chip-main">${moodScore != null ? moodScore + '/5' : '—'}</div>
-      <div class="chip-sub">${moodScore != null ? MOOD_LABEL[moodScore] : 'отправь «н 1-5»'}</div>
+      <div class="chip-main">${cigToday} / ${cigTarget}</div>
+      <div class="chip-sub">${cigMonth} мес · ${cigYear} год</div>
     </div>
   </div>`;
 
@@ -1061,7 +1063,36 @@ function render(d) {
       </div>
       ${whoopStrip}
       <div class="spacer"></div>
-      <div class="chips">${alcChip}${sleepChip}${trainChip}${moodChip}</div>
+      <div class="chips">${alcChip}${sleepChip}${trainChip}${cigChip}</div>
+      ${(() => {
+        const now    = new Date(d.generated_at || Date.now());
+        const doy    = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+        const yTotal = y.sobriety_goal || 365;
+        const yPct   = Math.round(doy / yTotal * 100);
+        const mDay   = m.days_elapsed || new Date().getDate();
+        const mTotal = m.days_in_month || 30;
+        const mPct   = Math.round(mDay / mTotal * 100);
+        return `<div style="margin-top:14px;display:flex;flex-direction:column;gap:8px">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:11px;color:var(--ink-faint);font-weight:600;letter-spacing:.4px">ГОД ${new Date().getFullYear()}</span>
+              <span style="font-size:11px;color:var(--ink-soft)">${doy} / ${yTotal} дн · ${yPct}%</span>
+            </div>
+            <div style="background:var(--line);border-radius:3px;height:5px">
+              <div style="width:${yPct}%;height:5px;background:var(--bordeaux);border-radius:3px"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:11px;color:var(--ink-faint);font-weight:600;letter-spacing:.4px">${m.name ? m.name.toUpperCase() : 'МЕСЯЦ'}</span>
+              <span style="font-size:11px;color:var(--ink-soft)">${mDay} / ${mTotal} дн · ${mPct}%</span>
+            </div>
+            <div style="background:var(--line);border-radius:3px;height:5px">
+              <div style="width:${mPct}%;height:5px;background:var(--ink-soft);border-radius:3px"></div>
+            </div>
+          </div>
+        </div>`;
+      })()}
     </section>
 
     <section class="tab-section" id="s-finance" style="display:none">
