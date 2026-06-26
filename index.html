@@ -1101,78 +1101,52 @@ function render(d) {
     </div>`;
   })();
 
-  /* ── 4 life pillars: 1 hero + 3 compact ── */
+  /* ── 4 life pillars: Сигареты hero + 3 compact numbers ── */
   const lifeRingsHtml = (() => {
     const SPEND_GOAL = 285000;
-    // Сигареты: сегодня vs таргет (100% = на таргете или лучше)
-    const cigPct = cigToday === 0 ? 100 : Math.min(100, Math.round(cigTarget / cigToday * 100));
 
-    const pillars = [
-      {
-        emoji: '🍺', label: 'Трезвость',
-        pct: Math.min(100, Math.round((alc || 0) / 30 * 100)),
-        sub: `${alc || 0} дн стрик`
-      },
-      {
-        emoji: '🚬', label: 'Сигареты',
-        pct: cigPct,
-        sub: `${cigToday} / ${cigTarget} сег`
-      },
-      {
-        emoji: '🏋', label: 'Тело',
-        pct: Math.min(100, m.workouts_goal ? Math.round((m.workouts || 0) / m.workouts_goal * 100) : 0),
-        sub: `${m.workouts || 0} / ${m.workouts_goal || '?'} в мес`
-      },
-      {
-        emoji: '💰', label: 'Бюджет',
-        pct: Math.min(100, Math.round(spent / SPEND_GOAL * 100)),
-        sub: `${Math.round(spent / 1000)}к из ${Math.round(SPEND_GOAL / 1000)}к`,
-        invertColor: true
-      }
-    ].map(p => ({
-      ...p,
-      sortPct: p.invertColor ? 100 - p.pct : p.pct
-    })).sort((a, b) => a.sortPct - b.sortPct);
-
-    const hero = pillars[0];
-    const rest = pillars.slice(1);
-
-    function pillarColor(pct, invert) {
-      if (invert) return pct >= 90 ? '#B83232' : pct >= 67 ? '#C8A028' : '#2A7A52';
-      return pct >= 67 ? '#2A7A52' : pct >= 34 ? '#C8A028' : '#B83232';
-    }
-
-    const hc    = pillarColor(hero.pct, hero.invertColor);
-    const fill  = hero.pct.toFixed(1);
-    const empty = (100 - hero.pct).toFixed(1);
+    // Hero: Сигареты — кольцо = taрget/today (полное = на цели)
+    const cigRingPct = cigToday === 0 ? 100 : Math.min(100, Math.round(cigTarget / cigToday * 100));
+    const cigColor   = cigToday <= cigTarget ? '#2A7A52'
+      : cigToday <= cigTarget + 2 ? '#C8A028' : '#B83232';
+    const cigFill  = cigRingPct.toFixed(1);
+    const cigEmpty = (100 - cigRingPct).toFixed(1);
+    const cigStatus = cigToday === 0 ? 'не курил' : cigToday <= cigTarget ? 'в норме' : `+${cigToday - cigTarget} сверх цели`;
 
     const heroEl = `<div style="text-align:center;margin-bottom:12px">
       <div style="position:relative;width:148px;height:148px;margin:0 auto">
         <svg viewBox="0 0 36 36" style="width:148px;height:148px">
           <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--line)" stroke-width="2.4"/>
-          <circle cx="18" cy="18" r="15.9" fill="none" stroke="${hc}"
+          <circle cx="18" cy="18" r="15.9" fill="none" stroke="${cigColor}"
             stroke-width="2.4" stroke-linecap="round"
-            stroke-dasharray="${fill} ${empty}" stroke-dashoffset="25"/>
+            stroke-dasharray="${cigFill} ${cigEmpty}" stroke-dashoffset="25"/>
         </svg>
         <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;line-height:1">
-          <div style="font-size:22px;line-height:1;margin-bottom:2px">${hero.emoji}</div>
-          <div style="font-size:36px;font-weight:800;font-family:Manrope,sans-serif;color:${hc};letter-spacing:-1px;line-height:1">${hero.pct}<span style="font-size:16px">%</span></div>
+          <div style="font-size:20px;line-height:1;margin-bottom:3px">🚬</div>
+          <div style="font-size:40px;font-weight:800;font-family:Manrope,sans-serif;color:${cigColor};letter-spacing:-2px;line-height:1">${cigToday}<span style="font-size:18px;font-weight:600;color:var(--ink-faint)">/${cigTarget}</span></div>
         </div>
       </div>
-      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-top:8px;letter-spacing:.2px">${hero.label}</div>
-      <div style="font-size:11px;color:var(--ink-faint);margin-top:3px">${hero.sub}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-top:8px">Сигареты</div>
+      <div style="font-size:11px;color:var(--ink-faint);margin-top:3px">${cigStatus} · ${m.cigarettes || 0} за месяц</div>
     </div>`;
 
+    // Compact 3: числа напрямую, без процентов
+    const wColor = spent > SPEND_GOAL ? '#B83232' : spent > SPEND_GOAL * 0.9 ? '#C8A028' : 'var(--ink)';
+    const compact = [
+      { emoji: '🍺', big: `${alc || 0}`, unit: 'дн',                           label: 'СТРИК' },
+      { emoji: '🏋', big: `${m.workouts || 0}`, unit: `из ${m.workouts_goal || '?'}`, label: 'В МЕС' },
+      { emoji: '💰', big: `${Math.round(spent / 1000)}к`, unit: `из ${Math.round(SPEND_GOAL / 1000)}к`, label: 'БЮДЖЕТ', color: wColor }
+    ];
+
     const compactEl = `<div class="card" style="padding:14px 8px;margin-bottom:14px;display:flex;align-items:center">
-      ${rest.map((p, i) => {
-        const c = pillarColor(p.pct, p.invertColor);
-        return `${i > 0 ? '<div style="width:1px;background:var(--line);align-self:stretch;margin:2px 0"></div>' : ''}
+      ${compact.map((p, i) => `
+        ${i > 0 ? '<div style="width:1px;background:var(--line);align-self:stretch;margin:2px 0"></div>' : ''}
         <div style="flex:1;text-align:center">
-          <div style="font-size:15px;line-height:1;margin-bottom:3px">${p.emoji}</div>
-          <div style="font-size:17px;font-weight:800;font-family:Manrope,sans-serif;color:${c};line-height:1">${p.pct}%</div>
-          <div style="font-size:9px;color:var(--ink-faint);margin-top:3px;letter-spacing:.3px">${p.label.toUpperCase()}</div>
-        </div>`;
-      }).join('')}
+          <div style="font-size:15px;line-height:1;margin-bottom:4px">${p.emoji}</div>
+          <div style="font-size:17px;font-weight:800;font-family:Manrope,sans-serif;color:${p.color || 'var(--ink)'};line-height:1">${p.big}<span style="font-size:10px;font-weight:500;color:var(--ink-faint);margin-left:2px">${p.unit}</span></div>
+          <div style="font-size:9px;color:var(--ink-faint);margin-top:3px;letter-spacing:.3px">${p.label}</div>
+        </div>
+      `).join('')}
     </div>`;
 
     return heroEl + compactEl;
