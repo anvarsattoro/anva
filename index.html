@@ -1101,28 +1101,80 @@ function render(d) {
     </div>`;
   })();
 
-  /* ── 4 life rings ── */
+  /* ── 4 life pillars: 1 hero + 3 compact ── */
   const lifeRingsHtml = (() => {
-    // Сигареты: % снижения от базовой привычки 7/день
-    const daysEl   = m.days_elapsed || 1;
-    const cigBase  = daysEl * 7;
-    const cigReduc = Math.max(0, cigBase - (m.cigarettes || 0));
-
-    // Бюджет: сколько осталось от 300к
+    const daysEl     = m.days_elapsed || 1;
+    const cigBase    = daysEl * 7;
+    const cigReduc   = Math.max(0, cigBase - (m.cigarettes || 0));
     const budgetFree = Math.max(0, expGoal - spent);
-    const budgetSub  = budgetFree > 0
-      ? `${Math.round(budgetFree/1000)}к свободно`
-      : 'перерасход';
 
-    return `<div class="rings-grid-2x2" style="margin-bottom:14px">
-      ${ring(y.sobriety_days, y.sobriety_goal, '🍺', 'Трезвость',
-        `${alc != null ? alc : 0} дн стрик`)}
-      ${ring(cigReduc, cigBase, '🚬', 'Сигареты',
-        `${cigToday} сег · ${m.cigarettes || 0} мес`)}
-      ${ring(y.intensive_count || 0, y.intensive_goal || 200, '🏋', 'Тело',
-        `${y.intensive_count || 0} / ${y.intensive_goal || 200} инт`)}
-      ${ring(budgetFree, expGoal, '💰', 'Бюджет', budgetSub)}
+    const pillars = [
+      {
+        emoji: '🍺', label: 'Трезвость',
+        val: y.sobriety_days, goal: y.sobriety_goal,
+        sub: `${alc != null ? alc : 0} дн стрик`
+      },
+      {
+        emoji: '🚬', label: 'Сигареты',
+        val: cigReduc, goal: Math.max(1, cigBase),
+        sub: `${cigToday} сег · цель ≤${cigTarget}/день`
+      },
+      {
+        emoji: '🏋', label: 'Тело',
+        val: y.intensive_count || 0, goal: y.intensive_goal || 200,
+        sub: `${y.intensive_count || 0} / ${y.intensive_goal || 200} инт`
+      },
+      {
+        emoji: '💰', label: 'Бюджет',
+        val: budgetFree, goal: expGoal,
+        sub: budgetFree > 0 ? `${Math.round(budgetFree/1000)}к свободно` : 'перерасход'
+      }
+    ].map(p => ({
+      ...p,
+      pct: Math.min(100, p.goal ? Math.round(p.val / p.goal * 100) : 0)
+    })).sort((a, b) => a.pct - b.pct);
+
+    const hero = pillars[0];
+    const rest = pillars.slice(1);
+
+    function pillarColor(pct) {
+      return pct >= 67 ? '#2A7A52' : pct >= 34 ? '#C8A028' : '#B83232';
+    }
+
+    const hc   = pillarColor(hero.pct);
+    const fill  = hero.pct.toFixed(1);
+    const empty = (100 - hero.pct).toFixed(1);
+
+    const heroEl = `<div style="text-align:center;margin-bottom:12px">
+      <div style="position:relative;width:148px;height:148px;margin:0 auto">
+        <svg viewBox="0 0 36 36" style="width:148px;height:148px">
+          <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--line)" stroke-width="2.4"/>
+          <circle cx="18" cy="18" r="15.9" fill="none" stroke="${hc}"
+            stroke-width="2.4" stroke-linecap="round"
+            stroke-dasharray="${fill} ${empty}" stroke-dashoffset="25"/>
+        </svg>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;line-height:1">
+          <div style="font-size:22px;line-height:1;margin-bottom:2px">${hero.emoji}</div>
+          <div style="font-size:36px;font-weight:800;font-family:Manrope,sans-serif;color:${hc};letter-spacing:-1px;line-height:1">${hero.pct}<span style="font-size:16px">%</span></div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-top:8px;letter-spacing:.2px">${hero.label}</div>
+      <div style="font-size:11px;color:var(--ink-faint);margin-top:3px">${hero.sub}</div>
     </div>`;
+
+    const compactEl = `<div class="card" style="padding:14px 8px;margin-bottom:14px;display:flex;align-items:center">
+      ${rest.map((p, i) => {
+        const c = pillarColor(p.pct);
+        return `${i > 0 ? '<div style="width:1px;background:var(--line);align-self:stretch;margin:2px 0"></div>' : ''}
+        <div style="flex:1;text-align:center">
+          <div style="font-size:15px;line-height:1;margin-bottom:3px">${p.emoji}</div>
+          <div style="font-size:17px;font-weight:800;font-family:Manrope,sans-serif;color:${c};line-height:1">${p.pct}%</div>
+          <div style="font-size:9px;color:var(--ink-faint);margin-top:3px;letter-spacing:.3px">${p.label.toUpperCase()}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+    return heroEl + compactEl;
   })();
 
   /* ── Time period bars ── */
