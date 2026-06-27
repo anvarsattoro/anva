@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-06-27T06:05:00.125284+03:00",
+  "generated_at": "2026-06-27T11:05:00.123047+03:00",
   "today": {
-    "recovery": 55.0,
-    "hrv_ms": 57.4,
-    "rhr": 57.0,
-    "sleep_hours": 6.9,
-    "sleep_start": "23:27",
+    "recovery": 48.0,
+    "hrv_ms": 52.4,
+    "rhr": 58.0,
+    "sleep_hours": 7.6,
+    "sleep_start": "23:44",
     "sleep_on_time": false,
-    "sleep_late_min": 18,
+    "sleep_late_min": 35,
     "alcohol_free_days": 7,
     "smoking_free_days": null,
     "trained": false,
     "workout_type": null,
     "workout_strain": null,
-    "action": "Лёг на 18 мин позже цели — сегодня отбой до 23:10",
+    "action": "Лёг на 35 мин позже цели — сегодня отбой до 23:10",
     "mood": null,
-    "cigarettes": 0,
+    "cigarettes": 1,
     "cigarettes_target": 4
   },
   "sleep_week": [
@@ -65,8 +65,8 @@
       "date": "2026-06-26",
       "day": 26,
       "label": "Пт",
-      "hours": null,
-      "on_time": null
+      "hours": 7.6,
+      "on_time": false
     }
   ],
   "recovery_week": [
@@ -116,8 +116,8 @@
       "date": "2026-06-27",
       "day": 27,
       "label": "Сб",
-      "score": null,
-      "hrv": null
+      "score": 48,
+      "hrv": 52.4
     }
   ],
   "month": {
@@ -130,7 +130,7 @@
     "workouts_goal": 30,
     "intensive": 14,
     "intensive_goal": 16,
-    "cigarettes": 182
+    "cigarettes": 183
   },
   "year": {
     "sobriety_days": 141,
@@ -139,7 +139,7 @@
     "activity_goal": 365,
     "intensive_count": 97,
     "intensive_goal": 200,
-    "cigarettes": 1239,
+    "cigarettes": 1240,
     "saved_rub": 20000,
     "savings_goal": 480000
   },
@@ -272,7 +272,7 @@
     {
       "day": 26,
       "sober": true,
-      "sleep_ok": null
+      "sleep_ok": false
     },
     {
       "day": 27,
