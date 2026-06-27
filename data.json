@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-27T15:05:03.568459+03:00",
+  "generated_at": "2026-06-27T19:05:00.239844+03:00",
   "today": {
     "recovery": 48.0,
     "hrv_ms": 52.4,
@@ -8,14 +8,14 @@
     "sleep_start": "23:44",
     "sleep_on_time": false,
     "sleep_late_min": 35,
-    "alcohol_free_days": 7,
+    "alcohol_free_days": null,
     "smoking_free_days": null,
     "trained": true,
-    "workout_type": "Теннис",
-    "workout_strain": 12.9,
+    "workout_type": "Пилатес",
+    "workout_strain": 13.0,
     "action": "Лёг на 35 мин позже цели — сегодня отбой до 23:10",
     "mood": null,
-    "cigarettes": 3,
+    "cigarettes": 5,
     "cigarettes_target": 4
   },
   "sleep_week": [
@@ -124,22 +124,22 @@
     "name": "Июнь",
     "days_elapsed": 27,
     "days_in_month": 30,
-    "sobriety_days": 7,
+    "sobriety_days": 0,
     "sleep_on_time_days": 1,
-    "workouts": 30,
+    "workouts": 31,
     "workouts_goal": 30,
-    "intensive": 15,
-    "intensive_goal": 17,
-    "cigarettes": 185
+    "intensive": 16,
+    "intensive_goal": 18,
+    "cigarettes": 187
   },
   "year": {
-    "sobriety_days": 141,
+    "sobriety_days": 140,
     "sobriety_goal": 365,
-    "activity_count": 197,
+    "activity_count": 198,
     "activity_goal": 365,
-    "intensive_count": 98,
+    "intensive_count": 99,
     "intensive_goal": 200,
-    "cigarettes": 1242,
+    "cigarettes": 1244,
     "saved_rub": 20000,
     "savings_goal": 480000
   },
@@ -246,37 +246,37 @@
     },
     {
       "day": 21,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 22,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 23,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 24,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 25,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 26,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 27,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     }
   ],
