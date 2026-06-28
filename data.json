@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T11:05:00.195928+03:00",
+  "generated_at": "2026-06-28T19:05:00.642651+03:00",
   "today": {
     "recovery": 50.0,
     "hrv_ms": 52.5,
@@ -10,12 +10,12 @@
     "sleep_late_min": 0,
     "alcohol_free_days": null,
     "smoking_free_days": null,
-    "trained": false,
-    "workout_type": null,
-    "workout_strain": null,
-    "action": "Запланируй тренировку на сегодня",
+    "trained": true,
+    "workout_type": "Теннис",
+    "workout_strain": 15.5,
+    "action": "Хороший день — держи режим до 23:10",
     "mood": null,
-    "cigarettes": 0,
+    "cigarettes": 3,
     "cigarettes_target": 4
   },
   "sleep_week": [
@@ -126,20 +126,20 @@
     "days_in_month": 30,
     "sobriety_days": 0,
     "sleep_on_time_days": 2,
-    "workouts": 31,
+    "workouts": 33,
     "workouts_goal": 30,
-    "intensive": 16,
-    "intensive_goal": 17,
-    "cigarettes": 188
+    "intensive": 18,
+    "intensive_goal": 19,
+    "cigarettes": 191
   },
   "year": {
     "sobriety_days": 140,
     "sobriety_goal": 365,
-    "activity_count": 198,
+    "activity_count": 200,
     "activity_goal": 365,
-    "intensive_count": 99,
+    "intensive_count": 101,
     "intensive_goal": 200,
-    "cigarettes": 1245,
+    "cigarettes": 1248,
     "saved_rub": 20000,
     "savings_goal": 480000
   },
