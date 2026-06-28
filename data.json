@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-27T19:05:00.239844+03:00",
+  "generated_at": "2026-06-28T06:05:00.245746+03:00",
   "today": {
     "recovery": 48.0,
     "hrv_ms": 52.4,
@@ -10,22 +10,15 @@
     "sleep_late_min": 35,
     "alcohol_free_days": null,
     "smoking_free_days": null,
-    "trained": true,
-    "workout_type": "Пилатес",
-    "workout_strain": 13.0,
+    "trained": false,
+    "workout_type": null,
+    "workout_strain": null,
     "action": "Лёг на 35 мин позже цели — сегодня отбой до 23:10",
     "mood": null,
-    "cigarettes": 5,
+    "cigarettes": 0,
     "cigarettes_target": 4
   },
   "sleep_week": [
-    {
-      "date": "2026-06-20",
-      "day": 20,
-      "label": "Сб",
-      "hours": 4.6,
-      "on_time": false
-    },
     {
       "date": "2026-06-21",
       "day": 21,
@@ -67,16 +60,16 @@
       "label": "Пт",
       "hours": 7.6,
       "on_time": false
+    },
+    {
+      "date": "2026-06-27",
+      "day": 27,
+      "label": "Сб",
+      "hours": null,
+      "on_time": null
     }
   ],
   "recovery_week": [
-    {
-      "date": "2026-06-21",
-      "day": 21,
-      "label": "Вс",
-      "score": 17,
-      "hrv": 41.9
-    },
     {
       "date": "2026-06-22",
       "day": 22,
@@ -118,19 +111,26 @@
       "label": "Сб",
       "score": 48,
       "hrv": 52.4
+    },
+    {
+      "date": "2026-06-28",
+      "day": 28,
+      "label": "Вс",
+      "score": null,
+      "hrv": null
     }
   ],
   "month": {
     "name": "Июнь",
-    "days_elapsed": 27,
+    "days_elapsed": 28,
     "days_in_month": 30,
     "sobriety_days": 0,
     "sleep_on_time_days": 1,
     "workouts": 31,
     "workouts_goal": 30,
     "intensive": 16,
-    "intensive_goal": 18,
-    "cigarettes": 187
+    "intensive_goal": 17,
+    "cigarettes": 188
   },
   "year": {
     "sobriety_days": 140,
@@ -139,7 +139,7 @@
     "activity_goal": 365,
     "intensive_count": 99,
     "intensive_goal": 200,
-    "cigarettes": 1244,
+    "cigarettes": 1245,
     "saved_rub": 20000,
     "savings_goal": 480000
   },
@@ -277,16 +277,15 @@
     {
       "day": 27,
       "sober": null,
+      "sleep_ok": null
+    },
+    {
+      "day": 28,
+      "sober": null,
       "sleep_ok": false
     }
   ],
   "mood_week": [
-    {
-      "date": "2026-06-21",
-      "day": 21,
-      "label": "Вс",
-      "score": null
-    },
     {
       "date": "2026-06-22",
       "day": 22,
@@ -321,6 +320,12 @@
       "date": "2026-06-27",
       "day": 27,
       "label": "Сб",
+      "score": null
+    },
+    {
+      "date": "2026-06-28",
+      "day": 28,
+      "label": "Вс",
       "score": null
     }
   ],
