@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T08:01:34.041016+03:00",
+  "generated_at": "2026-06-29T08:04:39.611915+03:00",
   "today": {
     "recovery": 41.0,
     "hrv_ms": 48.1,
@@ -337,12 +337,12 @@
   "finances": {
     "monthly_income": 383317,
     "monthly_expense_goal": 285000,
-    "month_expenses": 336067.03,
+    "month_expenses": 390067.03,
     "credit_repayment": 91173,
     "categories": [
       {
         "name": "Семья",
-        "amount": 163829.32,
+        "amount": 213829.32,
         "monthly_avg": 182000,
         "limit": 182000
       },
@@ -372,7 +372,7 @@
       },
       {
         "name": "Прочее",
-        "amount": 21629,
+        "amount": 25629,
         "monthly_avg": 18300,
         "limit": 5000
       },
