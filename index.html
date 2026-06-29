@@ -938,8 +938,7 @@ function render(d) {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 12px">
         <div>
           <div class="whoop-label">Доход</div>
-          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px">${income.toLocaleString('ru-RU', {minimumFractionDigits:2,maximumFractionDigits:2})} ₽</div>
-          ${incomeSources.length ? `<div style="margin-top:4px">${incomeSources.map(s=>`<div class="whoop-sub">${s.date.slice(5).replace('-','.')} ${s.source} +${s.amount.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})} ₽</div>`).join('')}</div>` : ''}
+          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px">${Math.round(income/1000)}к ₽</div>
         </div>
         <div>
           <div class="whoop-label">Свободно</div>
@@ -956,6 +955,19 @@ function render(d) {
           <div class="whoop-sub">не расход — перевод</div>
         </div>
       </div>
+      ${incomeSources.length ? `
+      <div style="margin-bottom:10px;padding:8px 10px;background:var(--surface2,rgba(0,0,0,.04));border-radius:8px">
+        <div class="whoop-label" style="margin-bottom:6px">Поступления</div>
+        ${incomeSources.map(s => `
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px solid var(--line)">
+          <span style="font-size:13px;color:var(--ink-secondary)">${s.date.slice(5).replace('-','.')} · ${s.source}</span>
+          <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:14px;color:var(--pos)">+${s.amount.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})} ₽</span>
+        </div>`).join('')}
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:5px">
+          <span style="font-size:12px;color:var(--ink-secondary)">Итого</span>
+          <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:14px">+${income.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})} ₽</span>
+        </div>
+      </div>` : ''}
       <div class="bar-track"><div class="bar-fill" style="width:${spentPct}%;background:${spentColor}"></div></div>
       <div class="bar-footer"><span class="bar-pct">${Math.round(spent/1000)}к / ${Math.round(expGoal/1000)}к ₽</span><span class="bar-pct">${spentPct}%</span></div>
       ${cats.length ? `<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line)">
