@@ -878,6 +878,8 @@ function render(d) {
 
   // Finance card
   const incomeSources = fin.income_sources || [];
+  const incomeByMonth = fin.income_by_month || [];
+  const ytdTotal = incomeByMonth.reduce((s, e) => s + e.amount, 0);
   const income    = fin.monthly_income || 400000;
   const expGoal   = fin.monthly_expense_goal || 300000;
   const creditRep = fin.credit_repayment || 0;
@@ -966,6 +968,23 @@ function render(d) {
         <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:5px">
           <span style="font-size:12px;color:var(--ink-secondary)">Итого</span>
           <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:14px">+${income.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})} ₽</span>
+        </div>
+      </div>` : ''}
+      ${incomeByMonth.length > 1 ? `
+      <div style="margin-bottom:12px;padding:8px 10px;background:var(--surface2,rgba(0,0,0,.04));border-radius:8px">
+        <div class="whoop-label" style="margin-bottom:6px">Доходы YTD</div>
+        ${incomeByMonth.map(e => {
+          const [y2, mo] = e.month.split('-');
+          const moNames = {1:'Янв',2:'Фев',3:'Мар',4:'Апр',5:'Май',6:'Июн',7:'Июл',8:'Авг',9:'Сен',10:'Окт',11:'Ноя',12:'Дек'};
+          const moName = moNames[parseInt(mo)] || mo;
+          return `<div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px solid var(--line)">
+            <span style="font-size:13px;color:var(--ink-soft)">${moName} ${y2}</span>
+            <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:14px;color:var(--pos)">+${Math.round(e.amount/1000)}к ₽</span>
+          </div>`;
+        }).join('')}
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:6px">
+          <span style="font-size:12px;color:var(--ink-soft);font-weight:600">Итого ${new Date().getFullYear()}</span>
+          <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:15px">+${Math.round(ytdTotal/1000)}к ₽</span>
         </div>
       </div>` : ''}
       <div class="bar-track"><div class="bar-fill" style="width:${spentPct}%;background:${spentColor}"></div></div>
