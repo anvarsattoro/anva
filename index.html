@@ -1180,7 +1180,7 @@ function render(d) {
     // Compact 3: числа напрямую, без процентов
     const wColor = spent > SPEND_GOAL ? '#B83232' : spent > SPEND_GOAL * 0.9 ? '#C8A028' : 'var(--ink)';
     const compact = [
-      { emoji: '🍺', big: `${alc || 0}`, unit: 'дн',                           label: 'СТРИК' },
+      { emoji: '🍺', big: `${alc != null ? alc : '—'}`, unit: alc != null ? 'дн' : '', label: 'СТРИК' },
       { emoji: '🏋', big: `${m.workouts || 0}`, unit: `из ${m.workouts_goal || '?'}`, label: 'В МЕС' },
       { emoji: '💰', big: `${Math.round(spent / 1000)}к`, unit: `из ${Math.round(SPEND_GOAL / 1000)}к`, label: 'БЮДЖЕТ', color: wColor }
     ];
