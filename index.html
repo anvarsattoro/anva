@@ -958,31 +958,24 @@ function render(d) {
           <div class="whoop-sub">не расход — перевод</div>
         </div>
       </div>
-      ${incomeSources.length ? `
-      <div style="margin-bottom:10px;padding:8px 10px;background:var(--surface2,rgba(0,0,0,.04));border-radius:8px">
-        <div class="whoop-label" style="margin-bottom:6px">Поступления</div>
-        ${incomeSources.map(s => `
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px solid var(--line)">
-          <span style="font-size:13px;color:var(--ink-secondary)">${s.date.slice(5).replace('-','.')} · ${s.source}</span>
-          <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:14px;color:var(--pos)">+${s.amount.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})} ₽</span>
-        </div>`).join('')}
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:5px">
-          <span style="font-size:12px;color:var(--ink-secondary)">Итого</span>
-          <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:14px">+${income.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})} ₽</span>
-        </div>
+      <div class="bar-track"><div class="bar-fill" style="width:${spentPct}%;background:${spentColor}"></div></div>
+      <div class="bar-footer"><span class="bar-pct">${Math.round(spent/1000)}к / ${Math.round(expGoal/1000)}к ₽</span><span class="bar-pct">${spentPct}%</span></div>
+      ${cats.length ? `<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line)">
+        <div class="whoop-label" style="margin-bottom:6px">Структура расходов</div>
+        ${catRows}
       </div>` : ''}
       ${incomeByMonth.length > 0 ? (() => {
         const moNames = {1:'Янв',2:'Фев',3:'Мар',4:'Апр',5:'Май',6:'Июн',7:'Июл',8:'Авг',9:'Сен',10:'Окт',11:'Ноя',12:'Дек'};
         const taxSmz = ytd.tax_smz || 0;
         const netTotal = ytdTotal - taxSmz;
-        return `<div style="margin-bottom:12px;padding:8px 10px;background:var(--surface2,rgba(0,0,0,.04));border-radius:8px">
+        return `<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line)">
           <div class="whoop-label" style="margin-bottom:8px">Доходы ${new Date().getFullYear()} · ЗП + СМЗ</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;text-align:center">
-            <div style="padding:8px 4px;background:var(--card);border-radius:8px">
+            <div style="padding:8px 4px;background:var(--bg);border-radius:8px">
               <div style="font-size:9px;color:var(--ink-faint);font-weight:600;letter-spacing:.6px;margin-bottom:3px">ЗП</div>
               <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:15px">${Math.round((ytd.zp||0)/1000)}к</div>
             </div>
-            <div style="padding:8px 4px;background:var(--card);border-radius:8px">
+            <div style="padding:8px 4px;background:var(--bg);border-radius:8px">
               <div style="font-size:9px;color:var(--ink-faint);font-weight:600;letter-spacing:.6px;margin-bottom:3px">СМЗ</div>
               <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:15px">${Math.round((ytd.smz||0)/1000)}к</div>
             </div>
@@ -1014,12 +1007,6 @@ function render(d) {
           </div>
         </div>`;
       })() : ''}
-      <div class="bar-track"><div class="bar-fill" style="width:${spentPct}%;background:${spentColor}"></div></div>
-      <div class="bar-footer"><span class="bar-pct">${Math.round(spent/1000)}к / ${Math.round(expGoal/1000)}к ₽</span><span class="bar-pct">${spentPct}%</span></div>
-      ${cats.length ? `<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line)">
-        <div class="whoop-label" style="margin-bottom:6px">Структура расходов</div>
-        ${catRows}
-      </div>` : ''}
     </div>`;
 
   /* ── Month metrics ── */
