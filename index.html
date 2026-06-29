@@ -880,7 +880,7 @@ function render(d) {
   const income    = fin.monthly_income || 400000;
   const expGoal   = fin.monthly_expense_goal || 300000;
   const creditRep = fin.credit_repayment || 0;
-  const cats = (fin.categories || []).filter(c => c.amount > 0);
+  const cats = (fin.categories || []).filter(c => c.amount > 0).sort((a, b) => b.amount - a.amount);
   // Реальные расходы = сумма категорий (дебет + кредит по факту трат, без погашения долга)
   const catSum  = cats.reduce((s, c) => s + c.amount, 0);
   const spent   = catSum || fin.month_expenses || 0;
