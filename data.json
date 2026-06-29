@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T08:37:35.935095+03:00",
+  "generated_at": "2026-06-29T08:41:52.102253+03:00",
   "today": {
     "recovery": 41.0,
     "hrv_ms": 48.1,
@@ -337,7 +337,7 @@
   "finances": {
     "monthly_income": 383317,
     "monthly_expense_goal": 285000,
-    "month_expenses": 301762.3,
+    "month_expenses": 309262.3,
     "credit_repayment": 91173,
     "categories": [
       {
@@ -384,7 +384,7 @@
       },
       {
         "name": "Теннис",
-        "amount": 9260,
+        "amount": 16760,
         "monthly_avg": 0,
         "limit": 25000
       },
