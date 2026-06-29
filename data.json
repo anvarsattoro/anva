@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T19:40:14.837788+03:00",
+  "generated_at": "2026-06-29T20:14:11.967255+03:00",
   "today": {
     "recovery": 41.0,
     "hrv_ms": 48.1,
@@ -15,7 +15,7 @@
     "workout_strain": null,
     "action": "Лёг на 26 мин позже цели — сегодня отбой до 23:10",
     "mood": null,
-    "cigarettes": 6,
+    "cigarettes": 4,
     "cigarettes_target": 4
   },
   "sleep_week": [
@@ -130,7 +130,7 @@
     "workouts_goal": 30,
     "intensive": 18,
     "intensive_goal": 19,
-    "cigarettes": 199
+    "cigarettes": 197
   },
   "year": {
     "sobriety_days": 142,
@@ -139,7 +139,7 @@
     "activity_goal": 365,
     "intensive_count": 101,
     "intensive_goal": 200,
-    "cigarettes": 1256,
+    "cigarettes": 1254,
     "saved_rub": 20000,
     "savings_goal": 480000
   },
