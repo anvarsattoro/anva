@@ -879,7 +879,8 @@ function render(d) {
   // Finance card
   const incomeSources = fin.income_sources || [];
   const incomeByMonth = fin.income_by_month || [];
-  const ytdTotal = incomeByMonth.reduce((s, e) => s + e.amount, 0);
+  const ytd = fin.income_ytd || {};
+  const ytdTotal = ytd.total || 0;
   const income    = fin.monthly_income || 400000;
   const expGoal   = fin.monthly_expense_goal || 300000;
   const creditRep = fin.credit_repayment || 0;
@@ -970,23 +971,49 @@ function render(d) {
           <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:14px">+${income.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})} ₽</span>
         </div>
       </div>` : ''}
-      ${incomeByMonth.length > 1 ? `
-      <div style="margin-bottom:12px;padding:8px 10px;background:var(--surface2,rgba(0,0,0,.04));border-radius:8px">
-        <div class="whoop-label" style="margin-bottom:6px">Доходы YTD</div>
-        ${incomeByMonth.map(e => {
-          const [y2, mo] = e.month.split('-');
-          const moNames = {1:'Янв',2:'Фев',3:'Мар',4:'Апр',5:'Май',6:'Июн',7:'Июл',8:'Авг',9:'Сен',10:'Окт',11:'Ноя',12:'Дек'};
-          const moName = moNames[parseInt(mo)] || mo;
-          return `<div style="display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px solid var(--line)">
-            <span style="font-size:13px;color:var(--ink-soft)">${moName} ${y2}</span>
-            <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:14px;color:var(--pos)">+${Math.round(e.amount/1000)}к ₽</span>
-          </div>`;
-        }).join('')}
-        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:6px">
-          <span style="font-size:12px;color:var(--ink-soft);font-weight:600">Итого ${new Date().getFullYear()}</span>
-          <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:15px">+${Math.round(ytdTotal/1000)}к ₽</span>
-        </div>
-      </div>` : ''}
+      ${incomeByMonth.length > 0 ? (() => {
+        const moNames = {1:'Янв',2:'Фев',3:'Мар',4:'Апр',5:'Май',6:'Июн',7:'Июл',8:'Авг',9:'Сен',10:'Окт',11:'Ноя',12:'Дек'};
+        const taxSmz = ytd.tax_smz || 0;
+        const netTotal = ytdTotal - taxSmz;
+        return `<div style="margin-bottom:12px;padding:8px 10px;background:var(--surface2,rgba(0,0,0,.04));border-radius:8px">
+          <div class="whoop-label" style="margin-bottom:8px">Доходы ${new Date().getFullYear()} · ЗП + СМЗ</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;text-align:center">
+            <div style="padding:8px 4px;background:var(--card);border-radius:8px">
+              <div style="font-size:9px;color:var(--ink-faint);font-weight:600;letter-spacing:.6px;margin-bottom:3px">ЗП</div>
+              <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:15px">${Math.round((ytd.zp||0)/1000)}к</div>
+            </div>
+            <div style="padding:8px 4px;background:var(--card);border-radius:8px">
+              <div style="font-size:9px;color:var(--ink-faint);font-weight:600;letter-spacing:.6px;margin-bottom:3px">СМЗ</div>
+              <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:15px">${Math.round((ytd.smz||0)/1000)}к</div>
+            </div>
+            <div style="padding:8px 4px;background:var(--crit-bg);border-radius:8px">
+              <div style="font-size:9px;color:var(--crit);font-weight:600;letter-spacing:.6px;margin-bottom:3px">НАЛОГ 6%</div>
+              <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:15px;color:var(--crit)">−${Math.round(taxSmz/1000)}к</div>
+            </div>
+          </div>
+          ${incomeByMonth.map(e => {
+            const [y2, mo] = e.month.split('-');
+            const moName = moNames[parseInt(mo)] || mo;
+            const zpK  = Math.round(e.zp  / 1000);
+            const smzK = Math.round(e.smz / 1000);
+            return `<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--line)">
+              <span style="font-size:12px;color:var(--ink-soft);min-width:36px">${moName}</span>
+              <div style="display:flex;gap:6px;align-items:center">
+                ${zpK  > 0 ? `<span style="font-size:11px;color:var(--ink-faint)">ЗП ${zpK}к</span>` : ''}
+                ${smzK > 0 ? `<span style="font-size:11px;color:var(--ink-faint)">СМЗ ${smzK}к</span>` : ''}
+                <span style="font-family:Manrope,sans-serif;font-weight:700;font-size:13px;color:var(--pos)">+${Math.round(e.total/1000)}к</span>
+              </div>
+            </div>`;
+          }).join('')}
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:7px">
+            <span style="font-size:12px;color:var(--ink-soft);font-weight:600">Итого · чистыми</span>
+            <div style="text-align:right">
+              <span style="font-family:Manrope,sans-serif;font-weight:800;font-size:15px">+${Math.round(ytdTotal/1000)}к ₽</span>
+              <span style="font-size:11px;color:var(--crit);margin-left:5px">→ ${Math.round(netTotal/1000)}к после налога</span>
+            </div>
+          </div>
+        </div>`;
+      })() : ''}
       <div class="bar-track"><div class="bar-fill" style="width:${spentPct}%;background:${spentColor}"></div></div>
       <div class="bar-footer"><span class="bar-pct">${Math.round(spent/1000)}к / ${Math.round(expGoal/1000)}к ₽</span><span class="bar-pct">${spentPct}%</span></div>
       ${cats.length ? `<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line)">
