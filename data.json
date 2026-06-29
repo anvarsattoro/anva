@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T08:41:52.102253+03:00",
+  "generated_at": "2026-06-29T09:07:23.823563+03:00",
   "today": {
     "recovery": 41.0,
     "hrv_ms": 48.1,
@@ -335,7 +335,7 @@
     }
   ],
   "finances": {
-    "monthly_income": 383317,
+    "monthly_income": 416336.11,
     "monthly_expense_goal": 285000,
     "month_expenses": 309262.3,
     "credit_repayment": 91173,
@@ -393,6 +393,28 @@
         "amount": 10400,
         "monthly_avg": 0,
         "limit": 5000
+      }
+    ],
+    "income_sources": [
+      {
+        "date": "2026-06-01",
+        "amount": 78947.21,
+        "source": "Банк Точка"
+      },
+      {
+        "date": "2026-06-11",
+        "amount": 130850.0,
+        "source": "Банк Точка"
+      },
+      {
+        "date": "2026-06-16",
+        "amount": 71428.9,
+        "source": "Банк Точка"
+      },
+      {
+        "date": "2026-06-25",
+        "amount": 135110.0,
+        "source": "Банк Точка"
       }
     ]
   }
