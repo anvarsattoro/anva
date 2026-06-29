@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T08:33:47.709966+03:00",
+  "generated_at": "2026-06-29T08:37:35.935095+03:00",
   "today": {
     "recovery": 41.0,
     "hrv_ms": 48.1,
@@ -359,8 +359,14 @@
         "limit": 20000
       },
       {
+        "name": "Транспорт",
+        "amount": 38720,
+        "monthly_avg": 0,
+        "limit": 0
+      },
+      {
         "name": "Прочее",
-        "amount": 56625,
+        "amount": 17905,
         "monthly_avg": 0,
         "limit": 5000
       },
