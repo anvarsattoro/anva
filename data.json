@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T08:22:43.927792+03:00",
+  "generated_at": "2026-06-29T08:33:47.709966+03:00",
   "today": {
     "recovery": 41.0,
     "hrv_ms": 48.1,
@@ -360,13 +360,13 @@
       },
       {
         "name": "Прочее",
-        "amount": 44025,
+        "amount": 56625,
         "monthly_avg": 0,
         "limit": 5000
       },
       {
         "name": "Дом",
-        "amount": 1957,
+        "amount": 9957,
         "monthly_avg": 0,
         "limit": 8000
       },
@@ -378,7 +378,7 @@
       },
       {
         "name": "Теннис",
-        "amount": 3260,
+        "amount": 9260,
         "monthly_avg": 0,
         "limit": 25000
       },
@@ -387,12 +387,6 @@
         "amount": 10400,
         "monthly_avg": 0,
         "limit": 5000
-      },
-      {
-        "name": "Переводы",
-        "amount": 26600,
-        "monthly_avg": 0,
-        "limit": 10000
       }
     ]
   }
