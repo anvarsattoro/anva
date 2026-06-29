@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T08:04:39.611915+03:00",
+  "generated_at": "2026-06-29T08:20:33.847430+03:00",
   "today": {
     "recovery": 41.0,
     "hrv_ms": 48.1,
@@ -337,24 +337,24 @@
   "finances": {
     "monthly_income": 383317,
     "monthly_expense_goal": 285000,
-    "month_expenses": 390067.03,
+    "month_expenses": 584964.3,
     "credit_repayment": 91173,
     "categories": [
       {
         "name": "Семья",
-        "amount": 213829.32,
+        "amount": 316443.98,
         "monthly_avg": 182000,
         "limit": 182000
       },
       {
         "name": "Здоровье",
-        "amount": 8637,
+        "amount": 11631.1,
         "monthly_avg": 43800,
         "limit": 10000
       },
       {
         "name": "Теннис",
-        "amount": 12260,
+        "amount": 15520,
         "monthly_avg": 26800,
         "limit": 25000
       },
@@ -366,37 +366,37 @@
       },
       {
         "name": "Еда",
-        "amount": 17356.97,
+        "amount": 44215.94,
         "monthly_avg": 19100,
         "limit": 20000
       },
       {
         "name": "Прочее",
-        "amount": 25629,
+        "amount": 51592.159999999996,
         "monthly_avg": 18300,
         "limit": 5000
       },
       {
         "name": "Переводы",
-        "amount": 16830,
+        "amount": 39430,
         "monthly_avg": 16000,
         "limit": 10000
       },
       {
         "name": "Дом",
-        "amount": 9007.95,
+        "amount": 10155.92,
         "monthly_avg": 15100,
         "limit": 8000
       },
       {
         "name": "Путешествия",
-        "amount": 6900,
+        "amount": 12200,
         "monthly_avg": 12500,
         "limit": 5000
       },
       {
         "name": "Алкоголь & Сигареты",
-        "amount": 25653.79,
+        "amount": 29812.2,
         "monthly_avg": 10000,
         "limit": 10000
       }
