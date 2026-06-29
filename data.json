@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29T11:05:00.529611+03:00",
+  "generated_at": "2026-06-29T12:06:29.053056+03:00",
   "today": {
     "recovery": 41.0,
     "hrv_ms": 48.1,
@@ -15,7 +15,7 @@
     "workout_strain": null,
     "action": "Лёг на 26 мин позже цели — сегодня отбой до 23:10",
     "mood": null,
-    "cigarettes": 0,
+    "cigarettes": 1,
     "cigarettes_target": 4
   },
   "sleep_week": [
@@ -130,7 +130,7 @@
     "workouts_goal": 30,
     "intensive": 18,
     "intensive_goal": 19,
-    "cigarettes": 193
+    "cigarettes": 194
   },
   "year": {
     "sobriety_days": 140,
@@ -139,7 +139,7 @@
     "activity_goal": 365,
     "intensive_count": 101,
     "intensive_goal": 200,
-    "cigarettes": 1250,
+    "cigarettes": 1251,
     "saved_rub": 20000,
     "savings_goal": 480000
   },
@@ -415,6 +415,32 @@
         "date": "2026-06-25",
         "amount": 135110.0,
         "source": "Банк Точка"
+      }
+    ],
+    "income_by_month": [
+      {
+        "month": "2026-01",
+        "amount": 109999.93
+      },
+      {
+        "month": "2026-02",
+        "amount": 415960.0
+      },
+      {
+        "month": "2026-03",
+        "amount": 436625.71
+      },
+      {
+        "month": "2026-04",
+        "amount": 349675.29
+      },
+      {
+        "month": "2026-05",
+        "amount": 412007.79
+      },
+      {
+        "month": "2026-06",
+        "amount": 416336.11
       }
     ]
   }
