@@ -877,6 +877,7 @@ function render(d) {
     </div>`;
 
   // Finance card
+  const incomeSources = fin.income_sources || [];
   const income    = fin.monthly_income || 400000;
   const expGoal   = fin.monthly_expense_goal || 300000;
   const creditRep = fin.credit_repayment || 0;
@@ -937,7 +938,8 @@ function render(d) {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 12px">
         <div>
           <div class="whoop-label">Доход</div>
-          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px">${Math.round(income/1000)}к ₽</div>
+          <div style="font-family:Manrope,sans-serif;font-weight:800;font-size:17px">${income.toLocaleString('ru-RU', {minimumFractionDigits:2,maximumFractionDigits:2})} ₽</div>
+          ${incomeSources.length ? `<div style="margin-top:4px">${incomeSources.map(s=>`<div class="whoop-sub">${s.date.slice(5).replace('-','.')} ${s.source} +${s.amount.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})} ₽</div>`).join('')}</div>` : ''}
         </div>
         <div>
           <div class="whoop-label">Свободно</div>
