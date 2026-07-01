@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T19:15:54.918637+03:00",
+  "generated_at": "2026-07-01T06:05:00.124112+03:00",
   "today": {
     "recovery": 79.0,
     "hrv_ms": 66.5,
@@ -8,24 +8,17 @@
     "sleep_start": "23:51",
     "sleep_on_time": false,
     "sleep_late_min": 41,
-    "alcohol_free_days": 3,
+    "alcohol_free_days": 4,
     "smoking_free_days": null,
-    "trained": true,
-    "workout_type": "Спиннинг",
-    "workout_strain": 4.7,
+    "trained": false,
+    "workout_type": null,
+    "workout_strain": null,
     "action": "Лёг на 41 мин позже цели — сегодня отбой до 23:10",
     "mood": null,
-    "cigarettes": 5,
+    "cigarettes": 0,
     "cigarettes_target": 4
   },
   "sleep_week": [
-    {
-      "date": "2026-06-23",
-      "day": 23,
-      "label": "Вт",
-      "hours": 7.1,
-      "on_time": false
-    },
     {
       "date": "2026-06-24",
       "day": 24,
@@ -67,16 +60,16 @@
       "label": "Пн",
       "hours": 7.3,
       "on_time": false
+    },
+    {
+      "date": "2026-06-30",
+      "day": 30,
+      "label": "Вт",
+      "hours": null,
+      "on_time": null
     }
   ],
   "recovery_week": [
-    {
-      "date": "2026-06-24",
-      "day": 24,
-      "label": "Ср",
-      "score": 93,
-      "hrv": 86.1
-    },
     {
       "date": "2026-06-25",
       "day": 25,
@@ -118,22 +111,29 @@
       "label": "Вт",
       "score": 79,
       "hrv": 66.5
+    },
+    {
+      "date": "2026-07-01",
+      "day": 1,
+      "label": "Ср",
+      "score": null,
+      "hrv": null
     }
   ],
   "month": {
-    "name": "Июнь",
-    "days_elapsed": 30,
-    "days_in_month": 30,
-    "sobriety_days": 3,
-    "sleep_on_time_days": 2,
-    "workouts": 35,
-    "workouts_goal": 30,
-    "intensive": 18,
-    "intensive_goal": 18,
-    "cigarettes": 202
+    "name": "Июль",
+    "days_elapsed": 1,
+    "days_in_month": 31,
+    "sobriety_days": 1,
+    "sleep_on_time_days": 0,
+    "workouts": 0,
+    "workouts_goal": 31,
+    "intensive": 0,
+    "intensive_goal": 16,
+    "cigarettes": 0
   },
   "year": {
-    "sobriety_days": 143,
+    "sobriety_days": 144,
     "sobriety_goal": 365,
     "activity_count": 200,
     "activity_goal": 365,
@@ -146,162 +146,11 @@
   "month_calendar": [
     {
       "day": 1,
-      "sober": null,
-      "sleep_ok": true
-    },
-    {
-      "day": 2,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 3,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 4,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 5,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 6,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 7,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 8,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 9,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 10,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 11,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 12,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 13,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 14,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 15,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 16,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 17,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 18,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 19,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 20,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 21,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 22,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 23,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 24,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 25,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 26,
-      "sober": null,
-      "sleep_ok": false
-    },
-    {
-      "day": 27,
-      "sober": null,
-      "sleep_ok": true
-    },
-    {
-      "day": 28,
-      "sober": true,
-      "sleep_ok": false
-    },
-    {
-      "day": 29,
-      "sober": true,
-      "sleep_ok": false
-    },
-    {
-      "day": 30,
       "sober": true,
       "sleep_ok": false
     }
   ],
   "mood_week": [
-    {
-      "date": "2026-06-24",
-      "day": 24,
-      "label": "Ср",
-      "score": null
-    },
     {
       "date": "2026-06-25",
       "day": 25,
@@ -337,95 +186,21 @@
       "day": 30,
       "label": "Вт",
       "score": null
+    },
+    {
+      "date": "2026-07-01",
+      "day": 1,
+      "label": "Ср",
+      "score": null
     }
   ],
   "finances": {
-    "monthly_income": 416336.11,
+    "monthly_income": 400000,
     "monthly_expense_goal": 285000,
-    "month_expenses": 309262.3,
-    "credit_repayment": 91173,
-    "categories": [
-      {
-        "name": "Алкоголь & Сигареты",
-        "amount": 11845,
-        "monthly_avg": 0,
-        "limit": 10000
-      },
-      {
-        "name": "Семья",
-        "amount": 171595,
-        "monthly_avg": 0,
-        "limit": 182000
-      },
-      {
-        "name": "Еда",
-        "amount": 29086,
-        "monthly_avg": 0,
-        "limit": 20000
-      },
-      {
-        "name": "Транспорт",
-        "amount": 38720,
-        "monthly_avg": 0,
-        "limit": 0
-      },
-      {
-        "name": "Прочее",
-        "amount": 17905,
-        "monthly_avg": 0,
-        "limit": 5000
-      },
-      {
-        "name": "Дом",
-        "amount": 9957,
-        "monthly_avg": 0,
-        "limit": 8000
-      },
-      {
-        "name": "Здоровье",
-        "amount": 2994,
-        "monthly_avg": 0,
-        "limit": 10000
-      },
-      {
-        "name": "Теннис",
-        "amount": 16760,
-        "monthly_avg": 0,
-        "limit": 25000
-      },
-      {
-        "name": "Путешествия",
-        "amount": 10400,
-        "monthly_avg": 0,
-        "limit": 5000
-      }
-    ],
-    "income_sources": [
-      {
-        "date": "2026-06-01",
-        "amount": 78947.21,
-        "source": "Банк Точка",
-        "type": "зп"
-      },
-      {
-        "date": "2026-06-11",
-        "amount": 130850.0,
-        "source": "Банк Точка",
-        "type": "смз"
-      },
-      {
-        "date": "2026-06-16",
-        "amount": 71428.9,
-        "source": "Банк Точка",
-        "type": "зп"
-      },
-      {
-        "date": "2026-06-25",
-        "amount": 135110.0,
-        "source": "Банк Точка",
-        "type": "смз"
-      }
-    ],
+    "month_expenses": 283000,
+    "credit_repayment": 0,
+    "categories": [],
+    "income_sources": [],
     "income_by_month": [
       {
         "month": "2026-01",
