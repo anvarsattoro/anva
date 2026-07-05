@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04T19:05:00.184392+03:00",
+  "generated_at": "2026-07-05T06:05:00.132326+03:00",
   "today": {
     "recovery": 64.0,
     "hrv_ms": 57.4,
@@ -8,7 +8,7 @@
     "sleep_start": "00:21",
     "sleep_on_time": false,
     "sleep_late_min": 72,
-    "alcohol_free_days": 7,
+    "alcohol_free_days": 8,
     "smoking_free_days": null,
     "trained": false,
     "workout_type": null,
@@ -19,13 +19,6 @@
     "cigarettes_target": 4
   },
   "sleep_week": [
-    {
-      "date": "2026-06-27",
-      "day": 27,
-      "label": "Сб",
-      "hours": 8.2,
-      "on_time": true
-    },
     {
       "date": "2026-06-28",
       "day": 28,
@@ -67,16 +60,16 @@
       "label": "Пт",
       "hours": 6.3,
       "on_time": false
+    },
+    {
+      "date": "2026-07-04",
+      "day": 4,
+      "label": "Сб",
+      "hours": null,
+      "on_time": null
     }
   ],
   "recovery_week": [
-    {
-      "date": "2026-06-28",
-      "day": 28,
-      "label": "Вс",
-      "score": 50,
-      "hrv": 52.5
-    },
     {
       "date": "2026-06-29",
       "day": 29,
@@ -118,26 +111,33 @@
       "label": "Сб",
       "score": 64,
       "hrv": 57.4
+    },
+    {
+      "date": "2026-07-05",
+      "day": 5,
+      "label": "Вс",
+      "score": null,
+      "hrv": null
     }
   ],
   "month": {
     "name": "Июль",
-    "days_elapsed": 4,
+    "days_elapsed": 5,
     "days_in_month": 31,
-    "sobriety_days": 4,
+    "sobriety_days": 5,
     "sleep_on_time_days": 0,
-    "workouts": 5,
+    "workouts": 8,
     "workouts_goal": 31,
-    "intensive": 2,
-    "intensive_goal": 17,
+    "intensive": 4,
+    "intensive_goal": 18,
     "cigarettes": 0
   },
   "year": {
-    "sobriety_days": 147,
+    "sobriety_days": 148,
     "sobriety_goal": 365,
-    "activity_count": 203,
+    "activity_count": 206,
     "activity_goal": 365,
-    "intensive_count": 102,
+    "intensive_count": 104,
     "intensive_goal": 200,
     "cigarettes": 1259,
     "saved_rub": 20000,
@@ -162,16 +162,15 @@
     {
       "day": 4,
       "sober": true,
+      "sleep_ok": null
+    },
+    {
+      "day": 5,
+      "sober": true,
       "sleep_ok": false
     }
   ],
   "mood_week": [
-    {
-      "date": "2026-06-28",
-      "day": 28,
-      "label": "Вс",
-      "score": null
-    },
     {
       "date": "2026-06-29",
       "day": 29,
@@ -206,6 +205,12 @@
       "date": "2026-07-04",
       "day": 4,
       "label": "Сб",
+      "score": null
+    },
+    {
+      "date": "2026-07-05",
+      "day": 5,
+      "label": "Вс",
       "score": null
     }
   ],
