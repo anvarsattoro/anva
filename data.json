@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-05T19:05:00.126933+03:00",
+  "generated_at": "2026-07-06T06:05:00.137403+03:00",
   "today": {
     "recovery": 1.0,
     "hrv_ms": 16.8,
@@ -8,7 +8,7 @@
     "sleep_start": "04:46",
     "sleep_on_time": false,
     "sleep_late_min": 337,
-    "alcohol_free_days": 8,
+    "alcohol_free_days": 9,
     "smoking_free_days": null,
     "trained": false,
     "workout_type": null,
@@ -19,13 +19,6 @@
     "cigarettes_target": 4
   },
   "sleep_week": [
-    {
-      "date": "2026-06-28",
-      "day": 28,
-      "label": "Вс",
-      "hours": 6.8,
-      "on_time": false
-    },
     {
       "date": "2026-06-29",
       "day": 29,
@@ -67,16 +60,16 @@
       "label": "Сб",
       "hours": 4.4,
       "on_time": false
+    },
+    {
+      "date": "2026-07-05",
+      "day": 5,
+      "label": "Вс",
+      "hours": null,
+      "on_time": null
     }
   ],
   "recovery_week": [
-    {
-      "date": "2026-06-29",
-      "day": 29,
-      "label": "Пн",
-      "score": 41,
-      "hrv": 48.1
-    },
     {
       "date": "2026-06-30",
       "day": 30,
@@ -118,22 +111,29 @@
       "label": "Вс",
       "score": 1,
       "hrv": 16.8
+    },
+    {
+      "date": "2026-07-06",
+      "day": 6,
+      "label": "Пн",
+      "score": null,
+      "hrv": null
     }
   ],
   "month": {
     "name": "Июль",
-    "days_elapsed": 5,
+    "days_elapsed": 6,
     "days_in_month": 31,
-    "sobriety_days": 5,
+    "sobriety_days": 6,
     "sleep_on_time_days": 0,
     "workouts": 8,
     "workouts_goal": 31,
     "intensive": 4,
-    "intensive_goal": 18,
+    "intensive_goal": 17,
     "cigarettes": 0
   },
   "year": {
-    "sobriety_days": 148,
+    "sobriety_days": 149,
     "sobriety_goal": 365,
     "activity_count": 206,
     "activity_goal": 365,
@@ -167,16 +167,15 @@
     {
       "day": 5,
       "sober": true,
+      "sleep_ok": null
+    },
+    {
+      "day": 6,
+      "sober": true,
       "sleep_ok": false
     }
   ],
   "mood_week": [
-    {
-      "date": "2026-06-29",
-      "day": 29,
-      "label": "Пн",
-      "score": null
-    },
     {
       "date": "2026-06-30",
       "day": 30,
@@ -211,6 +210,12 @@
       "date": "2026-07-05",
       "day": 5,
       "label": "Вс",
+      "score": null
+    },
+    {
+      "date": "2026-07-06",
+      "day": 6,
+      "label": "Пн",
       "score": null
     }
   ],
