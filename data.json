@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-07-08T06:05:00.176774+03:00",
+  "generated_at": "2026-07-08T11:05:00.206655+03:00",
   "today": {
-    "recovery": 72.0,
-    "hrv_ms": 72.1,
-    "rhr": 54.0,
-    "sleep_hours": 5.8,
-    "sleep_start": "00:51",
-    "sleep_on_time": false,
-    "sleep_late_min": 102,
+    "recovery": 87.0,
+    "hrv_ms": 83.9,
+    "rhr": 52.0,
+    "sleep_hours": 6.7,
+    "sleep_start": "23:08",
+    "sleep_on_time": true,
+    "sleep_late_min": 0,
     "alcohol_free_days": 11,
     "smoking_free_days": null,
-    "trained": false,
-    "workout_type": null,
-    "workout_strain": null,
-    "action": "Лёг на 102 мин позже цели — сегодня отбой до 23:10",
+    "trained": true,
+    "workout_type": "Теннис",
+    "workout_strain": 13.3,
+    "action": "Сон меньше 7 ч — лечь сегодня до 23:10",
     "mood": null,
     "cigarettes": 0,
     "cigarettes_target": 4
@@ -65,8 +65,8 @@
       "date": "2026-07-07",
       "day": 7,
       "label": "Вт",
-      "hours": null,
-      "on_time": null
+      "hours": 6.7,
+      "on_time": true
     }
   ],
   "recovery_week": [
@@ -116,8 +116,8 @@
       "date": "2026-07-08",
       "day": 8,
       "label": "Ср",
-      "score": null,
-      "hrv": null
+      "score": 87,
+      "hrv": 83.9
     }
   ],
   "month": {
@@ -125,19 +125,19 @@
     "days_elapsed": 8,
     "days_in_month": 31,
     "sobriety_days": 8,
-    "sleep_on_time_days": 1,
-    "workouts": 10,
+    "sleep_on_time_days": 2,
+    "workouts": 11,
     "workouts_goal": 31,
-    "intensive": 4,
-    "intensive_goal": 17,
+    "intensive": 5,
+    "intensive_goal": 18,
     "cigarettes": 0
   },
   "year": {
     "sobriety_days": 151,
     "sobriety_goal": 365,
-    "activity_count": 206,
+    "activity_count": 207,
     "activity_goal": 365,
-    "intensive_count": 103,
+    "intensive_count": 104,
     "intensive_goal": 200,
     "cigarettes": 1259,
     "saved_rub": 20000,
@@ -177,12 +177,12 @@
     {
       "day": 7,
       "sober": true,
-      "sleep_ok": null
+      "sleep_ok": true
     },
     {
       "day": 8,
       "sober": true,
-      "sleep_ok": false
+      "sleep_ok": true
     }
   ],
   "mood_week": [
