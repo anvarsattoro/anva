@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T11:05:00.182147+03:00",
+  "generated_at": "2026-07-09T15:05:00.278397+03:00",
   "today": {
     "recovery": 36.0,
     "hrv_ms": 41.4,
@@ -8,14 +8,14 @@
     "sleep_start": "00:10",
     "sleep_on_time": false,
     "sleep_late_min": 61,
-    "alcohol_free_days": 12,
+    "alcohol_free_days": 0,
     "smoking_free_days": null,
     "trained": false,
     "workout_type": null,
     "workout_strain": null,
     "action": "Лёг на 61 мин позже цели — сегодня отбой до 23:10",
-    "mood": null,
-    "cigarettes": 0,
+    "mood": 4,
+    "cigarettes": 2,
     "cigarettes_target": 4
   },
   "sleep_week": [
@@ -124,69 +124,69 @@
     "name": "Июль",
     "days_elapsed": 9,
     "days_in_month": 31,
-    "sobriety_days": 9,
+    "sobriety_days": 0,
     "sleep_on_time_days": 2,
     "workouts": 11,
     "workouts_goal": 31,
     "intensive": 5,
     "intensive_goal": 17,
-    "cigarettes": 0
+    "cigarettes": 2
   },
   "year": {
-    "sobriety_days": 152,
+    "sobriety_days": 151,
     "sobriety_goal": 365,
-    "activity_count": 205,
+    "activity_count": 204,
     "activity_goal": 365,
     "intensive_count": 104,
     "intensive_goal": 200,
-    "cigarettes": 1259,
+    "cigarettes": 1261,
     "saved_rub": 20000,
     "savings_goal": 480000
   },
   "month_calendar": [
     {
       "day": 1,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 2,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 3,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 4,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 5,
-      "sober": true,
+      "sober": null,
       "sleep_ok": true
     },
     {
       "day": 6,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 7,
-      "sober": true,
+      "sober": null,
       "sleep_ok": true
     },
     {
       "day": 8,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     },
     {
       "day": 9,
-      "sober": true,
+      "sober": null,
       "sleep_ok": false
     }
   ],
@@ -231,7 +231,7 @@
       "date": "2026-07-09",
       "day": 9,
       "label": "Чт",
-      "score": null
+      "score": 4
     }
   ],
   "finances": {
