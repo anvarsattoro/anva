@@ -863,6 +863,28 @@ function render(d) {
 
   const hasMoodData = mw.some(n => n.score != null);
 
+  // Обещание вчера вечером ("ложишься до 23:10?") vs факт сегодня утром
+  const sc = d.sleep_commitment;
+  const sleepCommitmentHtml = sc ? (() => {
+    const style = {
+      'сдержал':     { bg: 'var(--pos-bg)',  color: 'var(--pos)',  icon: '✅' },
+      'не сдержал':  { bg: 'var(--crit-bg)', color: 'var(--crit)', icon: '❌' },
+      'предупредил': { bg: 'var(--warn-bg)', color: 'var(--warn)', icon: '🤝' },
+      'не ответил':  { bg: 'var(--warn-bg)', color: 'var(--ink-faint)', icon: '…' },
+    }[sc.verdict] || { bg: 'var(--card)', color: 'var(--ink)', icon: '' };
+    const promisedText = sc.promised === 'да' ? 'обещал лечь до 23:10'
+      : sc.promised === 'нет' ? 'честно предупредил, что не ляжет'
+      : 'не ответил на вечерний пинг';
+    return `<div class="card" style="padding:14px 16px;margin-bottom:14px;background:${style.bg};border-color:transparent">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="section-label" style="margin-bottom:0">Обещание вчера</div>
+        <div style="font-size:12px;font-weight:800;color:${style.color}">${style.icon} ${sc.verdict}</div>
+      </div>
+      <div style="font-size:13px;color:var(--ink-soft);margin-top:6px">${promisedText}</div>
+      <div style="font-size:12px;color:var(--ink-faint);margin-top:3px">лёг в ${sc.actual_bedtime || '—'}${sc.recovery != null ? ' · recovery ' + Math.round(sc.recovery) + '%' : ''}</div>
+    </div>`;
+  })() : '';
+
   const sleepWeekHtml = `
     <div class="card sleep-chart-card">
       <div class="section-label">Сон — 7 ночей</div>
@@ -1261,6 +1283,7 @@ function render(d) {
         <span class="action-text">${t.action || ''}</span>
       </div>
 
+      ${sleepCommitmentHtml}
       ${lifeRingsHtml}
       ${whoopStrip}
 
