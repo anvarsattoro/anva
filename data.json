@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T15:05:00.278397+03:00",
+  "generated_at": "2026-07-09T19:05:00.212303+03:00",
   "today": {
     "recovery": 36.0,
     "hrv_ms": 41.4,
@@ -14,7 +14,7 @@
     "workout_type": null,
     "workout_strain": null,
     "action": "Лёг на 61 мин позже цели — сегодня отбой до 23:10",
-    "mood": 4,
+    "mood": 3,
     "cigarettes": 2,
     "cigarettes_target": 4
   },
@@ -231,9 +231,10 @@
       "date": "2026-07-09",
       "day": 9,
       "label": "Чт",
-      "score": 4
+      "score": 3
     }
   ],
+  "sleep_commitment": null,
   "finances": {
     "monthly_income": 400000,
     "monthly_expense_goal": 285000,
