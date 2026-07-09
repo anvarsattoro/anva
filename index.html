@@ -1162,7 +1162,7 @@ function render(d) {
     const cigStatus = cigToday === 0 ? 'не курил' : cigToday <= cigTarget ? 'в норме' : `+${cigToday - cigTarget} сверх цели`;
 
     const heroEl = `<div style="text-align:center;margin-bottom:12px">
-      <div style="position:relative;width:148px;height:148px;margin:0 auto">
+      <div onclick="logCigarette(this)" style="position:relative;width:148px;height:148px;margin:0 auto;cursor:pointer">
         <svg viewBox="0 0 36 36" style="width:148px;height:148px">
           <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--line)" stroke-width="2.4"/>
           <circle cx="18" cy="18" r="15.9" fill="none" stroke="${cigColor}"
@@ -1176,12 +1176,13 @@ function render(d) {
       </div>
       <div style="font-size:13px;font-weight:700;color:var(--ink);margin-top:8px">Сигареты</div>
       <div style="font-size:11px;color:var(--ink-faint);margin-top:3px">${cigStatus} · ${m.cigarettes || 0} за месяц</div>
+      <div style="font-size:10px;color:var(--ink-faint);margin-top:2px">нажми на кольцо, чтобы отметить +1</div>
     </div>`;
 
     // Compact 3: числа напрямую, без процентов
     const wColor = spent > SPEND_GOAL ? '#B83232' : spent > SPEND_GOAL * 0.9 ? '#C8A028' : 'var(--ink)';
     const compact = [
-      { emoji: '🍺', big: `${alc != null ? alc : '—'}`, unit: alc != null ? 'дн' : '', label: 'СТРИК' },
+      { emoji: '🍺', big: `${alc != null ? alc : '—'}`, unit: alc != null ? 'дн' : '', label: 'СТРИК · тапни при срыве', onclick: 'logAlcohol()' },
       { emoji: '🏋', big: `${m.workouts || 0}`, unit: `из ${m.workouts_goal || '?'}`, label: 'В МЕС' },
       { emoji: '💰', big: `${Math.round(spent / 1000)}к`, unit: `из ${Math.round(SPEND_GOAL / 1000)}к`, label: 'БЮДЖЕТ', color: wColor }
     ];
@@ -1189,7 +1190,7 @@ function render(d) {
     const compactEl = `<div class="card" style="padding:14px 8px;margin-bottom:14px;display:flex;align-items:center">
       ${compact.map((p, i) => `
         ${i > 0 ? '<div style="width:1px;background:var(--line);align-self:stretch;margin:2px 0"></div>' : ''}
-        <div style="flex:1;text-align:center">
+        <div style="flex:1;text-align:center${p.onclick ? ';cursor:pointer' : ''}"${p.onclick ? ` onclick="${p.onclick}"` : ''}>
           <div style="font-size:15px;line-height:1;margin-bottom:4px">${p.emoji}</div>
           <div style="font-size:17px;font-weight:800;font-family:Manrope,sans-serif;color:${p.color || 'var(--ink)'};line-height:1">${p.big}<span style="font-size:10px;font-weight:500;color:var(--ink-faint);margin-left:2px">${p.unit}</span></div>
           <div style="font-size:9px;color:var(--ink-faint);margin-top:3px;letter-spacing:.3px">${p.label}</div>
@@ -1197,7 +1198,14 @@ function render(d) {
       `).join('')}
     </div>`;
 
-    return heroEl + compactEl;
+    const moodPickerHtml = `<div class="card" style="padding:14px 16px;margin-bottom:14px">
+      <div class="section-label" style="margin-bottom:8px">Настроение сегодня</div>
+      <div style="display:flex;justify-content:space-between;gap:6px">
+        ${[1,2,3,4,5].map(s => `<button onclick="logMood(${s},this)" style="flex:1;padding:10px 0;border-radius:10px;border:1.5px solid ${t.mood===s?'var(--bordeaux)':'var(--line)'};background:${t.mood===s?'var(--pos-bg)':'var(--card)'};font-size:20px;cursor:pointer;font-family:inherit">${MOOD_EMOJI[s]}</button>`).join('')}
+      </div>
+    </div>`;
+
+    return heroEl + compactEl + moodPickerHtml;
   })();
 
   /* ── Time period bars ── */
@@ -1319,12 +1327,68 @@ function render(d) {
   document.getElementById('updated').textContent = 'обновлено ' + gen.toLocaleString('ru-RU', opts);
 }
 
-fetch('data.json?v=' + Date.now())
-  .then(r => r.json())
-  .then(render)
-  .catch(() => {
-    document.getElementById('content').innerHTML = '<div class="loading">Ошибка загрузки данных</div>';
-  });
+/* ── Запись событий прямо с дашборда ── */
+const TOKEN_KEY = 'dash_write_token';
+
+function getToken() {
+  let t = localStorage.getItem(TOKEN_KEY);
+  if (!t) {
+    t = prompt('Токен записи (см. credentials/dashboard_write_token):');
+    if (t && t.trim()) { t = t.trim(); localStorage.setItem(TOKEN_KEY, t); }
+    else t = null;
+  }
+  return t;
+}
+
+async function logEvent(payload, btnEl) {
+  const token = getToken();
+  if (!token) return;
+  if (btnEl) btnEl.style.opacity = '.5';
+  try {
+    const r = await fetch('/api/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify(payload),
+    });
+    if (r.status === 401) {
+      localStorage.removeItem(TOKEN_KEY);
+      alert('Неверный токен записи. Попробуй ещё раз — он спросится заново.');
+      return;
+    }
+    if (!r.ok) { alert('Не получилось записать (' + r.status + ')'); return; }
+    await loadAndRender();
+  } catch (e) {
+    alert('Нет связи с сервером: ' + e.message);
+  } finally {
+    if (btnEl) btnEl.style.opacity = '';
+  }
+}
+
+function logCigarette(el) { logEvent({ type: 'cigarette' }, el); }
+function logMood(score, el) { logEvent({ type: 'mood', score }, el); }
+function logAlcohol() {
+  if (confirm('Записать срыв? Стрик трезвости сбросится на 0, накопленные дни сохранятся.')) {
+    logEvent({ type: 'alcohol' });
+  }
+}
+
+async function loadAndRender() {
+  const d = await fetch('data.json?v=' + Date.now()).then(r => r.json());
+  try {
+    const live = await fetch('/api/computed?v=' + Date.now()).then(r => r.json());
+    Object.assign(d.today, live.today);
+    Object.assign(d.month, live.month);
+    Object.assign(d.year, live.year);
+    d.mood_week = live.mood_week;
+  } catch (e) {
+    // живые данные недоступны — показываем то, что есть в последнем батче
+  }
+  render(d);
+}
+
+loadAndRender().catch(() => {
+  document.getElementById('content').innerHTML = '<div class="loading">Ошибка загрузки данных</div>';
+});
 </script>
 </body>
 </html>

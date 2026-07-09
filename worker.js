@@ -13,13 +13,103 @@ function todayMoscow() {
   return `${get("year")}-${get("month")}-${get("day")}`;
 }
 
+const DAY_ABBR = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+const DEFAULT_CONFIG = {
+  cigarettes_daily_target: 4,
+  cigarettes_default_per_day: 7,
+  cigarettes_tracking_since: null,
+  pre_streak_weekly_drinks: 0,
+};
+
 async function loadState(env) {
   const raw = await env.HABITS_KV.get("state");
-  return raw ? JSON.parse(raw) : { cigarettes: {}, mood: {}, alcohol_free_since: null };
+  return raw ? JSON.parse(raw) : { cigarettes: {}, mood: {}, alcohol_free_since: null, accumulated_sober_days: 0 };
 }
 
 async function saveState(env, state) {
   await env.HABITS_KV.put("state", JSON.stringify(state));
+}
+
+async function loadConfig(env) {
+  const raw = await env.HABITS_KV.get("config");
+  return raw ? { ...DEFAULT_CONFIG, ...JSON.parse(raw) } : DEFAULT_CONFIG;
+}
+
+function daysSince(dateStr, today) {
+  if (!dateStr) return null;
+  const d = new Date(dateStr + "T00:00:00Z"), t = new Date(today + "T00:00:00Z");
+  return Math.round((t - d) / 86400000) + 1;
+}
+
+function isLeapYear(y) {
+  return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+}
+
+function cigsForDay(dateStr, today, cigData, cigSince, cigDefault) {
+  if (dateStr in cigData) return cigData[dateStr];
+  if (dateStr < today && (!cigSince || dateStr < cigSince)) return cigDefault;
+  return 0;
+}
+
+function addDays(dateStr, n) {
+  const d = new Date(dateStr + "T00:00:00Z");
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+
+function computeDerived(state, config, today) {
+  const year = today.slice(0, 4);
+  const monthStart = today.slice(0, 7) + "-01";
+  const yearStart = year + "-01-01";
+
+  const cigData = state.cigarettes || {};
+  const cigSince = config.cigarettes_tracking_since;
+  const cigDefault = config.cigarettes_default_per_day;
+  const cigTarget = config.cigarettes_daily_target;
+
+  let cigsToday = 0, cigsMonth = 0, cigsYear = 0;
+  for (let d = yearStart; d <= today; d = addDays(d, 1)) {
+    const v = cigsForDay(d, today, cigData, cigSince, cigDefault);
+    cigsYear += v;
+    if (d >= monthStart) cigsMonth += v;
+    if (d === today) cigsToday = v;
+  }
+
+  const alcSince = state.alcohol_free_since || null;
+  const alcoholFreeDays = daysSince(alcSince, today);
+  let alcMonthDays = 0;
+  if (alcSince) {
+    const start = alcSince > monthStart ? alcSince : monthStart;
+    alcMonthDays = daysSince(start, today) || 0;
+  }
+
+  let accumulated = state.accumulated_sober_days || 0;
+  if (!accumulated && alcSince) {
+    const preDays = Math.max(0, daysSince(yearStart, alcSince) - 1);
+    accumulated = Math.round(preDays * Math.max(0, 1 - config.pre_streak_weekly_drinks / 7));
+  }
+  const yearSoberDays = accumulated + (alcoholFreeDays || 0);
+  const yearSoberGoal = isLeapYear(Number(year)) ? 366 : 365;
+
+  const moodDict = state.mood || {};
+  const moodWeek = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = addDays(today, -i);
+    const dow = (new Date(d + "T00:00:00Z").getUTCDay() + 6) % 7; // 0=Пн
+    moodWeek.push({ date: d, day: Number(d.slice(8, 10)), label: DAY_ABBR[dow], score: moodDict[d] ?? null });
+  }
+
+  return {
+    today: {
+      alcohol_free_days: alcoholFreeDays,
+      cigarettes: cigsToday,
+      cigarettes_target: cigTarget,
+      mood: moodDict[today] ?? null,
+    },
+    month: { sobriety_days: alcMonthDays, cigarettes: cigsMonth },
+    year: { sobriety_days: yearSoberDays, sobriety_goal: yearSoberGoal, cigarettes: cigsYear },
+    mood_week: moodWeek,
+  };
 }
 
 function unauthorized() {
@@ -79,6 +169,15 @@ async function handleState(env) {
   });
 }
 
+async function handleComputed(env) {
+  const [state, config] = await Promise.all([loadState(env), loadConfig(env)]);
+  const today = todayMoscow();
+  const derived = computeDerived(state, config, today);
+  return new Response(JSON.stringify(derived), {
+    headers: { "content-type": "application/json" },
+  });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -87,6 +186,9 @@ export default {
     }
     if (url.pathname === "/api/state" && request.method === "GET") {
       return handleState(env);
+    }
+    if (url.pathname === "/api/computed" && request.method === "GET") {
+      return handleComputed(env);
     }
     return env.ASSETS.fetch(request);
   },
