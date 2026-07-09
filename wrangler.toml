@@ -1,0 +1,11 @@
+name = "anva"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+[assets]
+directory = "./"
+binding = "ASSETS"
+
+[[kv_namespaces]]
+binding = "HABITS_KV"
+id = "a606ae3ac33c42789e6f7fe658c91c1d"

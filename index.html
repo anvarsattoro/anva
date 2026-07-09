@@ -847,6 +847,7 @@ function render(d) {
   );
 
   // Mood 7-day chart
+  const MOOD_EMOJI = {1:'😞', 2:'😔', 3:'😐', 4:'😊', 5:'🌟'};
   const moodColors = {1:'#B83232', 2:'#D4701C', 3:'#C8A028', 4:'#74B852', 5:'#2A7A52'};
   const moodBars = mw.map(n => {
     const s = n.score;
