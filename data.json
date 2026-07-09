@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-07-09T06:05:00.130540+03:00",
+  "generated_at": "2026-07-09T11:05:00.182147+03:00",
   "today": {
-    "recovery": 87.0,
-    "hrv_ms": 83.9,
-    "rhr": 52.0,
-    "sleep_hours": 6.7,
-    "sleep_start": "23:08",
-    "sleep_on_time": true,
-    "sleep_late_min": 0,
+    "recovery": 36.0,
+    "hrv_ms": 41.4,
+    "rhr": 59.0,
+    "sleep_hours": 7.6,
+    "sleep_start": "00:10",
+    "sleep_on_time": false,
+    "sleep_late_min": 61,
     "alcohol_free_days": 12,
     "smoking_free_days": null,
     "trained": false,
     "workout_type": null,
     "workout_strain": null,
-    "action": "Сон меньше 7 ч — лечь сегодня до 23:10",
+    "action": "Лёг на 61 мин позже цели — сегодня отбой до 23:10",
     "mood": null,
     "cigarettes": 0,
     "cigarettes_target": 4
@@ -65,8 +65,8 @@
       "date": "2026-07-08",
       "day": 8,
       "label": "Ср",
-      "hours": null,
-      "on_time": null
+      "hours": 7.6,
+      "on_time": false
     }
   ],
   "recovery_week": [
@@ -116,8 +116,8 @@
       "date": "2026-07-09",
       "day": 9,
       "label": "Чт",
-      "score": null,
-      "hrv": null
+      "score": 36,
+      "hrv": 41.4
     }
   ],
   "month": {
@@ -182,12 +182,12 @@
     {
       "day": 8,
       "sober": true,
-      "sleep_ok": null
+      "sleep_ok": false
     },
     {
       "day": 9,
       "sober": true,
-      "sleep_ok": true
+      "sleep_ok": false
     }
   ],
   "mood_week": [
