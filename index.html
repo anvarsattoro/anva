@@ -1177,12 +1177,14 @@ function render(d) {
       <div style="font-size:13px;font-weight:700;color:var(--ink);margin-top:8px">Сигареты</div>
       <div style="font-size:11px;color:var(--ink-faint);margin-top:3px">${cigStatus} · ${m.cigarettes || 0} за месяц</div>
       <div style="font-size:10px;color:var(--ink-faint);margin-top:2px">нажми на кольцо, чтобы отметить +1</div>
+      ${cigToday > 0 ? `<div onclick="logCigarette(this,-1)" style="display:inline-block;margin-top:6px;font-size:11px;color:var(--ink-faint);text-decoration:underline;cursor:pointer;padding:4px 10px">− отменить (случайно нажал)</div>` : ''}
     </div>`;
 
     // Compact 3: числа напрямую, без процентов
     const wColor = spent > SPEND_GOAL ? '#B83232' : spent > SPEND_GOAL * 0.9 ? '#C8A028' : 'var(--ink)';
     const compact = [
-      { emoji: '🍺', big: `${alc != null ? alc : '—'}`, unit: alc != null ? 'дн' : '', label: 'СТРИК · тапни при срыве', onclick: 'logAlcohol()' },
+      { emoji: '🍺', big: `${alc != null ? alc : '—'}`, unit: alc != null ? 'дн' : '', label: 'СТРИК · тапни при срыве', onclick: 'logAlcohol()',
+        extra: t.can_undo_alcohol ? `<div onclick="event.stopPropagation();logAlcoholUndo()" style="font-size:9px;color:var(--crit);text-decoration:underline;margin-top:2px">отменить срыв</div>` : '' },
       { emoji: '🏋', big: `${m.workouts || 0}`, unit: `из ${m.workouts_goal || '?'}`, label: 'В МЕС' },
       { emoji: '💰', big: `${Math.round(spent / 1000)}к`, unit: `из ${Math.round(SPEND_GOAL / 1000)}к`, label: 'БЮДЖЕТ', color: wColor }
     ];
@@ -1194,6 +1196,7 @@ function render(d) {
           <div style="font-size:15px;line-height:1;margin-bottom:4px">${p.emoji}</div>
           <div style="font-size:17px;font-weight:800;font-family:Manrope,sans-serif;color:${p.color || 'var(--ink)'};line-height:1">${p.big}<span style="font-size:10px;font-weight:500;color:var(--ink-faint);margin-left:2px">${p.unit}</span></div>
           <div style="font-size:9px;color:var(--ink-faint);margin-top:3px;letter-spacing:.3px">${p.label}</div>
+          ${p.extra || ''}
         </div>
       `).join('')}
     </div>`;
@@ -1203,6 +1206,7 @@ function render(d) {
       <div style="display:flex;justify-content:space-between;gap:6px">
         ${[1,2,3,4,5].map(s => `<button onclick="logMood(${s},this)" style="flex:1;padding:10px 0;border-radius:10px;border:1.5px solid ${t.mood===s?'var(--bordeaux)':'var(--line)'};background:${t.mood===s?'var(--pos-bg)':'var(--card)'};font-size:20px;cursor:pointer;font-family:inherit">${MOOD_EMOJI[s]}</button>`).join('')}
       </div>
+      ${t.mood != null ? `<div onclick="logMoodClear(this)" style="text-align:center;margin-top:8px;font-size:11px;color:var(--ink-faint);text-decoration:underline;cursor:pointer">× очистить отметку за сегодня</div>` : ''}
     </div>`;
 
     return heroEl + compactEl + moodPickerHtml;
@@ -1364,11 +1368,17 @@ async function logEvent(payload, btnEl) {
   }
 }
 
-function logCigarette(el) { logEvent({ type: 'cigarette' }, el); }
+function logCigarette(el, delta) { logEvent({ type: 'cigarette', delta: delta === -1 ? -1 : 1 }, el); }
 function logMood(score, el) { logEvent({ type: 'mood', score }, el); }
+function logMoodClear(el) { logEvent({ type: 'mood_clear' }, el); }
 function logAlcohol() {
   if (confirm('Записать срыв? Стрик трезвости сбросится на 0, накопленные дни сохранятся.')) {
     logEvent({ type: 'alcohol' });
+  }
+}
+function logAlcoholUndo() {
+  if (confirm('Отменить последний срыв и вернуть стрик как было?')) {
+    logEvent({ type: 'alcohol_undo' });
   }
 }
 

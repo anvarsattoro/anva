@@ -105,6 +105,7 @@ function computeDerived(state, config, today) {
       cigarettes: cigsToday,
       cigarettes_target: cigTarget,
       mood: moodDict[today] ?? null,
+      can_undo_alcohol: !!state.alcohol_undo,
     },
     month: { sobriety_days: alcMonthDays, cigarettes: cigsMonth },
     year: { sobriety_days: yearSoberDays, sobriety_goal: yearSoberGoal, cigarettes: cigsYear },
@@ -133,25 +134,38 @@ async function handleLog(request, env) {
   const today = todayMoscow();
 
   if (body.type === "cigarette") {
-    state.cigarettes[today] = (state.cigarettes[today] || 0) + 1;
+    const delta = body.delta === -1 ? -1 : 1;
+    state.cigarettes[today] = Math.max(0, (state.cigarettes[today] || 0) + delta);
   } else if (body.type === "mood") {
     const score = Number(body.score);
     if (!Number.isInteger(score) || score < 1 || score > 5) {
       return new Response(JSON.stringify({ error: "bad score" }), { status: 400 });
     }
     state.mood[today] = score;
+  } else if (body.type === "mood_clear") {
+    delete state.mood[today];
   } else if (body.type === "alcohol") {
-    const streakStart = state.alcohol_free_since;
-    const prevAccumulated = state.accumulated_sober_days || 0;
+    state.alcohol_undo = {
+      alcohol_free_since: state.alcohol_free_since || null,
+      accumulated_sober_days: state.accumulated_sober_days || 0,
+    };
+    const streakStart = state.alcohol_undo.alcohol_free_since;
     if (streakStart) {
       const start = new Date(streakStart + "T00:00:00Z");
       const now = new Date(today + "T00:00:00Z");
       const streak = Math.max(0, Math.round((now - start) / 86400000));
-      state.accumulated_sober_days = prevAccumulated + streak;
+      state.accumulated_sober_days = state.alcohol_undo.accumulated_sober_days + streak;
     }
     const tomorrow = new Date(today + "T00:00:00Z");
     tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
     state.alcohol_free_since = tomorrow.toISOString().slice(0, 10);
+  } else if (body.type === "alcohol_undo") {
+    if (!state.alcohol_undo) {
+      return new Response(JSON.stringify({ error: "nothing to undo" }), { status: 400 });
+    }
+    state.alcohol_free_since = state.alcohol_undo.alcohol_free_since;
+    state.accumulated_sober_days = state.alcohol_undo.accumulated_sober_days;
+    delete state.alcohol_undo;
   } else {
     return new Response(JSON.stringify({ error: "unknown type" }), { status: 400 });
   }
