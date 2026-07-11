@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-11T06:05:00.204991+03:00",
+  "generated_at": "2026-07-11T08:30:00.276095+03:00",
   "today": {
-    "recovery": 20.0,
-    "hrv_ms": 32.2,
-    "rhr": 64.0,
-    "sleep_hours": 5.2,
+    "recovery": 27.0,
+    "hrv_ms": 37.6,
+    "rhr": 63.0,
+    "sleep_hours": 6.7,
     "sleep_start": "00:10",
     "sleep_on_time": false,
     "sleep_late_min": 60,
@@ -65,7 +65,7 @@
       "date": "2026-07-10",
       "day": 10,
       "label": "Пт",
-      "hours": 5.2,
+      "hours": 6.7,
       "on_time": false
     }
   ],
@@ -116,8 +116,8 @@
       "date": "2026-07-11",
       "day": 11,
       "label": "Сб",
-      "score": 20,
-      "hrv": 32.2
+      "score": 27,
+      "hrv": 37.6
     }
   ],
   "month": {
@@ -249,7 +249,7 @@
     "promised": "нет",
     "actual_bedtime": "00:10",
     "on_time": false,
-    "recovery": 20.0,
+    "recovery": 27.0,
     "verdict": "предупредил"
   },
   "finances": {
