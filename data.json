@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T15:05:00.271856+03:00",
+  "generated_at": "2026-07-13T19:00:00.042631+03:00",
   "today": {
     "recovery": 60.0,
     "hrv_ms": 59.6,
@@ -262,6 +262,57 @@
     "recovery": 60.0,
     "verdict": "не сдержал"
   },
+  "sleep_commitment_week": [
+    {
+      "date": "2026-07-06",
+      "day": 6,
+      "label": "Пн",
+      "promised": null,
+      "verdict": "нет данных"
+    },
+    {
+      "date": "2026-07-07",
+      "day": 7,
+      "label": "Вт",
+      "promised": null,
+      "verdict": "нет данных"
+    },
+    {
+      "date": "2026-07-08",
+      "day": 8,
+      "label": "Ср",
+      "promised": null,
+      "verdict": "нет данных"
+    },
+    {
+      "date": "2026-07-09",
+      "day": 9,
+      "label": "Чт",
+      "promised": "да",
+      "verdict": "не сдержал"
+    },
+    {
+      "date": "2026-07-10",
+      "day": 10,
+      "label": "Пт",
+      "promised": "нет",
+      "verdict": "предупредил"
+    },
+    {
+      "date": "2026-07-11",
+      "day": 11,
+      "label": "Сб",
+      "promised": "нет",
+      "verdict": "предупредил"
+    },
+    {
+      "date": "2026-07-12",
+      "day": 12,
+      "label": "Вс",
+      "promised": "да",
+      "verdict": "не сдержал"
+    }
+  ],
   "finances": {
     "monthly_income": 400000,
     "monthly_expense_goal": 285000,
