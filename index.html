@@ -865,13 +865,25 @@ function render(d) {
 
   // Обещание вчера вечером ("ложишься до 23:10?") vs факт сегодня утром
   const sc = d.sleep_commitment;
+  const scWeek = d.sleep_commitment_week || [];
+  const SC_STYLE = {
+    'сдержал':     { bg: 'var(--pos-bg)',  color: 'var(--pos)',  icon: '✅', dot: '#2A7A52' },
+    'не сдержал':  { bg: 'var(--crit-bg)', color: 'var(--crit)', icon: '❌', dot: '#B83232' },
+    'предупредил': { bg: 'var(--warn-bg)', color: 'var(--warn)', icon: '🤝', dot: '#B87A18' },
+    'не ответил':  { bg: 'var(--warn-bg)', color: 'var(--ink-faint)', icon: '…', dot: 'var(--ink-faint)' },
+    'нет данных':  { bg: 'var(--card)', color: 'var(--ink-faint)', icon: '', dot: 'var(--line)' },
+  };
+  const scWeekHtml = scWeek.length ? `<div style="display:flex;justify-content:space-between;gap:4px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)">
+    ${scWeek.map(n => {
+      const st = SC_STYLE[n.verdict] || SC_STYLE['нет данных'];
+      return `<div style="flex:1;text-align:center">
+        <div style="width:20px;height:20px;border-radius:50%;background:${st.dot};margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:10px;color:white">${st.icon}</div>
+        <div style="font-size:9px;color:var(--ink-faint);margin-top:3px">${n.label}</div>
+      </div>`;
+    }).join('')}
+  </div>` : '';
   const sleepCommitmentHtml = sc ? (() => {
-    const style = {
-      'сдержал':     { bg: 'var(--pos-bg)',  color: 'var(--pos)',  icon: '✅' },
-      'не сдержал':  { bg: 'var(--crit-bg)', color: 'var(--crit)', icon: '❌' },
-      'предупредил': { bg: 'var(--warn-bg)', color: 'var(--warn)', icon: '🤝' },
-      'не ответил':  { bg: 'var(--warn-bg)', color: 'var(--ink-faint)', icon: '…' },
-    }[sc.verdict] || { bg: 'var(--card)', color: 'var(--ink)', icon: '' };
+    const style = SC_STYLE[sc.verdict] || SC_STYLE['нет данных'];
     const promisedText = sc.promised === 'да' ? 'обещал лечь до 23:10'
       : sc.promised === 'нет' ? 'честно предупредил, что не ляжет'
       : 'не ответил на вечерний пинг';
@@ -882,6 +894,7 @@ function render(d) {
       </div>
       <div style="font-size:13px;color:var(--ink-soft);margin-top:6px">${promisedText}</div>
       <div style="font-size:12px;color:var(--ink-faint);margin-top:3px">лёг в ${sc.actual_bedtime || '—'}${sc.recovery != null ? ' · recovery ' + Math.round(sc.recovery) + '%' : ''}</div>
+      ${scWeekHtml}
     </div>`;
   })() : '';
 
