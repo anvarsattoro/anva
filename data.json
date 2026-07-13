@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-12T19:05:00.258954+03:00",
+  "generated_at": "2026-07-13T06:05:00.168121+03:00",
   "today": {
     "recovery": 24.0,
     "hrv_ms": 38.8,
@@ -8,24 +8,17 @@
     "sleep_start": "03:33",
     "sleep_on_time": false,
     "sleep_late_min": 263,
-    "alcohol_free_days": 3,
+    "alcohol_free_days": 4,
     "smoking_free_days": null,
     "trained": false,
     "workout_type": null,
     "workout_strain": null,
     "action": "Лёг на 263 мин позже цели — сегодня отбой до 23:10",
-    "mood": 4,
-    "cigarettes": 4,
+    "mood": null,
+    "cigarettes": 0,
     "cigarettes_target": 4
   },
   "sleep_week": [
-    {
-      "date": "2026-07-05",
-      "day": 5,
-      "label": "Вс",
-      "hours": 8.1,
-      "on_time": true
-    },
     {
       "date": "2026-07-06",
       "day": 6,
@@ -67,16 +60,16 @@
       "label": "Сб",
       "hours": 5.0,
       "on_time": false
+    },
+    {
+      "date": "2026-07-12",
+      "day": 12,
+      "label": "Вс",
+      "hours": null,
+      "on_time": null
     }
   ],
   "recovery_week": [
-    {
-      "date": "2026-07-06",
-      "day": 6,
-      "label": "Пн",
-      "score": 95,
-      "hrv": 119.2
-    },
     {
       "date": "2026-07-07",
       "day": 7,
@@ -118,22 +111,29 @@
       "label": "Вс",
       "score": 24,
       "hrv": 38.8
+    },
+    {
+      "date": "2026-07-13",
+      "day": 13,
+      "label": "Пн",
+      "score": null,
+      "hrv": null
     }
   ],
   "month": {
     "name": "Июль",
-    "days_elapsed": 12,
+    "days_elapsed": 13,
     "days_in_month": 31,
-    "sobriety_days": 3,
+    "sobriety_days": 4,
     "sleep_on_time_days": 2,
-    "workouts": 17,
+    "workouts": 18,
     "workouts_goal": 31,
     "intensive": 8,
     "intensive_goal": 18,
     "cigarettes": 6
   },
   "year": {
-    "sobriety_days": 154,
+    "sobriety_days": 155,
     "sobriety_goal": 365,
     "activity_count": 208,
     "activity_goal": 365,
@@ -202,16 +202,15 @@
     {
       "day": 12,
       "sober": true,
+      "sleep_ok": null
+    },
+    {
+      "day": 13,
+      "sober": true,
       "sleep_ok": false
     }
   ],
   "mood_week": [
-    {
-      "date": "2026-07-06",
-      "day": 6,
-      "label": "Пн",
-      "score": null
-    },
     {
       "date": "2026-07-07",
       "day": 7,
@@ -247,15 +246,21 @@
       "day": 12,
       "label": "Вс",
       "score": 4
+    },
+    {
+      "date": "2026-07-13",
+      "day": 13,
+      "label": "Пн",
+      "score": null
     }
   ],
   "sleep_commitment": {
-    "date": "2026-07-11",
-    "promised": "нет",
+    "date": "2026-07-12",
+    "promised": "да",
     "actual_bedtime": "03:33",
     "on_time": false,
     "recovery": 24.0,
-    "verdict": "предупредил"
+    "verdict": "не сдержал"
   },
   "finances": {
     "monthly_income": 400000,
