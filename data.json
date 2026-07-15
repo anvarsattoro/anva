@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T08:30:00.198307+03:00",
+  "generated_at": "2026-07-15T10:32:25.087950+03:00",
   "today": {
     "recovery": 55.0,
     "hrv_ms": 58.0,
@@ -135,9 +135,9 @@
   "year": {
     "sobriety_days": 157,
     "sobriety_goal": 365,
-    "activity_count": 209,
+    "activity_count": 208,
     "activity_goal": 365,
-    "intensive_count": 106,
+    "intensive_count": 105,
     "intensive_goal": 200,
     "cigarettes": 1265,
     "saved_rub": 20000,
@@ -324,12 +324,80 @@
     }
   ],
   "finances": {
-    "monthly_income": 400000,
+    "monthly_income": 227507.1,
     "monthly_expense_goal": 285000,
-    "month_expenses": 283000,
+    "month_expenses": 264687.69,
     "credit_repayment": 0,
-    "categories": [],
-    "income_sources": [],
+    "categories": [
+      {
+        "name": "Семья",
+        "amount": 144375,
+        "monthly_avg": 0,
+        "limit": 182000
+      },
+      {
+        "name": "Алкоголь & Сигареты",
+        "amount": 18904,
+        "monthly_avg": 0,
+        "limit": 10000
+      },
+      {
+        "name": "Дом",
+        "amount": 9022,
+        "monthly_avg": 0,
+        "limit": 8000
+      },
+      {
+        "name": "Прочее",
+        "amount": 36422,
+        "monthly_avg": 0,
+        "limit": 5000
+      },
+      {
+        "name": "Теннис",
+        "amount": 18600,
+        "monthly_avg": 0,
+        "limit": 25000
+      },
+      {
+        "name": "Еда",
+        "amount": 19150,
+        "monthly_avg": 0,
+        "limit": 20000
+      },
+      {
+        "name": "Транспорт",
+        "amount": 14302,
+        "monthly_avg": 0,
+        "limit": 0
+      },
+      {
+        "name": "Путешествия",
+        "amount": 3500,
+        "monthly_avg": 0,
+        "limit": 5000
+      },
+      {
+        "name": "Здоровье",
+        "amount": 413,
+        "monthly_avg": 0,
+        "limit": 10000
+      }
+    ],
+    "income_sources": [
+      {
+        "date": "2026-07-06",
+        "amount": 148936.0,
+        "source": "Банк Точка",
+        "type": "смз"
+      },
+      {
+        "date": "2026-07-01",
+        "amount": 78571.1,
+        "source": "Банк Точка",
+        "type": "зп"
+      }
+    ],
     "income_by_month": [
       {
         "month": "2026-01",
@@ -366,13 +434,19 @@
         "zp": 150376.11,
         "smz": 265960.0,
         "total": 416336.11
+      },
+      {
+        "month": "2026-07",
+        "zp": 78571.1,
+        "smz": 148936.0,
+        "total": 227507.1
       }
     ],
     "income_ytd": {
-      "zp": 781429.83,
-      "smz": 1359175.0,
-      "tax_smz": 81550.5,
-      "total": 2140604.83
+      "zp": 860000.93,
+      "smz": 1508111.0,
+      "tax_smz": 90486.66,
+      "total": 2368111.93
     }
   }
 }
