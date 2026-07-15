@@ -136,6 +136,12 @@ async function handleLog(request, env) {
   if (body.type === "cigarette") {
     const delta = body.delta === -1 ? -1 : 1;
     state.cigarettes[today] = Math.max(0, (state.cigarettes[today] || 0) + delta);
+  } else if (body.type === "cigarette_set") {
+    const value = Math.round(Number(body.value));
+    if (!Number.isFinite(value) || value < 0) {
+      return new Response(JSON.stringify({ error: "bad value" }), { status: 400 });
+    }
+    state.cigarettes[today] = value;
   } else if (body.type === "mood") {
     const score = Number(body.score);
     if (!Number.isInteger(score) || score < 1 || score > 5) {

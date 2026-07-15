@@ -1197,7 +1197,7 @@ function render(d) {
     const cigStatus = cigToday === 0 ? 'не курил' : cigToday <= cigTarget ? 'в норме' : `+${cigToday - cigTarget} сверх цели`;
 
     const heroEl = `<div style="text-align:center;margin-bottom:12px">
-      <div onclick="logCigarette(this)" style="position:relative;width:148px;height:148px;margin:0 auto;cursor:pointer">
+      <div onclick="setCigaretteCount(this, ${cigToday})" style="position:relative;width:148px;height:148px;margin:0 auto;cursor:pointer">
         <svg viewBox="0 0 36 36" style="width:148px;height:148px">
           <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--line)" stroke-width="2.4"/>
           <circle cx="18" cy="18" r="15.9" fill="none" stroke="${cigColor}"
@@ -1211,8 +1211,7 @@ function render(d) {
       </div>
       <div style="font-size:13px;font-weight:700;color:var(--ink);margin-top:8px">Сигареты</div>
       <div style="font-size:11px;color:var(--ink-faint);margin-top:3px">${cigStatus} · ${m.cigarettes || 0} за месяц</div>
-      <div style="font-size:10px;color:var(--ink-faint);margin-top:2px">нажми на кольцо, чтобы отметить +1</div>
-      ${cigToday > 0 ? `<div onclick="logCigarette(this,-1)" style="display:inline-block;margin-top:6px;font-size:11px;color:var(--ink-faint);text-decoration:underline;cursor:pointer;padding:4px 10px">− отменить (случайно нажал)</div>` : ''}
+      <div style="font-size:10px;color:var(--ink-faint);margin-top:2px">нажми, чтобы вписать/поправить число за день</div>
     </div>`;
 
     // Compact 3: числа напрямую, без процентов
@@ -1405,6 +1404,13 @@ async function logEvent(payload, btnEl) {
 }
 
 function logCigarette(el, delta) { logEvent({ type: 'cigarette', delta: delta === -1 ? -1 : 1 }, el); }
+function setCigaretteCount(el, cur) {
+  const val = prompt('Сколько сигарет сегодня всего?', cur);
+  if (val === null) return;
+  const n = parseInt(val, 10);
+  if (!Number.isFinite(n) || n < 0) return;
+  logEvent({ type: 'cigarette_set', value: n }, el);
+}
 function logMood(score, el) { logEvent({ type: 'mood', score }, el); }
 function logMoodClear(el) { logEvent({ type: 'mood_clear' }, el); }
 function logAlcohol() {
