@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-07-15T06:05:00.178936+03:00",
+  "generated_at": "2026-07-15T08:30:00.198307+03:00",
   "today": {
-    "recovery": 69.0,
-    "hrv_ms": 65.0,
-    "rhr": 55.0,
-    "sleep_hours": 7.3,
-    "sleep_start": "23:15",
+    "recovery": 55.0,
+    "hrv_ms": 58.0,
+    "rhr": 56.0,
+    "sleep_hours": 6.2,
+    "sleep_start": "23:44",
     "sleep_on_time": false,
-    "sleep_late_min": 5,
+    "sleep_late_min": 34,
     "alcohol_free_days": 6,
     "smoking_free_days": null,
-    "trained": false,
-    "workout_type": null,
-    "workout_strain": null,
-    "action": "Лёг на 5 мин позже цели — сегодня отбой до 23:10",
+    "trained": true,
+    "workout_type": "Теннис",
+    "workout_strain": 13.0,
+    "action": "Лёг на 34 мин позже цели — сегодня отбой до 23:10",
     "mood": null,
     "cigarettes": 0,
     "cigarettes_target": 4
@@ -65,8 +65,8 @@
       "date": "2026-07-14",
       "day": 14,
       "label": "Вт",
-      "hours": null,
-      "on_time": null
+      "hours": 6.2,
+      "on_time": false
     }
   ],
   "recovery_week": [
@@ -116,8 +116,8 @@
       "date": "2026-07-15",
       "day": 15,
       "label": "Ср",
-      "score": null,
-      "hrv": null
+      "score": 55,
+      "hrv": 58.0
     }
   ],
   "month": {
@@ -126,18 +126,18 @@
     "days_in_month": 31,
     "sobriety_days": 6,
     "sleep_on_time_days": 2,
-    "workouts": 19,
+    "workouts": 20,
     "workouts_goal": 31,
-    "intensive": 8,
-    "intensive_goal": 17,
+    "intensive": 9,
+    "intensive_goal": 18,
     "cigarettes": 6
   },
   "year": {
     "sobriety_days": 157,
     "sobriety_goal": 365,
-    "activity_count": 208,
+    "activity_count": 209,
     "activity_goal": 365,
-    "intensive_count": 105,
+    "intensive_count": 106,
     "intensive_goal": 200,
     "cigarettes": 1265,
     "saved_rub": 20000,
@@ -212,7 +212,7 @@
     {
       "day": 14,
       "sober": true,
-      "sleep_ok": null
+      "sleep_ok": false
     },
     {
       "day": 15,
@@ -267,9 +267,9 @@
   "sleep_commitment": {
     "date": "2026-07-14",
     "promised": "да",
-    "actual_bedtime": "23:15",
+    "actual_bedtime": "23:44",
     "on_time": false,
-    "recovery": 69.0,
+    "recovery": 55.0,
     "verdict": "не сдержал"
   },
   "sleep_commitment_week": [
