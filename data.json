@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T10:32:25.087950+03:00",
+  "generated_at": "2026-07-15T11:05:00.126372+03:00",
   "today": {
     "recovery": 55.0,
     "hrv_ms": 58.0,
@@ -14,7 +14,7 @@
     "workout_type": "Теннис",
     "workout_strain": 13.0,
     "action": "Лёг на 34 мин позже цели — сегодня отбой до 23:10",
-    "mood": null,
+    "mood": 3,
     "cigarettes": 0,
     "cigarettes_target": 4
   },
@@ -261,7 +261,7 @@
       "date": "2026-07-15",
       "day": 15,
       "label": "Ср",
-      "score": null
+      "score": 3
     }
   ],
   "sleep_commitment": {
