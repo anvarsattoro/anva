@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-07-16T06:05:00.210382+03:00",
+  "generated_at": "2026-07-16T08:30:00.288084+03:00",
   "today": {
-    "recovery": 55.0,
-    "hrv_ms": 58.0,
-    "rhr": 56.0,
-    "sleep_hours": 6.2,
-    "sleep_start": "23:44",
-    "sleep_on_time": false,
-    "sleep_late_min": 34,
+    "recovery": 57.0,
+    "hrv_ms": 59.9,
+    "rhr": 58.0,
+    "sleep_hours": 7.1,
+    "sleep_start": "23:01",
+    "sleep_on_time": true,
+    "sleep_late_min": 0,
     "alcohol_free_days": 7,
     "smoking_free_days": null,
     "trained": false,
     "workout_type": null,
     "workout_strain": null,
-    "action": "Лёг на 34 мин позже цели — сегодня отбой до 23:10",
+    "action": "Запланируй тренировку на сегодня",
     "mood": null,
     "cigarettes": 0,
     "cigarettes_target": 4
@@ -65,8 +65,8 @@
       "date": "2026-07-15",
       "day": 15,
       "label": "Ср",
-      "hours": null,
-      "on_time": null
+      "hours": 7.1,
+      "on_time": true
     }
   ],
   "recovery_week": [
@@ -116,8 +116,8 @@
       "date": "2026-07-16",
       "day": 16,
       "label": "Чт",
-      "score": null,
-      "hrv": null
+      "score": 57,
+      "hrv": 59.9
     }
   ],
   "month": {
@@ -125,7 +125,7 @@
     "days_elapsed": 16,
     "days_in_month": 31,
     "sobriety_days": 7,
-    "sleep_on_time_days": 2,
+    "sleep_on_time_days": 3,
     "workouts": 21,
     "workouts_goal": 31,
     "intensive": 9,
@@ -217,12 +217,12 @@
     {
       "day": 15,
       "sober": true,
-      "sleep_ok": null
+      "sleep_ok": true
     },
     {
       "day": 16,
       "sober": true,
-      "sleep_ok": false
+      "sleep_ok": true
     }
   ],
   "mood_week": [
@@ -272,10 +272,10 @@
   "sleep_commitment": {
     "date": "2026-07-15",
     "promised": "да",
-    "actual_bedtime": "23:44",
-    "on_time": false,
-    "recovery": 55.0,
-    "verdict": "не сдержал"
+    "actual_bedtime": "23:01",
+    "on_time": true,
+    "recovery": 57.0,
+    "verdict": "сдержал"
   },
   "sleep_commitment_week": [
     {
@@ -325,7 +325,7 @@
       "day": 15,
       "label": "Ср",
       "promised": "да",
-      "verdict": "не сдержал"
+      "verdict": "сдержал"
     }
   ],
   "finances": {
