@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-16T15:05:00.123319+03:00",
+  "generated_at": "2026-07-16T19:05:00.122498+03:00",
   "today": {
     "recovery": 57.0,
     "hrv_ms": 59.9,
@@ -135,7 +135,7 @@
   "year": {
     "sobriety_days": 158,
     "sobriety_goal": 365,
-    "activity_count": 210,
+    "activity_count": 209,
     "activity_goal": 365,
     "intensive_count": 106,
     "intensive_goal": 200,
