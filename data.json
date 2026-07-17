@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T11:05:00.256746+03:00",
+  "generated_at": "2026-07-17T15:05:00.173449+03:00",
   "today": {
     "recovery": 32.0,
     "hrv_ms": 45.4,
@@ -11,8 +11,8 @@
     "alcohol_free_days": 8,
     "smoking_free_days": null,
     "trained": true,
-    "workout_type": "#57",
-    "workout_strain": 4.3,
+    "workout_type": "#123",
+    "workout_strain": 4.5,
     "action": "Лёг на 22 мин позже цели — сегодня отбой до 23:10",
     "mood": null,
     "cigarettes": 0,
@@ -135,9 +135,9 @@
   "year": {
     "sobriety_days": 159,
     "sobriety_goal": 365,
-    "activity_count": 211,
+    "activity_count": 210,
     "activity_goal": 365,
-    "intensive_count": 106,
+    "intensive_count": 105,
     "intensive_goal": 200,
     "cigarettes": 1271,
     "saved_rub": 20000,
